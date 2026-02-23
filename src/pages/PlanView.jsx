@@ -171,14 +171,16 @@ export default function PlanView() {
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 md:px-8 py-8">
-      <PlanDocument plan={plan} patientData={patientData} />
+      <div id="plan-print-area" className="max-w-4xl mx-auto px-4 md:px-8 py-8">
+        <PlanDocument plan={plan} patientData={patientData} />
       </div>
 
       <style>{`
         @media print {
-          .sticky { position: relative !important; }
-          body { background: white !important; }
+          body * { visibility: hidden; }
+          #plan-print-area, #plan-print-area * { visibility: visible; }
+          #plan-print-area { position: absolute; left: 0; top: 0; width: 100%; padding: 0; margin: 0; }
+          body { background: white !important; margin: 0 !important; }
         }
       `}</style>
     </div>
