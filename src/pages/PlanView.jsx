@@ -10,12 +10,22 @@ export default function PlanView() {
   const [plan, setPlan] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [patientData, setPatientData] = useState(null);
   const planId = new URLSearchParams(window.location.search).get("id");
 
   useEffect(() => {
     if (!planId) return navigate(createPageUrl("Dashboard"));
-    base44.entities.TherapeuticPlan.filter({ id: planId }).then((plans) => {
-      if (plans.length) setPlan(plans[0]);
+    base44.entities.TherapeuticPlan.filter({ id: planId }).then(async (plans) => {
+      if (plans.length) {
+        const p = plans[0];
+        setPlan(p);
+        if (p.patient_id) {
+          try {
+            const patients = await base44.entities.Patient.filter({ id: p.patient_id });
+            if (patients.length) setPatientData(patients[0]);
+          } catch (e) {}
+        }
+      }
       setLoading(false);
     });
   }, [planId]);
