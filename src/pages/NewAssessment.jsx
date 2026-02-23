@@ -17,7 +17,7 @@ const STEPS = [
 
 function buildPrompt(data) {
   return `Você é um especialista em liberação miofascial da clínica Vibe Terapias. 
-Crie um plano terapêutico completo e personalizado seguindo EXATAMENTE a estrutura abaixo.
+Crie um plano terapêutico completo e personalizado. Retorne APENAS um JSON válido, sem texto antes ou depois, seguindo EXATAMENTE esta estrutura:
 
 DADOS DO PACIENTE:
 - Nome: ${data.nome}
