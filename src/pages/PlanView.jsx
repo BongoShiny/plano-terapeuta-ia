@@ -30,6 +30,31 @@ export default function PlanView() {
     });
   }, [planId]);
 
+  const [downloading, setDownloading] = useState(false);
+
+  const downloadDocx = async () => {
+    setDownloading(true);
+    try {
+      const response = await base44.functions.invoke("generateDocx", { planId: plan.id });
+      // response.data is arraybuffer
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Plano_Vibe_${plan.patient_nome || "Paciente"}.docx`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    } catch (e) {
+      alert("Erro ao gerar o .docx. Tente novamente.");
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   const markAsPresented = async () => {
     await base44.entities.TherapeuticPlan.update(plan.id, { status: "Apresentado" });
     setPlan((p) => ({ ...p, status: "Apresentado" }));
