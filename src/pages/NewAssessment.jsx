@@ -34,125 +34,111 @@ DADOS DO PACIENTE:
 - Atividade Física: ${data.atividade_fisica || "Não informado"}
 - Condições Preexistentes: ${(data.condicoes_preexistentes || []).join(", ") || "Nenhuma"}
 - Medicamentos: ${data.medicamentos || "Nenhum"}
-- Resultado Câmera Termal: ${data.resultado_camera_termal || "Não realizado"}
+- Resultado Câmera Termal: ${data.resultado_camera_termal || "A ser realizado na primeira sessão"}
 - Objetivos do Paciente: ${data.objetivos_paciente || "Não informado"}
 
 REGRAS OBRIGATÓRIAS:
-1. Mencione o nome do paciente várias vezes no texto para que ele se sinta acolhido
-2. CADA ETAPA TEM EXATAMENTE 3 CICLOS - NÃO MUDE ISSO
+1. Mencione o nome ${data.nome} várias vezes nos textos para que o paciente se sinta acolhido
+2. CADA ETAPA TEM EXATAMENTE 3 CICLOS - NÃO MUDE ISSO (total 9 ciclos)
 3. O plano total tem 24 sessões divididas em 3 Etapas
-4. Sempre mencione Liberação Miofascial primeiro, depois os bônus separados por vírgula (não por +)
-5. Dry Needling, Eletroestimulação e Ventosaterapia: coloque "(se aprovado)" após mencionar
-6. O plano deve ser persuasivo e fácil de explicar para o paciente na recepção
-7. Use linguagem acolhedora e profissional
+4. Sempre mencione Liberação Miofascial primeiro nas técnicas
+5. Dry Needling, Eletroestimulação e Ventosaterapia: escreva "caso o cliente aprove" após mencionar
+6. Linguagem persuasiva, acolhedora e profissional
+7. Retorne SOMENTE o JSON, sem nenhum texto antes ou depois
 
-ESTRUTURA OBRIGATÓRIA DO PLANO:
+JSON a retornar (preencha todos os campos com o conteúdo real, não deixe placeholder):
 
-**PACIENTE:** ${data.nome}
-**IDADE:** ${data.idade} anos | **SEXO:** ${data.sexo} | **TELEFONE:** ${data.telefone}
-**TERAPIA ESPECIAL:** ${data.terapia_especial}
-
----
-
-**RESUMO DAS QUEIXAS, DORES E ÁREAS AFETADAS**
-[Escreva um parágrafo acolhedor sobre as queixas, mencionando o nome do paciente, as dores relatadas, tempo, áreas afetadas e causas prováveis. Faça o paciente se sentir compreendido.]
-
-**Resultado da Avaliação com a Câmera Termal:**
-[Inclua o resultado da câmera termal se disponível, ou escreva "A ser realizado na primeira sessão"]
-
----
-
-**OBJETIVOS DO TRATAMENTO**
-• [Objetivo específico 1 baseado nas queixas]
-• [Objetivo específico 2]
-• [Objetivo específico 3]
-• [Objetivo específico 4]
-• [Objetivo específico 5 - prevenção de lesões futuras]
-
-**Objetivo Geral do Tratamento**
-[Parágrafo geral mencionando o nome do paciente, focado em proporcionar alívio, recuperação e qualidade de vida]
-
----
-
-**EXPLICAÇÃO DA TERAPIA ESPECIAL - ${data.terapia_especial}**
-[Parágrafo explicando a terapia especial escolhida e como ela vai ajudar especificamente este paciente]
-
----
-
-**ETAPA 1: ALÍVIO IMEDIATO DAS DORES E PREPARAÇÃO DO CORPO (Sessões 1 a 8)**
-
-**OBJETIVO DA ETAPA:** O FOCO DESSA FASE É PROPORCIONAR ALÍVIO IMEDIATO DAS DORES E TENSÕES MUSCULARES, INICIANDO O PROCESSO DE RELAXAMENTO DAS ÁREAS MAIS AFETADAS DE ${data.nome.toUpperCase()}.
-
-**Ciclo 1: Sessões 1 e 2**
-Objetivo: [Objetivo específico do ciclo 1]
-Técnicas aplicadas: Liberação miofascial, [outras técnicas] (se aprovado)
-Músculos trabalhados: [músculos específicos baseados nas áreas afetadas]
-
-**Ciclo 2: Sessões 3 e 4**
-Objetivo: [Objetivo específico do ciclo 2]
-Técnicas aplicadas: Liberação miofascial, [outras técnicas] (se aprovado)
-Músculos trabalhados: [músculos específicos]
-
-**Ciclo 3: Sessões 5, 6, 7 e 8**
-Objetivo: [Objetivo específico do ciclo 3]
-Técnicas aplicadas: Liberação miofascial, [outras técnicas] (se aprovado)
-Músculos trabalhados: [músculos específicos]
-
----
-
-**ETAPA 2: RECUPERAÇÃO FUNCIONAL E CORREÇÃO DE ASSIMETRIAS (Sessões 9 a 16)**
-
-**OBJETIVO DA ETAPA:** APROFUNDAR O TRATAMENTO DE ${data.nome.toUpperCase()}, PROMOVENDO A RECUPERAÇÃO FUNCIONAL DAS ÁREAS MAIS COMPROMETIDAS E INICIANDO O FORTALECIMENTO MUSCULAR.
-
-**Ciclo 4: Sessões 9, 10 e 11**
-Objetivo: [Objetivo específico]
-Técnicas aplicadas: Liberação miofascial, [outras técnicas] (se aprovado)
-Músculos trabalhados: [músculos específicos]
-
-**Ciclo 5: Sessões 12 e 13**
-Objetivo: [Objetivo específico]
-Técnicas aplicadas: Liberação miofascial, [outras técnicas] (se aprovado)
-Músculos trabalhados: [músculos específicos]
-
-**Ciclo 6: Sessões 14, 15 e 16**
-Objetivo: [Objetivo específico]
-Técnicas aplicadas: Liberação miofascial, [outras técnicas] (se aprovado)
-Músculos trabalhados: [músculos específicos]
-
----
-
-**ETAPA 3: AJUSTES FINAIS E MANUTENÇÃO DURADOURA (Sessões 17 a 24)**
-
-**OBJETIVO DA ETAPA:** FORTALECER OS MÚSCULOS DE ${data.nome.toUpperCase()} E PREVENIR FUTURAS LESÕES, GARANTINDO RECUPERAÇÃO TOTAL E MANUTENÇÃO DO BEM-ESTAR A LONGO PRAZO.
-
-**Ciclo 7: Sessões 17, 18 e 19**
-Objetivo: [Objetivo específico]
-Técnicas aplicadas: Liberação miofascial, [outras técnicas] (se aprovado)
-Músculos trabalhados: [músculos específicos]
-
-**Ciclo 8: Sessões 20, 21 e 22**
-Objetivo: [Objetivo específico]
-Técnicas aplicadas: Liberação miofascial, [outras técnicas] (se aprovado)
-Músculos trabalhados: [músculos específicos]
-
-**Ciclo 9: Sessões 23 e 24**
-Objetivo: Garantir a recuperação completa de ${data.nome} e estabilização muscular duradoura
-Técnicas aplicadas: Liberação miofascial, [todas as técnicas aprovadas]
-Músculos trabalhados: Todos os músculos trabalhados nas fases anteriores
-
----
-
-**RESUMO DO PLANO TERAPÊUTICO**
-[Parágrafo persuasivo e acolhedor, mencionando o nome do paciente várias vezes, explicando que o plano foi personalizado para as necessidades específicas dele, com foco no alívio das dores relatadas. Mencione as 3 etapas de forma motivadora. Esse resumo deve ser fácil de apresentar presencialmente e convencer o paciente a fechar o pacote de 24 sessões.]
-
----
-
-**TÉCNICAS APLICADAS NO PROGRAMA:**
-• **Liberação Miofascial:** Técnica manual para aliviar tensões e aderências nas fáscias e músculos das áreas afetadas de ${data.nome}
-• **Ventosaterapia** (se aprovado): Para melhorar a circulação sanguínea e aliviar tensões profundas
-• **Dry Needling** (se aprovado): Agulhamento em pontos gatilhos para liberar tensões musculares
-• **Eletroestimulação** (se aprovado): Para analgesia e ativação muscular
-• **Exercícios Posturais:** Orientações para manter os resultados entre as sessões`;
+{
+  "resumo_queixas": "Parágrafo acolhedor descrevendo as queixas de ${data.nome}, áreas afetadas, tempo de dor e causas prováveis. Mencione o nome várias vezes.",
+  "resultado_camera_termal": "${data.resultado_camera_termal || "A câmera termal realizará o mapeamento completo na primeira sessão, identificando os pontos de tensão e sobrecarga muscular para personalizar ainda mais o tratamento."}",
+  "objetivos_tratamento": [
+    "Objetivo específico 1 baseado nas queixas de ${data.nome}",
+    "Objetivo específico 2",
+    "Objetivo específico 3",
+    "Objetivo específico 4",
+    "Melhorar postura, mobilidade e qualidade de vida de ${data.nome}"
+  ],
+  "objetivo_geral": "Parágrafo geral sobre proporcionar alívio imediato, recuperação muscular e qualidade de vida para ${data.nome}.",
+  "explicacao_terapia": "Parágrafo explicando como a terapia ${data.terapia_especial} vai tratar especificamente as queixas de ${data.nome}, citando que a Liberação Miofascial é a base do tratamento.",
+  "etapas": [
+    {
+      "numero": 1,
+      "nome": "Alívio Imediato das Dores e Preparação do Corpo",
+      "objetivo_etapa": "O FOCO DESSA FASE É PROPORCIONAR ALÍVIO IMEDIATO DAS DORES DE ${data.nome.toUpperCase()}, REDUZINDO TENSÕES MUSCULARES E PREPARANDO O CORPO PARA TERAPIAS MAIS PROFUNDAS.",
+      "ciclos": [
+        {
+          "numero": 1,
+          "objetivo": "Alívio inicial das dores e mapeamento das áreas mais tensas de ${data.nome}.",
+          "tecnicas": "Liberação Miofascial, ventosaterapia deslizante (caso o cliente aprove), pedras quentes.",
+          "musculos": "Músculos específicos das áreas afetadas: ${(data.areas_afetadas || []).join(", ")} e outros."
+        },
+        {
+          "numero": 2,
+          "objetivo": "Redução da inflamação e diminuição das dores irradiadas.",
+          "tecnicas": "Liberação Miofascial, Dry Needling (caso o cliente aprove), eletroestimulação (caso o cliente aprove).",
+          "musculos": "Músculos profundos das regiões de maior queixa de ${data.nome} e outros."
+        },
+        {
+          "numero": 3,
+          "objetivo": "Consolidação do alívio das dores e início da recuperação muscular de ${data.nome}.",
+          "tecnicas": "Liberação Miofascial, ventosaterapia (caso o cliente aprove), massagem relaxante.",
+          "musculos": "Musculatura das áreas afetadas com foco em relaxamento profundo e outros."
+        }
+      ]
+    },
+    {
+      "numero": 2,
+      "nome": "Recuperação Funcional e Correção de Assimetrias",
+      "objetivo_etapa": "APROFUNDAR O TRATAMENTO DE ${data.nome.toUpperCase()}, CORRIGINDO ASSIMETRIAS POSTURAIS E MELHORANDO A MOBILIDADE GLOBAL.",
+      "ciclos": [
+        {
+          "numero": 4,
+          "objetivo": "Aprofundamento nas regiões de dor persistente de ${data.nome}.",
+          "tecnicas": "Liberação Miofascial, ventosaterapia (caso o cliente aprove), alongamentos terapêuticos.",
+          "musculos": "Músculos com tensões mais profundas nas áreas de queixa e outros."
+        },
+        {
+          "numero": 5,
+          "objetivo": "Aumento da mobilidade e redução de tensões profundas.",
+          "tecnicas": "Liberação Miofascial, Dry Needling (caso o cliente aprove).",
+          "musculos": "Musculatura profunda das áreas trabalhadas nas fases anteriores e outros."
+        },
+        {
+          "numero": 6,
+          "objetivo": "Preparação de ${data.nome} para a fase final de fortalecimento e manutenção.",
+          "tecnicas": "Liberação Miofascial, eletroestimulação (caso o cliente aprove).",
+          "musculos": "Core, musculatura estabilizadora e áreas de queixa principal e outros."
+        }
+      ]
+    },
+    {
+      "numero": 3,
+      "nome": "Ajustes Finais e Manutenção Duradoura",
+      "objetivo_etapa": "FORTALECER, PREVENIR RECIDIVAS E GARANTIR QUE ${data.nome.toUpperCase()} MANTENHA OS RESULTADOS A LONGO PRAZO.",
+      "ciclos": [
+        {
+          "numero": 7,
+          "objetivo": "Manutenção da mobilidade e prevenção de novas tensões para ${data.nome}.",
+          "tecnicas": "Liberação Miofascial, ventosaterapia (caso o cliente aprove).",
+          "musculos": "Todas as regiões trabalhadas com foco na manutenção e outros."
+        },
+        {
+          "numero": 8,
+          "objetivo": "Reforço postural e estabilidade corporal de ${data.nome}.",
+          "tecnicas": "Liberação Miofascial, exercícios posturais.",
+          "musculos": "Core, glúteos, musculatura estabilizadora e outros."
+        },
+        {
+          "numero": 9,
+          "objetivo": "Garantir recuperação completa e estabilidade muscular duradoura.",
+          "tecnicas": "Liberação Miofascial, técnicas integradas.",
+          "musculos": "Todos os músculos trabalhados nas fases anteriores e outros."
+        }
+      ]
+    }
+  ],
+  "resumo_final": "Parágrafo persuasivo e acolhedor sobre o plano de ${data.nome}, mencionando o nome várias vezes, destacando as 3 etapas, alívio progressivo e qualidade de vida recuperada. Deve convencer o paciente a fechar o pacote completo de 24 sessões."
+}`;
 }
 
 export default function NewAssessment() {
