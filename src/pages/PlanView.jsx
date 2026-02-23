@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { createPageUrl } from "@/utils";
-import ReactMarkdown from "react-markdown";
+import PlanDocument from "../components/plan/PlanDocument";
 import { ArrowLeft, Printer, CheckCircle, Loader2, Users, FileText } from "lucide-react";
 
 export default function PlanView() {
