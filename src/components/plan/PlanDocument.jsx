@@ -69,7 +69,7 @@ export default function PlanDocument({ plan, patientData }) {
   const pageStyle = {
     position: "relative",
     backgroundImage: `url(${BG_IMAGE_URL})`,
-    backgroundSize: "100% 100%",
+    backgroundSize: "80% 80%",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center center",
     marginBottom: 24,
@@ -94,7 +94,7 @@ export default function PlanDocument({ plan, patientData }) {
 
       {/* ============ PAGE 1 ============ */}
       <div id="plan-page-1" style={pageStyle}>
-        <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "80%", display: "block" }} />
+        <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block" }} />
         <div style={contentStyle}>
 
           {/* Patient info */}
