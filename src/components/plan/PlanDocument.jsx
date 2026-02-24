@@ -272,6 +272,7 @@ export default function PlanDocument({ plan, patientData }) {
 
       {/* ============ PAGE 1 ============ */}
       <div id="plan-page-1" style={pageStyle}>
+        <PageHeaderFull />
         <LeafDecor position="top-right" />
         <LeafDecor position="bottom-left" />
 
