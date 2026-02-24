@@ -258,13 +258,20 @@ export default function PlanDocument({ plan, patientData }) {
     background: "white",
     position: "relative",
     overflow: "hidden",
-    padding: "20mm 18mm 18mm",
+    padding: "0 18mm 0",
     marginBottom: 24,
     boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
     borderRadius: 4,
     width: "210mm",
     minHeight: "297mm",
     boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "column",
+  };
+
+  const contentStyle = {
+    flex: 1,
+    padding: "14px 0 14px",
   };
 
   return (
