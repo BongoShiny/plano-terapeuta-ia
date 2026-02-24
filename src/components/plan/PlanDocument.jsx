@@ -257,6 +257,7 @@ export default function PlanDocument({ plan, patientData }) {
       {/* Fallback */}
       {!planData && plan.plano_completo && (
         <div style={pageStyle}>
+          <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block" }} />
           <div style={contentStyle}>
             <pre style={{ fontSize: 11, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "Arial, sans-serif" }}>
               {plan.plano_completo}
