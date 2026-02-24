@@ -82,7 +82,7 @@ export default function PlanDocument({ plan, patientData }) {
     pageBreakAfter: "always",
     breakAfter: "page",
     background: "white",
-    overflow: "hidden",
+    overflow: "visible",
   };
 
   const contentStyle = {
