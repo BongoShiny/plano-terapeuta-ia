@@ -295,7 +295,6 @@ export default function PlanDocument({ plan, patientData }) {
             </div>
           </div>
 
-          <PageFooter />
         </div>
       ))}
 
