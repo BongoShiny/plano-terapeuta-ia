@@ -304,7 +304,6 @@ export default function PlanDocument({ plan, patientData }) {
         <div id="plan-page-resumo" style={pageStyle}>
           <LeafDecor position="top-right" />
           <LeafDecor position="bottom-left" />
-          <PageHeader />
 
           <Divider />
           <div style={{ marginBottom: 16 }}>
