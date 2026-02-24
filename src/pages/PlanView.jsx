@@ -177,25 +177,33 @@ export default function PlanView() {
 
       <style>{`
         @media print {
-          @page { size: A4; margin: 0; }
-          body * { visibility: hidden; }
-          #plan-print-area, #plan-print-area * { visibility: visible; }
+          @page { size: A4 portrait; margin: 0; }
+          html, body { margin: 0 !important; padding: 0 !important; background: white !important; }
+          body > * { display: none !important; }
+          #plan-print-area { display: block !important; }
+          #plan-print-area * { visibility: visible !important; }
           #plan-print-area {
-            position: absolute; left: 0; top: 0;
-            width: 100%; padding: 0; margin: 0;
+            position: fixed !important;
+            top: 0 !important; left: 0 !important;
+            width: 210mm !important;
+            padding: 0 !important;
+            margin: 0 !important;
           }
-          body { background: white !important; margin: 0 !important; }
           #plan-print-area > div > div {
             width: 210mm !important;
             min-height: 297mm !important;
+            height: 297mm !important;
             margin: 0 !important;
             border-radius: 0 !important;
             box-shadow: none !important;
-            page-break-after: always;
+            page-break-after: always !important;
+            break-after: page !important;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
+            color-adjust: exact !important;
             background-size: 100% 100% !important;
             background-repeat: no-repeat !important;
+            overflow: hidden !important;
           }
         }
       `}</style>
