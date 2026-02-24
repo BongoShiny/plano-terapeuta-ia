@@ -205,7 +205,6 @@ export default function PlanDocument({ plan, patientData }) {
             </div>
           )}
 
-        </div>
       </Page>
 
       {/* ============ PAGE 2+ - Etapas ============ */}
