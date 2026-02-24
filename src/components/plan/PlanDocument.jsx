@@ -81,12 +81,12 @@ export default function PlanDocument({ plan, patientData }) {
     flexDirection: "column",
     pageBreakAfter: "always",
     breakAfter: "page",
+    background: `url(${BG_IMG}) center center / 100% 100% no-repeat white`,
   };
 
-  // Top padding: ~52mm to clear the dark header bar; bottom: ~28mm for footer bar
   const contentStyle = {
     flex: 1,
-    padding: "52mm 20mm 28mm 20mm",
+    padding: "8mm 14mm 8mm 14mm",
   };
 
   return (
