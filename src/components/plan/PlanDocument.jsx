@@ -258,7 +258,6 @@ export default function PlanDocument({ plan, patientData }) {
           </div>
         )}
 
-        <PageFooter />
       </div>
 
       {/* ============ PAGE 2+ - Etapas ============ */}
