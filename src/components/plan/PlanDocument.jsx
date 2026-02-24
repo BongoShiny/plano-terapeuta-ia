@@ -366,37 +366,41 @@ export default function PlanDocument({ plan, patientData }) {
       {/* ============ PAGE 2+ - Etapas ============ */}
       {etapas.map((etapa, ei) => (
         <div key={ei} id={`plan-page-etapa-${ei + 1}`} style={pageStyle}>
+          <PageHeaderFull />
           <LeafDecor position="top-right" />
-          <LeafDecor position="mid-right" />
+          <LeafDecor position="bottom-left" />
+          <div style={contentStyle}>
 
-          {/* Etapa Header */}
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ textAlign: "center", marginBottom: 12 }}>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B" }}>
-                Etapa {etapa.numero}: {etapa.nome}
-              </span>
-            </div>
+            {/* Etapa Header */}
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ textAlign: "center", marginBottom: 12 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B" }}>
+                  Etapa {etapa.numero}: {etapa.nome}
+                </span>
+              </div>
 
-            <div style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: 10.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Objetivo:</div>
-              <div style={{
-                fontSize: 11, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6,
-                textTransform: "uppercase", paddingLeft: 16
-              }}>
-                {etapa.objetivo_etapa}
+              <div style={{ marginBottom: 12 }}>
+                <div style={{ fontSize: 10.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Objetivo:</div>
+                <div style={{
+                  fontSize: 11, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6,
+                  textTransform: "uppercase", paddingLeft: 16
+                }}>
+                  {etapa.objetivo_etapa}
+                </div>
+              </div>
+
+              <Divider />
+
+              <div style={{ marginBottom: 6 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Intervenções</div>
+                {safeArray(etapa.ciclos).map((ciclo, ci) => (
+                  <CicloBlock key={ci} ciclo={ciclo} />
+                ))}
               </div>
             </div>
 
-            <Divider />
-
-            <div style={{ marginBottom: 6 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Intervenções</div>
-              {safeArray(etapa.ciclos).map((ciclo, ci) => (
-                <CicloBlock key={ci} ciclo={ciclo} />
-              ))}
-            </div>
           </div>
-
+          <PageFooterFull />
         </div>
       ))}
 
