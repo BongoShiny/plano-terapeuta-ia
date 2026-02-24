@@ -92,12 +92,44 @@ export default function PlanDocument({ plan, patientData }) {
     zIndex: 1,
   };
 
+  // Wrapper that adds header/bg/footer to any page
+  const Page = ({ id, children }) => (
+    <div id={id} style={pageStyle}>
+      {/* Header image */}
+      <img
+        src={HEADER_IMG}
+        alt=""
+        style={{ width: "100%", display: "block", WebkitPrintColorAdjust: "exact", printColorAdjust: "exact" }}
+      />
+      {/* Background decoration */}
+      <img
+        src={BG_IMG}
+        alt=""
+        style={{
+          position: "absolute", top: 0, left: 0,
+          width: "100%", height: "100%",
+          objectFit: "cover", zIndex: 0,
+          WebkitPrintColorAdjust: "exact", printColorAdjust: "exact",
+          pointerEvents: "none",
+        }}
+      />
+      {/* Content */}
+      <div style={contentStyle}>{children}</div>
+      {/* Footer image */}
+      <img
+        src={FOOTER_IMG}
+        alt=""
+        style={{ width: "100%", display: "block", marginTop: "auto", WebkitPrintColorAdjust: "exact", printColorAdjust: "exact" }}
+      />
+    </div>
+  );
+
   return (
     <div style={{ fontFamily: "'Arial', 'Helvetica', sans-serif", color: "#222", lineHeight: 1.5 }}>
 
       {/* ============ PAGE 1 ============ */}
-      <div id="plan-page-1" style={pageStyle}>
-        <div style={contentStyle}>
+      <Page id="plan-page-1">
+        <div>
 
           {/* Patient info */}
           <div style={{ marginBottom: 14 }}>
