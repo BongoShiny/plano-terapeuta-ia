@@ -81,12 +81,15 @@ export default function PlanDocument({ plan, patientData }) {
     flexDirection: "column",
     pageBreakAfter: "always",
     breakAfter: "page",
-    background: `url(${BG_IMG}) center center / 100% 100% no-repeat white`,
+    background: "white",
+    overflow: "hidden",
   };
 
   const contentStyle = {
     flex: 1,
     padding: "8mm 14mm 8mm 14mm",
+    position: "relative",
+    zIndex: 1,
   };
 
   return (
