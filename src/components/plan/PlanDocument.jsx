@@ -71,6 +71,8 @@ export default function PlanDocument({ plan, patientData }) {
     backgroundSize: "100% 100%",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center center",
+    WebkitPrintColorAdjust: "exact",
+    printColorAdjust: "exact",
     marginBottom: 24,
     boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
     borderRadius: 4,
@@ -79,12 +81,14 @@ export default function PlanDocument({ plan, patientData }) {
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
+    pageBreakAfter: "always",
+    breakAfter: "page",
   };
 
-  // Content area: top padding accounts for header bar (~18%), bottom for footer (~10%)
+  // Top padding: ~52mm to clear the dark header bar; bottom: ~28mm for footer bar
   const contentStyle = {
     flex: 1,
-    padding: "54mm 18mm 32mm 18mm",
+    padding: "52mm 20mm 28mm 20mm",
   };
 
   return (
