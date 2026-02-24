@@ -305,11 +305,7 @@ export default function PlanDocument({ plan, patientData }) {
 
       {/* ============ PAGE RESUMO ============ */}
       {planData?.resumo_final && (
-        <div id="plan-page-resumo" style={{
-          background: "white", position: "relative", overflow: "hidden",
-          padding: "32px 40px 20px", marginBottom: 24,
-          boxShadow: "0 4px 24px rgba(0,0,0,0.12)", borderRadius: 4
-        }}>
+        <div id="plan-page-resumo" style={pageStyle}>
           <LeafDecor position="top-right" />
           <LeafDecor position="bottom-left" />
           <PageHeader />
