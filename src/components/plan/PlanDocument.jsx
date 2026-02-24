@@ -80,6 +80,7 @@ export default function PlanDocument({ plan, patientData }) {
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
+    paddingBottom: "38mm",
   };
 
   // Content area: top padding accounts for header bar (~18%), bottom for footer (~10%)
