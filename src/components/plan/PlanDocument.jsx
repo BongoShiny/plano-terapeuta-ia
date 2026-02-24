@@ -69,7 +69,7 @@ export default function PlanDocument({ plan, patientData }) {
   const pageStyle = {
     position: "relative",
     backgroundImage: `url(${BG_IMAGE_URL})`,
-    backgroundSize: "80% 80%",
+    backgroundSize: "100% 80%",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center center",
     marginBottom: 24,
