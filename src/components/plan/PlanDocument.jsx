@@ -1,6 +1,7 @@
 import React from "react";
 
 const BG_IMAGE_URL = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/ccb659552_image.png";
+const FOOTER_IMAGE_URL = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/ac819d2fc_image.png";
 
 function Divider() {
   return <div style={{ height: 1, background: "#D1C4B0", margin: "14px 0" }} />;
