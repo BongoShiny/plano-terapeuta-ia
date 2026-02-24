@@ -1,6 +1,8 @@
 import React from "react";
 
-const BG_IMAGE_URL = null;
+const HEADER_IMG = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/2108bfab1_image.png";
+const FOOTER_IMG = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/17b257ed7_image.png";
+const BG_IMG    = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/8d2c73784_image.png";
 
 function Divider() {
   return <div style={{ height: 1, background: "#D1C4B0", margin: "14px 0" }} />;
