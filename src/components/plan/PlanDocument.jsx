@@ -83,10 +83,10 @@ export default function PlanDocument({ plan, patientData }) {
     paddingBottom: "38mm",
   };
 
-  // Content area: top padding accounts for header bar (~18%), bottom for footer (~10%)
+  // Content area: top padding accounts for header bar, bottom stops before footer image
   const contentStyle = {
     flex: 1,
-    padding: "54mm 18mm 90mm 18mm",
+    padding: "54mm 18mm 40mm 18mm",
   };
 
   return (
