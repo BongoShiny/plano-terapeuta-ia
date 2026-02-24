@@ -73,7 +73,6 @@ export default function PlanDocument({ plan, patientData }) {
     backgroundRepeat: "no-repeat",
     backgroundPosition: "top center",
     marginBottom: 24,
-    boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
     borderRadius: 4,
     width: "210mm",
     minHeight: "297mm",
