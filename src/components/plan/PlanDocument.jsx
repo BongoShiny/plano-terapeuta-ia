@@ -3,9 +3,9 @@ import React from "react";
 // Leaf decoration SVG
 function LeafDecor({ position }) {
   const styles = {
-    "top-right": { position: "absolute", top: 0, right: 0, width: 120, opacity: 0.18, transform: "rotate(0deg)" },
-    "bottom-left": { position: "absolute", bottom: 0, left: 0, width: 100, opacity: 0.14, transform: "rotate(180deg)" },
-    "mid-right": { position: "absolute", top: "40%", right: 0, width: 90, opacity: 0.12, transform: "rotate(15deg)" },
+    "top-right": { position: "absolute", top: 0, right: 0, width: 120, opacity: 0.18, transform: "rotate(0deg)", pointerEvents: "none" },
+    "bottom-left": { position: "absolute", bottom: 0, left: 0, width: 100, opacity: 0.14, transform: "rotate(180deg)", pointerEvents: "none" },
+    "mid-right": { position: "absolute", top: "40%", right: 0, width: 90, opacity: 0.12, transform: "rotate(15deg)", pointerEvents: "none" },
   };
   return (
     <svg style={styles[position]} viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
