@@ -108,9 +108,10 @@ export default function PlanDocument({ plan, patientData }) {
         style={{
           position: "absolute", top: 0, left: 0,
           width: "100%", height: "100%",
-          objectFit: "cover", zIndex: 0,
+          objectFit: "fill", zIndex: 0,
           WebkitPrintColorAdjust: "exact", printColorAdjust: "exact",
           pointerEvents: "none",
+          opacity: 1,
         }}
       />
       {/* Content */}
