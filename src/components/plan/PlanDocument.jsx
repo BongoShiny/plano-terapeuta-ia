@@ -351,10 +351,7 @@ export default function PlanDocument({ plan, patientData }) {
 
       {/* Fallback: If no structured data, show raw text */}
       {!planData && plan.plano_completo && (
-        <div style={{
-          background: "white", padding: "32px 40px",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.12)", borderRadius: 4
-        }}>
+        <div style={pageStyle}>
           <PageHeader />
           <pre style={{ fontSize: 11, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "Arial, sans-serif" }}>
             {plan.plano_completo}
