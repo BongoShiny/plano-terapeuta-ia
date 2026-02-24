@@ -129,7 +129,6 @@ export default function PlanDocument({ plan, patientData }) {
 
       {/* ============ PAGE 1 ============ */}
       <Page id="plan-page-1">
-        <div>
 
           {/* Patient info */}
           <div style={{ marginBottom: 14 }}>
