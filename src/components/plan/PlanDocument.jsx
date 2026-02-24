@@ -175,8 +175,6 @@ export default function PlanDocument({ plan, patientData }) {
         <LeafDecor position="top-right" />
         <LeafDecor position="bottom-left" />
 
-        <PageHeader />
-
         {/* Title badge */}
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
           <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#C17F6A", display: "inline-block", flexShrink: 0 }} />
