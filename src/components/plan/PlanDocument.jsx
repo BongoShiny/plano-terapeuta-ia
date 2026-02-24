@@ -267,8 +267,6 @@ export default function PlanDocument({ plan, patientData }) {
           <LeafDecor position="top-right" />
           <LeafDecor position="mid-right" />
 
-          <PageHeader />
-
           {/* Etapa Header */}
           <div style={{ marginBottom: 16 }}>
             <div style={{ textAlign: "center", marginBottom: 12 }}>
