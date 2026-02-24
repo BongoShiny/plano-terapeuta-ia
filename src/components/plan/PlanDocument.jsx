@@ -94,6 +94,7 @@ export default function PlanDocument({ plan, patientData }) {
 
       {/* ============ PAGE 1 ============ */}
       <div id="plan-page-1" style={pageStyle}>
+        <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block" }} />
         <div style={contentStyle}>
 
           {/* Patient info */}
