@@ -177,10 +177,32 @@ export default function PlanView() {
 
       <style>{`
         @media print {
+          @page {
+            size: A4 portrait;
+            margin: 0;
+          }
           body * { visibility: hidden; }
           #plan-print-area, #plan-print-area * { visibility: visible; }
-          #plan-print-area { position: absolute; left: 0; top: 0; width: 100%; padding: 0; margin: 0; }
-          body { background: white !important; margin: 0 !important; }
+          #plan-print-area {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+          }
+          #plan-print-area > div > div {
+            page-break-after: always;
+            break-after: page;
+            margin-bottom: 0 !important;
+          }
+          body {
+            background: white !important;
+            margin: 0 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
         }
       `}</style>
     </div>
