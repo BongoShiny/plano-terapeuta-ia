@@ -70,22 +70,23 @@ export default function PlanDocument({ plan, patientData }) {
     position: "relative",
     overflow: "hidden",
     backgroundImage: `url(${BG_IMAGE_URL})`,
-    backgroundSize: "100% 100%",
+    backgroundSize: "100% auto",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "top center",
     backgroundColor: "#ffffff",
     marginBottom: 24,
+    borderRadius: 4,
     width: "210mm",
-    height: "297mm",
+    minHeight: "297mm",
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
   };
 
+  // Content area: top padding accounts for header bar, bottom stops before footer image
   const contentStyle = {
     flex: 1,
-    padding: "28mm 14mm 52mm 14mm",
-    overflow: "hidden",
+    padding: "54mm 18mm 40mm 18mm",
   };
 
   return (
