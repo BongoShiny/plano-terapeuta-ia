@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType } from 'npm:docx@8.5.0';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } from 'npm:docx@9.0.0';
 
 Deno.serve(async (req) => {
   try {
@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
       new Paragraph({
         children: [
           new TextRun({ text: "Paciente: ", bold: true, size: 22 }),
-          new TextRun({ text: `${plan.patient_nome || ""}    `, size: 22 }),
+          new TextRun({ text: `${plan.patient_nome}    `, size: 22 }),
           new TextRun({ text: "Terapia Especial: ", bold: true, size: 22 }),
           new TextRun({ text: plan.terapia_especial || "", size: 22 }),
         ],
@@ -68,14 +68,8 @@ Deno.serve(async (req) => {
       // ---- RESUMO QUEIXAS ----
       if (planData.resumo_queixas) {
         children.push(
-          new Paragraph({
-            children: [new TextRun({ text: "Resumo das Queixas e Dores", bold: true, size: 26, color: "1B3A4B" })],
-            spacing: { before: 200, after: 100 },
-          }),
-          new Paragraph({
-            children: [new TextRun({ text: planData.resumo_queixas, size: 20 })],
-            spacing: { after: 120 },
-          }),
+          new Paragraph({ text: "Resumo das Queixas e Dores", heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 100 } }),
+          new Paragraph({ children: [new TextRun({ text: planData.resumo_queixas, size: 20 })], spacing: { after: 120 } }),
         );
       }
 
@@ -95,10 +89,7 @@ Deno.serve(async (req) => {
       // ---- OBJETIVOS ----
       if (safeArray(planData.objetivos_tratamento).length) {
         children.push(
-          new Paragraph({
-            children: [new TextRun({ text: "Objetivos do Tratamento", bold: true, size: 26, color: "1B3A4B" })],
-            spacing: { before: 200, after: 100 },
-          }),
+          new Paragraph({ text: "Objetivos do Tratamento", heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 100 } }),
         );
         for (const obj of safeArray(planData.objetivos_tratamento)) {
           children.push(
@@ -113,43 +104,29 @@ Deno.serve(async (req) => {
       // ---- OBJETIVO GERAL ----
       if (planData.objetivo_geral) {
         children.push(
-          new Paragraph({
-            children: [new TextRun({ text: "Objetivo Geral", bold: true, size: 26, color: "1B3A4B" })],
-            spacing: { before: 200, after: 100 },
-          }),
-          new Paragraph({
-            children: [new TextRun({ text: planData.objetivo_geral, size: 20 })],
-            spacing: { after: 120 },
-          }),
+          new Paragraph({ text: "Objetivo Geral", heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 100 } }),
+          new Paragraph({ children: [new TextRun({ text: planData.objetivo_geral, size: 20 })], spacing: { after: 120 } }),
         );
       }
 
       // ---- EXPLICAÇÃO TERAPIA ----
       if (planData.explicacao_terapia) {
         children.push(
-          new Paragraph({
-            children: [new TextRun({ text: "Explicação da Terapia Especial", bold: true, size: 26, color: "1B3A4B" })],
-            spacing: { before: 200, after: 100 },
-          }),
-          new Paragraph({
-            children: [new TextRun({ text: planData.explicacao_terapia, size: 20 })],
-            spacing: { after: 200 },
-          }),
+          new Paragraph({ text: "Explicação da Terapia Especial", heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 100 } }),
+          new Paragraph({ children: [new TextRun({ text: planData.explicacao_terapia, size: 20 })], spacing: { after: 200 } }),
         );
       }
 
       // ---- ETAPAS ----
       children.push(
-        new Paragraph({
-          children: [new TextRun({ text: "PLANO DE TRATAMENTO E FASES INTEGRADAS", bold: true, size: 28, color: "1B3A4B" })],
-          spacing: { before: 300, after: 200 },
-        }),
+        new Paragraph({ text: "PLANO DE TRATAMENTO E FASES INTEGRADAS", heading: HeadingLevel.HEADING_1, spacing: { before: 300, after: 200 } }),
       );
 
       for (const etapa of safeArray(planData.etapas)) {
         children.push(
           new Paragraph({
-            children: [new TextRun({ text: `Etapa ${etapa.numero}: ${etapa.nome || ""}`, bold: true, size: 24, color: "1B3A4B" })],
+            text: `Etapa ${etapa.numero}: ${etapa.nome}`,
+            heading: HeadingLevel.HEADING_2,
             spacing: { before: 240, after: 120 },
           }),
           new Paragraph({
@@ -158,11 +135,12 @@ Deno.serve(async (req) => {
           }),
         );
 
+        // Table for ciclos
         const headerRow = new TableRow({
           children: [
-            new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "Ciclo", bold: true, size: 20 })] })], width: { size: 15, type: WidthType.PERCENTAGE } }),
+            new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "Ciclo", bold: true, size: 20 })] })], width: { size: 20, type: WidthType.PERCENTAGE } }),
             new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "Objetivo", bold: true, size: 20 })] })], width: { size: 30, type: WidthType.PERCENTAGE } }),
-            new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "Técnicas", bold: true, size: 20 })] })], width: { size: 30, type: WidthType.PERCENTAGE } }),
+            new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "Técnicas", bold: true, size: 20 })] })], width: { size: 25, type: WidthType.PERCENTAGE } }),
             new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "Músculos", bold: true, size: 20 })] })], width: { size: 25, type: WidthType.PERCENTAGE } }),
           ],
           tableHeader: true,
@@ -171,7 +149,7 @@ Deno.serve(async (req) => {
         const dataRows = safeArray(etapa.ciclos).map((ciclo) =>
           new TableRow({
             children: [
-              new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: `Ciclo ${ciclo.numero || ""}`, size: 18 })] })] }),
+              new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: `Ciclo ${ciclo.numero}`, size: 18 })] })] }),
               new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: ciclo.objetivo || "", size: 18 })] })] }),
               new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: ciclo.tecnicas || "", size: 18 })] })] }),
               new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: ciclo.musculos || "", size: 18 })] })] }),
@@ -184,24 +162,19 @@ Deno.serve(async (req) => {
             rows: [headerRow, ...dataRows],
             width: { size: 100, type: WidthType.PERCENTAGE },
           }),
-          new Paragraph({ children: [new TextRun({ text: "" })], spacing: { after: 200 } }),
+          new Paragraph({ text: "", spacing: { after: 200 } }),
         );
       }
 
       // ---- RESUMO FINAL ----
       if (planData.resumo_final) {
         children.push(
-          new Paragraph({
-            children: [new TextRun({ text: "Resumo do Plano Terapêutico", bold: true, size: 26, color: "1B3A4B" })],
-            spacing: { before: 200, after: 100 },
-          }),
-          new Paragraph({
-            children: [new TextRun({ text: planData.resumo_final, size: 20 })],
-            spacing: { after: 200 },
-          }),
+          new Paragraph({ text: "Resumo do Plano Terapêutico", heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 100 } }),
+          new Paragraph({ children: [new TextRun({ text: planData.resumo_final, size: 20 })], spacing: { after: 200 } }),
         );
       }
     } else if (plan.plano_completo) {
+      // Fallback: plain text
       children.push(
         new Paragraph({ children: [new TextRun({ text: plan.plano_completo, size: 20 })] }),
       );
@@ -209,22 +182,14 @@ Deno.serve(async (req) => {
 
     // ---- RODAPÉ ----
     children.push(
-      new Paragraph({ children: [new TextRun({ text: "" })], spacing: { before: 300 } }),
+      new Paragraph({ text: "", spacing: { before: 300 } }),
       new Paragraph({
         alignment: AlignmentType.CENTER,
         children: [new TextRun({ text: "LONDRINA/PR – R. Alvarenga Peixoto, 26  |  SÃO PAULO/SP – Av. Rouxinol, 1041  |  Av. Paulista, 1337", size: 16, color: "777777" })],
       }),
     );
 
-    const doc = new Document({
-      sections: [
-        {
-          properties: {},
-          children,
-        },
-      ],
-    });
-
+    const doc = new Document({ sections: [{ children }] });
     const buffer = await Packer.toBuffer(doc);
 
     return new Response(buffer, {
