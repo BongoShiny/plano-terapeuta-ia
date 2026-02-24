@@ -154,16 +154,24 @@ export default function PlanDocument({ plan, patientData }) {
   const safeArray = (val) => Array.isArray(val) ? val : [];
   const etapas = safeArray(planData?.etapas);
 
+  const pageStyle = {
+    background: "white",
+    position: "relative",
+    overflow: "hidden",
+    padding: "20mm 18mm 18mm",
+    marginBottom: 24,
+    boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
+    borderRadius: 4,
+    width: "210mm",
+    minHeight: "297mm",
+    boxSizing: "border-box",
+  };
+
   return (
     <div style={{ fontFamily: "'Arial', 'Helvetica', sans-serif", color: "#222", lineHeight: 1.5 }}>
 
       {/* ============ PAGE 1 ============ */}
-      <div id="plan-page-1" style={{
-        background: "white", position: "relative", overflow: "hidden",
-        padding: "32px 40px 20px", marginBottom: 24,
-        boxShadow: "0 4px 24px rgba(0,0,0,0.12)", borderRadius: 4,
-        minHeight: 900
-      }}>
+      <div id="plan-page-1" style={pageStyle}>
         <LeafDecor position="top-right" />
         <LeafDecor position="bottom-left" />
 
