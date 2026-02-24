@@ -207,94 +207,81 @@ export default function PlanDocument({ plan, patientData }) {
           )}
 
         </div>
-      </div>
+      </Page>
 
       {/* ============ PAGE 2+ - Etapas ============ */}
       {etapas.map((etapa, ei) => (
-        <div key={ei} id={`plan-page-etapa-${ei + 1}`} style={pageStyle}>
-          <div style={contentStyle}>
-
-            <div style={{ textAlign: "center", marginBottom: 12 }}>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B" }}>
-                Etapa {etapa.numero}: {etapa.nome}
-              </span>
-            </div>
-
-            <div style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: 10.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Objetivo:</div>
-              <div style={{
-                fontSize: 11, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6,
-                textTransform: "uppercase", paddingLeft: 16
-              }}>
-                {etapa.objetivo_etapa}
-              </div>
-            </div>
-
-            <Divider />
-
-            <div style={{ marginBottom: 6 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Intervenções</div>
-              {safeArray(etapa.ciclos).map((ciclo, ci) => (
-                <CicloBlock key={ci} ciclo={ciclo} />
-              ))}
-            </div>
-
+        <Page key={ei} id={`plan-page-etapa-${ei + 1}`}>
+          <div style={{ textAlign: "center", marginBottom: 12 }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B" }}>
+              Etapa {etapa.numero}: {etapa.nome}
+            </span>
           </div>
-        </div>
+
+          <div style={{ marginBottom: 12 }}>
+            <div style={{ fontSize: 10.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Objetivo:</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6, textTransform: "uppercase", paddingLeft: 16 }}>
+              {etapa.objetivo_etapa}
+            </div>
+          </div>
+
+          <Divider />
+
+          <div style={{ marginBottom: 6 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Intervenções</div>
+            {safeArray(etapa.ciclos).map((ciclo, ci) => (
+              <CicloBlock key={ci} ciclo={ciclo} />
+            ))}
+          </div>
+        </Page>
       ))}
 
       {/* ============ PAGE RESUMO ============ */}
       {planData?.resumo_final && (
-        <div id="plan-page-resumo" style={pageStyle}>
-          <div style={contentStyle}>
-
-            <Divider />
-            <div style={{ marginBottom: 16 }}>
-              <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
-              <p style={{ fontSize: 10.5, lineHeight: 1.8, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
-                {planData.resumo_final}
-              </p>
-            </div>
-            <Divider />
-
-            <div style={{ marginTop: 20 }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 10 }}>
-                <thead>
-                  <tr style={{ background: "#1B3A4B", color: "white" }}>
-                    <th style={{ padding: "8px 12px", textAlign: "left" }}>Plano</th>
-                    <th style={{ padding: "8px 12px", textAlign: "left" }}>Fases Incluídas</th>
-                    <th style={{ padding: "8px 12px", textAlign: "left" }}>Intervalo entre Sessões</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { plano: "05 sessões", fases: "Etapa 1 e início da Etapa 2", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias" },
-                    { plano: "10 sessões", fases: "Etapas 1, 2 e início da Etapa 3", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias, seguido por 7 dias" },
-                    { plano: "24 sessões", fases: "Todas as etapas até a Transformação", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias, seguido por 7 dias" },
-                  ].map((row, i) => (
-                    <tr key={i} style={{ background: i % 2 === 0 ? "#F9F7F5" : "white" }}>
-                      <td style={{ padding: "8px 12px", fontWeight: 700, color: "#1B3A4B" }}>{row.plano}</td>
-                      <td style={{ padding: "8px 12px" }}>{row.fases}</td>
-                      <td style={{ padding: "8px 12px" }}>{row.intervalo}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
+        <Page id="plan-page-resumo">
+          <Divider />
+          <div style={{ marginBottom: 16 }}>
+            <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
+            <p style={{ fontSize: 10.5, lineHeight: 1.8, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
+              {planData.resumo_final}
+            </p>
           </div>
-        </div>
+          <Divider />
+
+          <div style={{ marginTop: 20 }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 10 }}>
+              <thead>
+                <tr style={{ background: "#1B3A4B", color: "white" }}>
+                  <th style={{ padding: "8px 12px", textAlign: "left" }}>Plano</th>
+                  <th style={{ padding: "8px 12px", textAlign: "left" }}>Fases Incluídas</th>
+                  <th style={{ padding: "8px 12px", textAlign: "left" }}>Intervalo entre Sessões</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { plano: "05 sessões", fases: "Etapa 1 e início da Etapa 2", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias" },
+                  { plano: "10 sessões", fases: "Etapas 1, 2 e início da Etapa 3", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias, seguido por 7 dias" },
+                  { plano: "24 sessões", fases: "Todas as etapas até a Transformação", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias, seguido por 7 dias" },
+                ].map((row, i) => (
+                  <tr key={i} style={{ background: i % 2 === 0 ? "#F9F7F5" : "white" }}>
+                    <td style={{ padding: "8px 12px", fontWeight: 700, color: "#1B3A4B" }}>{row.plano}</td>
+                    <td style={{ padding: "8px 12px" }}>{row.fases}</td>
+                    <td style={{ padding: "8px 12px" }}>{row.intervalo}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Page>
       )}
 
       {/* Fallback */}
       {!planData && plan.plano_completo && (
-        <div style={pageStyle}>
-          <div style={contentStyle}>
-            <pre style={{ fontSize: 11, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "Arial, sans-serif" }}>
-              {plan.plano_completo}
-            </pre>
-          </div>
-        </div>
+        <Page id="plan-page-fallback">
+          <pre style={{ fontSize: 11, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "Arial, sans-serif" }}>
+            {plan.plano_completo}
+          </pre>
+        </Page>
       )}
     </div>
   );
