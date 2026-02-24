@@ -1,23 +1,6 @@
 import React from "react";
 
-// Leaf decoration SVG
-function LeafDecor({ position }) {
-  const styles = {
-    "top-right": { position: "absolute", top: 0, right: 0, width: 120, opacity: 0.18, transform: "rotate(0deg)", pointerEvents: "none" },
-    "bottom-left": { position: "absolute", bottom: 0, left: 0, width: 100, opacity: 0.14, transform: "rotate(180deg)", pointerEvents: "none" },
-    "mid-right": { position: "absolute", top: "40%", right: 0, width: 90, opacity: 0.12, transform: "rotate(15deg)", pointerEvents: "none" },
-  };
-  return (
-    <svg style={styles[position]} viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M180 10 C160 80, 100 120, 40 200 C80 180, 140 150, 160 80 C140 130, 90 160, 30 240 C70 210, 130 170, 150 90" stroke="#C17F6A" strokeWidth="3" fill="none"/>
-      <path d="M160 0 C140 70, 80 110, 20 190" stroke="#C17F6A" strokeWidth="2" fill="none"/>
-      <path d="M200 40 C170 90, 120 130, 60 200 C100 175, 155 135, 175 75" stroke="#C17F6A" strokeWidth="2.5" fill="none"/>
-      <ellipse cx="80" cy="110" rx="35" ry="20" fill="#C17F6A" transform="rotate(-30 80 110)" opacity="0.4"/>
-      <ellipse cx="120" cy="60" rx="28" ry="16" fill="#C17F6A" transform="rotate(-25 120 60)" opacity="0.35"/>
-      <ellipse cx="50" cy="170" rx="30" ry="18" fill="#C17F6A" transform="rotate(-35 50 170)" opacity="0.3"/>
-    </svg>
-  );
-}
+function LeafDecor() { return null; }
 
 function PageHeader() {
   return (
