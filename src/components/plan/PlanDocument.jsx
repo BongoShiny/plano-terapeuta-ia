@@ -1,6 +1,6 @@
 import React from "react";
 
-const BG_IMAGE_URL = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/c3163fb3c_image.png";
+const BG_IMAGE_URL = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/8487d4b13_PLANOTERAPUTICO.pdf";
 
 function Divider() {
   return <div style={{ height: 1, background: "#D1C4B0", margin: "14px 0" }} />;
