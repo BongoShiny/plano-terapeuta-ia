@@ -282,90 +282,85 @@ export default function PlanDocument({ plan, patientData }) {
         <PageHeaderFull />
         <LeafDecor position="top-right" />
         <LeafDecor position="bottom-left" />
+        <div style={contentStyle}>
 
-        {/* Title badge */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
-          <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#C17F6A", display: "inline-block", flexShrink: 0 }} />
-          <span style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", letterSpacing: 0.5 }}>
-            PLANO TERAPÊUTICO – VIBE TERAPIAS
-          </span>
-        </div>
-
-        {/* Patient info */}
-        <div style={{ marginBottom: 14 }}>
-          <div style={{ fontSize: 11, lineHeight: 1.8 }}>
-            <span style={{ fontWeight: 700 }}>Paciente: </span>{plan.patient_nome}<br />
-            <span style={{ fontWeight: 700 }}>Sexo: </span>{patientData?.sexo || "–"}<br />
-            <span style={{ fontWeight: 700 }}>Telefone: </span>{plan.patient_telefone}<br />
-            <span style={{ fontWeight: 700 }}>Terapia Especial: </span>{plan.terapia_especial}
-          </div>
-        </div>
-
-        <Divider />
-
-        {/* Resumo das queixas */}
-        <div style={{ marginBottom: 14 }}>
-          <SectionTitle>Resumo das Queixas, Dores e Áreas Afetadas</SectionTitle>
-          <p style={{ fontSize: 10.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
-            {planData?.resumo_queixas || patientData?.queixas_principais || "–"}
-          </p>
-        </div>
-
-        {planData?.resultado_camera_termal && (
-          <>
-            <div style={{ marginBottom: 14 }}>
-              <SectionTitle>Resultado da Avaliação com a câmera termal:</SectionTitle>
-              <p style={{ fontSize: 10.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
-                {planData.resultado_camera_termal}
-              </p>
-            </div>
-            <Divider />
-          </>
-        )}
-
-        {/* Objetivos */}
-        {safeArray(planData?.objetivos_tratamento).length > 0 && (
-          <>
-            <Divider />
-            <div style={{ marginBottom: 14 }}>
-              <SectionTitle>Objetivos do Tratamento</SectionTitle>
-              <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                {safeArray(planData?.objetivos_tratamento).map((obj, i) => (
-                  <li key={i} style={{ display: "flex", gap: 8, fontSize: 10.5, marginBottom: 5, lineHeight: 1.5 }}>
-                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#1B3A4B", flexShrink: 0, marginTop: 4 }} />
-                    <span>{obj}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </>
-        )}
-
-        <Divider />
-
-        {/* Objetivo Geral */}
-        {planData?.objetivo_geral && (
-          <>
-            <div style={{ marginBottom: 14 }}>
-              <SectionTitle>Objetivo Geral do Tratamento</SectionTitle>
-              <p style={{ fontSize: 10.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
-                {planData.objetivo_geral}
-              </p>
-            </div>
-            <Divider />
-          </>
-        )}
-
-        {/* Explicação da Terapia */}
-        {planData?.explicacao_terapia && (
+          {/* Patient info */}
           <div style={{ marginBottom: 14 }}>
-            <SectionTitle>Explicação da Terapia Especial</SectionTitle>
+            <div style={{ fontSize: 11, lineHeight: 1.8 }}>
+              <span style={{ fontWeight: 700 }}>Paciente: </span>{plan.patient_nome}<br />
+              <span style={{ fontWeight: 700 }}>Sexo: </span>{patientData?.sexo || "–"}<br />
+              <span style={{ fontWeight: 700 }}>Telefone: </span>{plan.patient_telefone}<br />
+              <span style={{ fontWeight: 700 }}>Terapia Especial: </span>{plan.terapia_especial}
+            </div>
+          </div>
+
+          <Divider />
+
+          {/* Resumo das queixas */}
+          <div style={{ marginBottom: 14 }}>
+            <SectionTitle>Resumo das Queixas, Dores e Áreas Afetadas</SectionTitle>
             <p style={{ fontSize: 10.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
-              {planData.explicacao_terapia}
+              {planData?.resumo_queixas || patientData?.queixas_principais || "–"}
             </p>
           </div>
-        )}
 
+          {planData?.resultado_camera_termal && (
+            <>
+              <div style={{ marginBottom: 14 }}>
+                <SectionTitle>Resultado da Avaliação com a câmera termal:</SectionTitle>
+                <p style={{ fontSize: 10.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
+                  {planData.resultado_camera_termal}
+                </p>
+              </div>
+              <Divider />
+            </>
+          )}
+
+          {/* Objetivos */}
+          {safeArray(planData?.objetivos_tratamento).length > 0 && (
+            <>
+              <Divider />
+              <div style={{ marginBottom: 14 }}>
+                <SectionTitle>Objetivos do Tratamento</SectionTitle>
+                <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                  {safeArray(planData?.objetivos_tratamento).map((obj, i) => (
+                    <li key={i} style={{ display: "flex", gap: 8, fontSize: 10.5, marginBottom: 5, lineHeight: 1.5 }}>
+                      <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#1B3A4B", flexShrink: 0, marginTop: 4 }} />
+                      <span>{obj}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          )}
+
+          <Divider />
+
+          {/* Objetivo Geral */}
+          {planData?.objetivo_geral && (
+            <>
+              <div style={{ marginBottom: 14 }}>
+                <SectionTitle>Objetivo Geral do Tratamento</SectionTitle>
+                <p style={{ fontSize: 10.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
+                  {planData.objetivo_geral}
+                </p>
+              </div>
+              <Divider />
+            </>
+          )}
+
+          {/* Explicação da Terapia */}
+          {planData?.explicacao_terapia && (
+            <div style={{ marginBottom: 14 }}>
+              <SectionTitle>Explicação da Terapia Especial</SectionTitle>
+              <p style={{ fontSize: 10.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
+                {planData.explicacao_terapia}
+              </p>
+            </div>
+          )}
+
+        </div>
+        <PageFooterFull />
       </div>
 
       {/* ============ PAGE 2+ - Etapas ============ */}
