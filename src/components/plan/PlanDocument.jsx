@@ -1,8 +1,6 @@
 import React from "react";
 
-const HEADER_IMG = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/9b4767936_image.png";
-const FOOTER_IMG = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/d1566e031_image.png";
-const BG_IMG    = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/eeeca7b7f_image.png";
+const BG_IMAGE_URL = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/c3163fb3c_image.png";
 
 function Divider() {
   return <div style={{ height: 1, background: "#D1C4B0", margin: "14px 0" }} />;
@@ -69,8 +67,10 @@ export default function PlanDocument({ plan, patientData }) {
 
   const pageStyle = {
     position: "relative",
-    WebkitPrintColorAdjust: "exact",
-    printColorAdjust: "exact",
+    backgroundImage: `url(${BG_IMAGE_URL})`,
+    backgroundSize: "100% 100%",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center center",
     marginBottom: 24,
     boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
     borderRadius: 4,
@@ -79,57 +79,20 @@ export default function PlanDocument({ plan, patientData }) {
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
-    pageBreakAfter: "always",
-    breakAfter: "page",
-    background: "white",
-    overflow: "visible",
   };
 
+  // Content area: top padding accounts for header bar (~18%), bottom for footer (~10%)
   const contentStyle = {
     flex: 1,
-    padding: "8mm 14mm 8mm 14mm",
-    position: "relative",
-    zIndex: 1,
+    padding: "54mm 18mm 32mm 18mm",
   };
-
-  // Wrapper that adds header/bg/footer to any page
-  const Page = ({ id, children }) => (
-    <div id={id} style={pageStyle}>
-      {/* Header image */}
-      <img
-        src={HEADER_IMG}
-        alt=""
-        style={{ width: "100%", display: "block", WebkitPrintColorAdjust: "exact", printColorAdjust: "exact" }}
-      />
-      {/* Background decoration */}
-      <img
-        src={BG_IMG}
-        alt=""
-        style={{
-          position: "absolute", top: 0, left: 0,
-          width: "100%", height: "100%",
-          objectFit: "fill", zIndex: 0,
-          WebkitPrintColorAdjust: "exact", printColorAdjust: "exact",
-          pointerEvents: "none",
-          opacity: 1,
-        }}
-      />
-      {/* Content */}
-      <div style={contentStyle}>{children}</div>
-      {/* Footer image */}
-      <img
-        src={FOOTER_IMG}
-        alt=""
-        style={{ width: "100%", display: "block", marginTop: "auto", WebkitPrintColorAdjust: "exact", printColorAdjust: "exact" }}
-      />
-    </div>
-  );
 
   return (
     <div style={{ fontFamily: "'Arial', 'Helvetica', sans-serif", color: "#222", lineHeight: 1.5 }}>
 
       {/* ============ PAGE 1 ============ */}
-      <Page id="plan-page-1">
+      <div id="plan-page-1" style={pageStyle}>
+        <div style={contentStyle}>
 
           {/* Patient info */}
           <div style={{ marginBottom: 14 }}>
@@ -206,81 +169,95 @@ export default function PlanDocument({ plan, patientData }) {
             </div>
           )}
 
-      </Page>
+        </div>
+      </div>
 
       {/* ============ PAGE 2+ - Etapas ============ */}
       {etapas.map((etapa, ei) => (
-        <Page key={ei} id={`plan-page-etapa-${ei + 1}`}>
-          <div style={{ textAlign: "center", marginBottom: 12 }}>
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B" }}>
-              Etapa {etapa.numero}: {etapa.nome}
-            </span>
-          </div>
+        <div key={ei} id={`plan-page-etapa-${ei + 1}`} style={pageStyle}>
+          <div style={contentStyle}>
 
-          <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 10.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Objetivo:</div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6, textTransform: "uppercase", paddingLeft: 16 }}>
-              {etapa.objetivo_etapa}
+            <div style={{ textAlign: "center", marginBottom: 12 }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B" }}>
+                Etapa {etapa.numero}: {etapa.nome}
+              </span>
             </div>
-          </div>
 
-          <Divider />
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ fontSize: 10.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Objetivo:</div>
+              <div style={{
+                fontSize: 11, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6,
+                textTransform: "uppercase", paddingLeft: 16
+              }}>
+                {etapa.objetivo_etapa}
+              </div>
+            </div>
 
-          <div style={{ marginBottom: 6 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Intervenções</div>
-            {safeArray(etapa.ciclos).map((ciclo, ci) => (
-              <CicloBlock key={ci} ciclo={ciclo} />
-            ))}
+            <Divider />
+
+            <div style={{ marginBottom: 6 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Intervenções</div>
+              {safeArray(etapa.ciclos).map((ciclo, ci) => (
+                <CicloBlock key={ci} ciclo={ciclo} />
+              ))}
+            </div>
+
           </div>
-        </Page>
+        </div>
       ))}
 
       {/* ============ PAGE RESUMO ============ */}
       {planData?.resumo_final && (
-        <Page id="plan-page-resumo">
-          <Divider />
-          <div style={{ marginBottom: 16 }}>
-            <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
-            <p style={{ fontSize: 10.5, lineHeight: 1.8, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
-              {planData.resumo_final}
-            </p>
-          </div>
-          <Divider />
+        <div id="plan-page-resumo" style={pageStyle}>
+          <div style={contentStyle}>
 
-          <div style={{ marginTop: 20 }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 10 }}>
-              <thead>
-                <tr style={{ background: "#1B3A4B", color: "white" }}>
-                  <th style={{ padding: "8px 12px", textAlign: "left" }}>Plano</th>
-                  <th style={{ padding: "8px 12px", textAlign: "left" }}>Fases Incluídas</th>
-                  <th style={{ padding: "8px 12px", textAlign: "left" }}>Intervalo entre Sessões</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { plano: "05 sessões", fases: "Etapa 1 e início da Etapa 2", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias" },
-                  { plano: "10 sessões", fases: "Etapas 1, 2 e início da Etapa 3", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias, seguido por 7 dias" },
-                  { plano: "24 sessões", fases: "Todas as etapas até a Transformação", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias, seguido por 7 dias" },
-                ].map((row, i) => (
-                  <tr key={i} style={{ background: i % 2 === 0 ? "#F9F7F5" : "white" }}>
-                    <td style={{ padding: "8px 12px", fontWeight: 700, color: "#1B3A4B" }}>{row.plano}</td>
-                    <td style={{ padding: "8px 12px" }}>{row.fases}</td>
-                    <td style={{ padding: "8px 12px" }}>{row.intervalo}</td>
+            <Divider />
+            <div style={{ marginBottom: 16 }}>
+              <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
+              <p style={{ fontSize: 10.5, lineHeight: 1.8, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
+                {planData.resumo_final}
+              </p>
+            </div>
+            <Divider />
+
+            <div style={{ marginTop: 20 }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 10 }}>
+                <thead>
+                  <tr style={{ background: "#1B3A4B", color: "white" }}>
+                    <th style={{ padding: "8px 12px", textAlign: "left" }}>Plano</th>
+                    <th style={{ padding: "8px 12px", textAlign: "left" }}>Fases Incluídas</th>
+                    <th style={{ padding: "8px 12px", textAlign: "left" }}>Intervalo entre Sessões</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {[
+                    { plano: "05 sessões", fases: "Etapa 1 e início da Etapa 2", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias" },
+                    { plano: "10 sessões", fases: "Etapas 1, 2 e início da Etapa 3", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias, seguido por 7 dias" },
+                    { plano: "24 sessões", fases: "Todas as etapas até a Transformação", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias, seguido por 7 dias" },
+                  ].map((row, i) => (
+                    <tr key={i} style={{ background: i % 2 === 0 ? "#F9F7F5" : "white" }}>
+                      <td style={{ padding: "8px 12px", fontWeight: 700, color: "#1B3A4B" }}>{row.plano}</td>
+                      <td style={{ padding: "8px 12px" }}>{row.fases}</td>
+                      <td style={{ padding: "8px 12px" }}>{row.intervalo}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
           </div>
-        </Page>
+        </div>
       )}
 
       {/* Fallback */}
       {!planData && plan.plano_completo && (
-        <Page id="plan-page-fallback">
-          <pre style={{ fontSize: 11, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "Arial, sans-serif" }}>
-            {plan.plano_completo}
-          </pre>
-        </Page>
+        <div style={pageStyle}>
+          <div style={contentStyle}>
+            <pre style={{ fontSize: 11, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "Arial, sans-serif" }}>
+              {plan.plano_completo}
+            </pre>
+          </div>
+        </div>
       )}
     </div>
   );
