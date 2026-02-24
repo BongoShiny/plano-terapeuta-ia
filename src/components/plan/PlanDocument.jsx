@@ -213,6 +213,7 @@ export default function PlanDocument({ plan, patientData }) {
       {/* ============ PAGE RESUMO ============ */}
       {planData?.resumo_final && (
         <div id="plan-page-resumo" style={pageStyle}>
+          <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block" }} />
           <div style={contentStyle}>
 
             <Divider />
