@@ -230,7 +230,7 @@ export default function PlanDocument({ plan, patientData }) {
             <Divider />
             <div style={{ marginBottom: 16 }}>
               <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
-              <p style={{ fontSize: 10.5, lineHeight: 1.8, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
+              <p style={{ fontSize: 12.5, lineHeight: 1.8, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
                 {planData.resumo_final}
               </p>
             </div>
