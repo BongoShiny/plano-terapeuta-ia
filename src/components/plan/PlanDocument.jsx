@@ -69,18 +69,24 @@ export default function PlanDocument({ plan, patientData }) {
   const pageStyle = {
     position: "relative",
     overflow: "hidden",
-    backgroundImage: `url(${BG_IMAGE_URL})`,
-    backgroundSize: "100% 100%",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "top center",
     backgroundColor: "#ffffff",
     marginBottom: 24,
     borderRadius: 0,
     width: "100%",
-    minHeight: "297mm",
+    height: "297mm",
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
+  };
+
+  const bgStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    objectFit: "fill",
+    zIndex: 0,
   };
 
   // Content area: top padding accounts for header bar, bottom stops before footer image
