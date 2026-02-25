@@ -9,7 +9,7 @@ function Divider() {
 
 function SectionTitle({ children }) {
   return (
-    <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", marginBottom: 8 }}>
+    <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8 }}>
       {children}
     </div>
   );
