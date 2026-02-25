@@ -192,7 +192,7 @@ export default function PlanDocument({ plan, patientData }) {
           <div style={contentStyle}>
 
             <div style={{ textAlign: "center", marginBottom: 12 }}>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B" }}>
+              <span style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B" }}>
                 Etapa {etapa.numero}: {etapa.nome}
               </span>
             </div>
