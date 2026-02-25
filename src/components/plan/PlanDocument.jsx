@@ -28,20 +28,20 @@ function CicloBlock({ ciclo }) {
       <div style={{ paddingLeft: 4 }}>
         <div style={{ display: "flex", gap: 4, marginBottom: 4 }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#1B3A4B", flexShrink: 0, marginTop: 4 }} />
-          <p style={{ fontSize: 10.5, color: "#222", margin: 0, lineHeight: 1.6 }}>
-            <strong style={{ color: "#1B3A4B" }}>Objetivo:</strong> {ciclo.objetivo}
+          <p style={{ fontSize: 12.5, color: "#222", margin: 0, lineHeight: 1.6 }}>
+           <strong style={{ color: "#1B3A4B" }}>Objetivo:</strong> {ciclo.objetivo}
           </p>
-        </div>
-        <div style={{ display: "flex", gap: 4, marginBottom: 4 }}>
+          </div>
+          <div style={{ display: "flex", gap: 4, marginBottom: 4 }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#1B3A4B", flexShrink: 0, marginTop: 4 }} />
-          <p style={{ fontSize: 10.5, color: "#222", margin: 0, lineHeight: 1.6 }}>
-            <strong style={{ color: "#1B3A4B" }}>Técnicas aplicadas:</strong>{" "}
-            <span dangerouslySetInnerHTML={{ __html: ciclo.tecnicas.replace(/Liberação Miofascial/g, '<strong style="color:#1B3A4B">Liberação Miofascial</strong>').replace(/Dry Needling/g, '<strong>Dry Needling</strong>').replace(/caso o cliente aprove/g, '<em>caso o cliente aprove</em>') }} />
+          <p style={{ fontSize: 12.5, color: "#222", margin: 0, lineHeight: 1.6 }}>
+           <strong style={{ color: "#1B3A4B" }}>Técnicas aplicadas:</strong>{" "}
+           <span dangerouslySetInnerHTML={{ __html: ciclo.tecnicas.replace(/Liberação Miofascial/g, '<strong style="color:#1B3A4B">Liberação Miofascial</strong>').replace(/Dry Needling/g, '<strong>Dry Needling</strong>').replace(/caso o cliente aprove/g, '<em>caso o cliente aprove</em>') }} />
           </p>
-        </div>
-        <div style={{ display: "flex", gap: 4 }}>
+          </div>
+          <div style={{ display: "flex", gap: 4 }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#1B3A4B", flexShrink: 0, marginTop: 4 }} />
-          <p style={{ fontSize: 10.5, color: "#222", margin: 0, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 12.5, color: "#222", margin: 0, lineHeight: 1.6 }}>
             <strong style={{ color: "#1B3A4B" }}>Músculos trabalhados:</strong> {ciclo.musculos}
           </p>
         </div>
