@@ -130,7 +130,7 @@ export default function PlanDocument({ plan, patientData }) {
             <>
               <div style={{ marginBottom: 14 }}>
                 <SectionTitle>Resultado da Avaliação com a câmera termal:</SectionTitle>
-                <p style={{ fontSize: 10.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
+                <p style={{ fontSize: 12.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
                   {planData.resultado_camera_termal}
                 </p>
               </div>
