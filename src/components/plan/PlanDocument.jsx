@@ -75,7 +75,7 @@ export default function PlanDocument({ plan, patientData }) {
     backgroundPosition: "top center",
     backgroundColor: "#ffffff",
     marginBottom: 24,
-    borderRadius: 4,
+    borderRadius: 0,
     width: "210mm",
     height: "297mm",
     boxSizing: "border-box",
