@@ -186,7 +186,8 @@ export default function PlanDocument({ plan, patientData }) {
       {/* ============ PAGE 2+ - Etapas ============ */}
       {etapas.map((etapa, ei) => (
         <div key={ei} id={`plan-page-etapa-${ei + 1}`} style={pageStyle}>
-          <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block" }} />
+          <img src={BG_IMAGE_URL} alt="" style={bgStyle} />
+          <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0 }} />
           <div style={contentStyle}>
 
             <div style={{ textAlign: "center", marginBottom: 12 }}>
