@@ -200,7 +200,7 @@ export default function PlanDocument({ plan, patientData }) {
             <div style={{ marginBottom: 12 }}>
               <div style={{ fontSize: 10.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Objetivo:</div>
               <div style={{
-                fontSize: 11, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6,
+                fontSize: 13, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6,
                 textTransform: "uppercase", paddingLeft: 16
               }}>
                 {etapa.objetivo_etapa}
