@@ -195,6 +195,7 @@ export default function PlanView() {
             page-break-after: always;
             break-after: page;
             margin-bottom: 0 !important;
+            border-radius: 0 !important;
           }
           body {
             background: white !important;
