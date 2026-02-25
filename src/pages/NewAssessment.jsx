@@ -186,11 +186,30 @@ export default function NewAssessment() {
       });
 
       // Generate with AI
+      const postureUrls = [data.foto_postural_1, data.foto_postural_2].filter(Boolean);
       const prompt = buildPrompt(data);
-      const result = await base44.integrations.Core.InvokeLLM({ prompt });
+      const result = await base44.integrations.Core.InvokeLLM({
+        prompt,
+        file_urls: postureUrls.length > 0 ? postureUrls : undefined,
+      });
+
+      // Inject photo URLs into plan JSON
+      let finalPlan = result;
+      try {
+        const jsonMatch = result.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          const obj = JSON.parse(jsonMatch[0]);
+          if (data.foto_postural_1) obj.foto_postural_1 = data.foto_postural_1;
+          if (data.foto_postural_2) obj.foto_postural_2 = data.foto_postural_2;
+          if (data.fotos_camera_termal?.length) obj.fotos_camera_termal = data.fotos_camera_termal;
+          if (data.avaliacao_postural) obj.avaliacao_postural = data.avaliacao_postural;
+          if (data.resultado_camera_termal) obj.resultado_camera_termal = data.resultado_camera_termal;
+          finalPlan = JSON.stringify(obj);
+        }
+      } catch (e) {}
 
       await base44.entities.TherapeuticPlan.update(plan.id, {
-        plano_completo: result,
+        plano_completo: finalPlan,
         status: "Ativo",
       });
 
