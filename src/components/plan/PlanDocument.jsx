@@ -89,10 +89,11 @@ export default function PlanDocument({ plan, patientData }) {
     zIndex: 0,
   };
 
-  // Content area: top padding accounts for header bar, bottom stops before footer image
   const contentStyle = {
     flex: 1,
     padding: "54mm 18mm 40mm 18mm",
+    position: "relative",
+    zIndex: 1,
   };
 
   return (
