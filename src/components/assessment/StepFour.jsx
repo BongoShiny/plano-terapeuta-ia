@@ -130,17 +130,31 @@ Use linguagem profissional e acolhedora. Seja detalhado e relacione os achados p
       </div>
 
       {/* Câmera Termal */}
-      <div>
-        <label className="block text-sm font-semibold mb-1.5" style={{ color: "#374151" }}>
-          <Camera className="inline w-4 h-4 mr-1.5" style={{ color: "#C17F6A" }} />
-          Resultado da Avaliação com a Câmera Termal
-          <span className="ml-2 font-normal text-gray-400">(opcional)</span>
+      <div className="rounded-2xl p-5 border" style={{ borderColor: "#E5E7EB" }}>
+        <div className="flex items-center gap-2 mb-3">
+          <Camera className="w-4 h-4" style={{ color: "#C17F6A" }} />
+          <h3 className="font-semibold text-sm" style={{ color: "#1B3A4B" }}>
+            Avaliação com a Câmera Termal
+            <span className="ml-2 font-normal text-gray-400">(opcional)</span>
+          </h3>
+        </div>
+        <div className="mb-3">
+          <label className="block text-xs font-semibold mb-2" style={{ color: "#374151" }}>
+            Fotos da câmera termal (até 6 fotos)
+          </label>
+          <CameraThermalUploader
+            value={data.fotos_camera_termal || []}
+            onChange={(v) => onChange("fotos_camera_termal", v)}
+          />
+        </div>
+        <label className="block text-xs font-semibold mb-1" style={{ color: "#374151" }}>
+          Descrição / Resultado
         </label>
         <textarea
           value={data.resultado_camera_termal || ""}
           onChange={(e) => onChange("resultado_camera_termal", e.target.value)}
           placeholder="Ex: Tensão elevada na região cervical, lombar e ombros. Ponto de calor identificado em L4-L5..."
-          rows={4}
+          rows={3}
           className="w-full px-4 py-3 border rounded-xl text-sm focus:outline-none resize-none"
           style={{ borderColor: "#D1D5DB", background: "white" }}
           onFocus={(e) => (e.target.style.borderColor = "#C17F6A")}
