@@ -259,6 +259,33 @@ export default function PlanDocument({ plan, patientData }) {
         </div>
       )}
 
+      {/* ============ PAGE CÂMERA TERMAL ============ */}
+      {safeArray(planData?.fotos_camera_termal).length > 0 && (
+        <div id="plan-page-termal" style={pageStyle}>
+          <img src={BG_IMAGE_URL} alt="" style={bgStyle} />
+          <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0 }} />
+          <div style={contentStyle}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 16, textAlign: "center" }}>
+              Avaliação com Câmera Termal
+            </div>
+            <Divider />
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginTop: 12 }}>
+              {safeArray(planData.fotos_camera_termal).map((url, i) => (
+                <div key={i} style={{ borderRadius: 8, overflow: "hidden", border: "1px solid #E5E7EB" }}>
+                  <img src={url} alt={`Câmera Termal ${i + 1}`} style={{ width: "100%", display: "block", objectFit: "cover", height: 180 }} />
+                </div>
+              ))}
+            </div>
+            {planData?.resultado_camera_termal && (
+              <div style={{ marginTop: 20 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8 }}>Resultado da Avaliação</div>
+                <p style={{ fontSize: 12.5, lineHeight: 1.7, margin: 0, textAlign: "justify" }}>{planData.resultado_camera_termal}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Fallback */}
       {!planData && plan.plano_completo && (
         <div style={pageStyle}>
