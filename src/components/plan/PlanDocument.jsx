@@ -22,7 +22,7 @@ function DiamondIcon() {
 function CicloBlock({ ciclo }) {
   return (
     <div style={{ marginBottom: 14 }}>
-      <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>
+      <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>
         <DiamondIcon />Ciclo {ciclo.numero}:
       </div>
       <div style={{ paddingLeft: 4 }}>
