@@ -112,6 +112,7 @@ export default function PlanDocument({ plan, patientData }) {
               <span style={{ fontWeight: 700 }}>Sexo: </span>{patientData?.sexo || "–"}<br />
               <span style={{ fontWeight: 700 }}>Telefone: </span>{plan.patient_telefone}<br />
               <span style={{ fontWeight: 700 }}>Terapia Especial: </span>{plan.terapia_especial}
+            
             </div>
           </div>
 
