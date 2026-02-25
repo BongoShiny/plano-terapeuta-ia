@@ -210,7 +210,7 @@ export default function PlanDocument({ plan, patientData }) {
             <Divider />
 
             <div style={{ marginBottom: 6 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Intervenções</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Intervenções</div>
               {safeArray(etapa.ciclos).map((ciclo, ci) => (
                 <CicloBlock key={ci} ciclo={ciclo} />
               ))}
