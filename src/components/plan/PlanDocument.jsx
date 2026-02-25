@@ -146,7 +146,7 @@ export default function PlanDocument({ plan, patientData }) {
                 <SectionTitle>Objetivos do Tratamento</SectionTitle>
                 <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
                   {safeArray(planData?.objetivos_tratamento).map((obj, i) => (
-                    <li key={i} style={{ display: "flex", gap: 8, fontSize: 10.5, marginBottom: 5, lineHeight: 1.5 }}>
+                    <li key={i} style={{ display: "flex", gap: 8, fontSize: 12.5, marginBottom: 5, lineHeight: 1.5 }}>
                       <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#1B3A4B", flexShrink: 0, marginTop: 4 }} />
                       <span>{obj}</span>
                     </li>
