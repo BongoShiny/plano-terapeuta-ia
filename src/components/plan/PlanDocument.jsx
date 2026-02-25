@@ -236,30 +236,24 @@ export default function PlanDocument({ plan, patientData }) {
             </div>
             <Divider />
 
-            <div style={{ marginTop: 20 }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
-                <thead>
-                  <tr style={{ background: "#1B3A4B", color: "white" }}>
-                    <th style={{ padding: "8px 12px", textAlign: "left" }}>Plano</th>
-                    <th style={{ padding: "8px 12px", textAlign: "left" }}>Fases Incluídas</th>
-                    <th style={{ padding: "8px 12px", textAlign: "left" }}>Intervalo entre Sessões</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { plano: "05 sessões", fases: "Etapa 1 e início da Etapa 2", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias" },
-                    { plano: "10 sessões", fases: "Etapas 1, 2 e início da Etapa 3", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias, seguido por 7 dias" },
-                    { plano: "24 sessões", fases: "Todas as etapas até a Transformação", intervalo: "3 a 4 dias (iniciais), depois 4 a 6 dias, seguido por 7 dias" },
-                  ].map((row, i) => (
-                    <tr key={i} style={{ background: i % 2 === 0 ? "#F9F7F5" : "white" }}>
-                      <td style={{ padding: "8px 12px", fontWeight: 700, color: "#1B3A4B" }}>{row.plano}</td>
-                      <td style={{ padding: "8px 12px" }}>{row.fases}</td>
-                      <td style={{ padding: "8px 12px" }}>{row.intervalo}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {/* Fotos Posturais */}
+            {(planData?.foto_postural_1 || planData?.foto_postural_2) && (
+              <div style={{ marginTop: 20 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Fotos da Avaliação Postural</div>
+                <div style={{ display: "flex", gap: 16 }}>
+                  {planData?.foto_postural_1 && (
+                    <div style={{ flex: 1 }}>
+                      <img src={planData.foto_postural_1} alt="Foto Postural 1" style={{ width: "100%", borderRadius: 8, objectFit: "cover", maxHeight: 300 }} />
+                    </div>
+                  )}
+                  {planData?.foto_postural_2 && (
+                    <div style={{ flex: 1 }}>
+                      <img src={planData.foto_postural_2} alt="Foto Postural 2" style={{ width: "100%", borderRadius: 8, objectFit: "cover", maxHeight: 300 }} />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
           </div>
         </div>
