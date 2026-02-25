@@ -237,7 +237,7 @@ export default function PlanDocument({ plan, patientData }) {
             <Divider />
 
             <div style={{ marginTop: 20 }}>
-              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 10 }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
                 <thead>
                   <tr style={{ background: "#1B3A4B", color: "white" }}>
                     <th style={{ padding: "8px 12px", textAlign: "left" }}>Plano</th>
