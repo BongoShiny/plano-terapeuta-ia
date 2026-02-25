@@ -171,7 +171,7 @@ export default function PlanView() {
       </div>
 
       {/* Content */}
-      <div id="plan-print-area" className="max-w-4xl mx-auto px-4 md:px-8 py-8">
+      <div id="plan-print-area" className="mx-auto px-4 md:px-8 py-8" style={{ maxWidth: "900px" }}>
         <PlanDocument plan={plan} patientData={patientData} />
       </div>
 
