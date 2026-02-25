@@ -175,7 +175,7 @@ export default function PlanDocument({ plan, patientData }) {
           {planData?.explicacao_terapia && (
             <div style={{ marginBottom: 14 }}>
               <SectionTitle>Explicação da Terapia Especial</SectionTitle>
-              <p style={{ fontSize: 10.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
+              <p style={{ fontSize: 12.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
                 {planData.explicacao_terapia}
               </p>
             </div>
