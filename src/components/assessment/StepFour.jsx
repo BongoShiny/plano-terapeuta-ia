@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Camera, Target, CheckCircle, Upload, Loader2, ImageIcon, Sparkles } from "lucide-react";
 import { base44 } from "@/api/base44Client";
+import CameraThermalUploader from "./CameraThermalUploader";
 
 function PhotoUploader({ label, value, onChange }) {
   const [uploading, setUploading] = useState(false);
