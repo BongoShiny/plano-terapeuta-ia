@@ -107,7 +107,7 @@ export default function PlanDocument({ plan, patientData }) {
 
           {/* Patient info */}
           <div style={{ marginBottom: 14 }}>
-            <div style={{ fontSize: 10, lineHeight: 1.2 }}>
+            <div style={{ fontSize: 12, lineHeight: 1.4 }}>
               <span style={{ fontWeight: 700 }}>Paciente: </span>{plan.patient_nome}<br />
               <span style={{ fontWeight: 700 }}>Sexo: </span>{patientData?.sexo || "–"}<br />
               <span style={{ fontWeight: 700 }}>Telefone: </span>{plan.patient_telefone}<br />
