@@ -181,15 +181,15 @@ export default function PlanView() {
             size: A4 portrait;
             margin: 0;
           }
-          html, body {
-            height: 100%;
-            margin: 0 !important;
-            padding: 0 !important;
-            overflow: visible !important;
-            background: white !important;
+          * {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             color-adjust: exact !important;
+          }
+          body {
+            margin: 0;
+            padding: 0;
+            background: white;
           }
           body * { 
             visibility: hidden; 
@@ -206,21 +206,16 @@ export default function PlanView() {
             padding: 0;
           }
           #plan-print-area > div > div {
-            page-break-after: always !important;
-            page-break-inside: avoid !important;
-            break-after: page !important;
-            break-inside: avoid !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 210mm !important;
-            height: 297mm !important;
-            min-height: 297mm !important;
-            max-height: 297mm !important;
-            border-radius: 0 !important;
-            overflow: hidden !important;
+            page-break-after: always;
+            page-break-inside: avoid;
+            margin: 0;
+            padding: 0;
+            width: 210mm;
+            height: 297mm;
+            border-radius: 0;
           }
           #plan-print-area > div > div:last-child {
-            page-break-after: auto !important;
+            page-break-after: auto;
           }
         }
       `}</style>
