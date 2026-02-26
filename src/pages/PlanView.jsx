@@ -182,9 +182,8 @@ export default function PlanView() {
             margin: 0;
           }
           * {
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-            color-adjust: exact !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
           }
           body {
             margin: 0;
@@ -216,6 +215,10 @@ export default function PlanView() {
           }
           #plan-print-area > div > div:last-child {
             page-break-after: auto;
+          }
+          img {
+            max-width: 100%;
+            height: auto;
           }
         }
       `}</style>
