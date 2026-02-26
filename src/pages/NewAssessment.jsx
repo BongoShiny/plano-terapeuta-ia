@@ -21,17 +21,17 @@ function buildPrompt(data) {
 Crie um plano terapêutico completo e personalizado. Retorne APENAS um JSON válido, sem texto antes ou depois.
 
 DADOS DO PACIENTE:
-- Nome: ${data.nome}
-- Idade: ${data.idade} anos
-- Sexo: ${data.sexo}
-- Telefone: ${data.telefone}
-- Terapia Especial: ${data.terapia_especial}
-- Queixas Principais: ${data.queixas_principais}
-- Áreas Afetadas: ${(data.areas_afetadas || []).join(", ")}
-- Intensidade da Dor: ${data.intensidade_dor}/10
-- Tempo de Dor: ${data.tempo_dor}
+- Nome: ${data.nome || "Não informado"}
+- Idade: ${data.idade || "Não informada"} anos
+- Sexo: ${data.sexo || "Não informado"}
+- Telefone: ${data.telefone || "Não informado"}
+- Terapia Especial: ${data.terapia_especial || "Liberação Miofascial"}
+- Queixas Principais: ${data.queixas_principais || "Não informado"}
+- Áreas Afetadas: ${(data.areas_afetadas || []).join(", ") || "Não informado"}
+- Intensidade da Dor: ${data.intensidade_dor || 0}/10
+- Tempo de Dor: ${data.tempo_dor || "Não informado"}
 - Histórico: ${data.historico_dor || "Não informado"}
-- Causas Prováveis: ${(data.causas_provaveis || []).join(", ")}
+- Causas Prováveis: ${(data.causas_provaveis || []).join(", ") || "Não informado"}
 - Atividade Física: ${data.atividade_fisica || "Não informado"}
 - Condições Preexistentes: ${(data.condicoes_preexistentes || []).join(", ") || "Nenhuma"}
 - Medicamentos: ${data.medicamentos || "Nenhum"}
