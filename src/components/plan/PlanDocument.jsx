@@ -89,6 +89,7 @@ export default function PlanDocument({ plan, patientData }) {
     height: "100%",
     objectFit: "fill",
     zIndex: 0,
+    pointerEvents: "none",
   };
 
   const contentStyle = {
