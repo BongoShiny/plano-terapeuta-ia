@@ -72,12 +72,13 @@ export default function PlanDocument({ plan, patientData }) {
     backgroundColor: "#ffffff",
     marginBottom: 24,
     borderRadius: 0,
-    width: "100%",
-    minHeight: "297mm",
-    maxHeight: "297mm",
+    width: "210mm",
+    height: "297mm",
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
+    pageBreakAfter: "always",
+    pageBreakInside: "avoid",
   };
 
   const bgStyle = {
