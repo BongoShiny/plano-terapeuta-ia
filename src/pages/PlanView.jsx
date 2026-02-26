@@ -179,33 +179,48 @@ export default function PlanView() {
         @media print {
           @page {
             size: A4 portrait;
+            margin: 0;
           }
-          body * { visibility: hidden; }
-          #plan-print-area, #plan-print-area * { visibility: visible; }
+          html, body {
+            height: 100%;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: visible !important;
+            background: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+          }
+          body * { 
+            visibility: hidden; 
+          }
+          #plan-print-area, #plan-print-area * { 
+            visibility: visible; 
+          }
           #plan-print-area {
             position: absolute;
             left: 0;
             top: 0;
-            width: 100%;
-            padding: 0;
+            width: 210mm;
             margin: 0;
+            padding: 0;
           }
           #plan-print-area > div > div {
-            page-break-after: always;
-            break-after: page;
-            page-break-inside: avoid;
-            break-inside: avoid;
-            margin-bottom: 0 !important;
-            border-radius: 0 !important;
-            height: auto !important;
-            max-height: 100vh !important;
-          }
-          body {
-            background: white !important;
+            page-break-after: always !important;
+            page-break-inside: avoid !important;
+            break-after: page !important;
+            break-inside: avoid !important;
             margin: 0 !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-            color-adjust: exact !important;
+            padding: 0 !important;
+            width: 210mm !important;
+            height: 297mm !important;
+            min-height: 297mm !important;
+            max-height: 297mm !important;
+            border-radius: 0 !important;
+            overflow: hidden !important;
+          }
+          #plan-print-area > div > div:last-child {
+            page-break-after: auto !important;
           }
         }
       `}</style>
