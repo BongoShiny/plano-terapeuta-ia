@@ -179,7 +179,6 @@ export default function PlanView() {
         @media print {
           @page {
             size: A4 portrait;
-            margin: 0;
           }
           body * { visibility: hidden; }
           #plan-print-area, #plan-print-area * { visibility: visible; }
@@ -194,8 +193,12 @@ export default function PlanView() {
           #plan-print-area > div > div {
             page-break-after: always;
             break-after: page;
+            page-break-inside: avoid;
+            break-inside: avoid;
             margin-bottom: 0 !important;
             border-radius: 0 !important;
+            height: auto !important;
+            max-height: 100vh !important;
           }
           body {
             background: white !important;
