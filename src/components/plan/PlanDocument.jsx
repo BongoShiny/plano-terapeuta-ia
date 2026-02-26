@@ -94,7 +94,7 @@ export default function PlanDocument({ plan, patientData }) {
 
   const contentStyle = {
     flex: 1,
-    padding: "54mm 10mm 12mm 10mm",
+    padding: "50mm 10mm 15mm 10mm",
     position: "relative",
     zIndex: 1,
   };
