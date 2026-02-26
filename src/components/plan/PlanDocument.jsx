@@ -73,7 +73,7 @@ export default function PlanDocument({ plan, patientData }) {
     marginBottom: 24,
     borderRadius: 0,
     width: "210mm",
-    height: "297mm",
+    minHeight: "297mm",
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
