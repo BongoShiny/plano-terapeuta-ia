@@ -275,6 +275,23 @@ export default function PlanDocument({ plan, patientData }) {
         </div>
       )}
 
+      {/* ============ PAGE AVALIAÇÃO POSTURAL ============ */}
+      {planData?.avaliacao_postural && (
+        <div id="plan-page-avaliacao-postural" style={pageStyle}>
+          <img src={BG_IMAGE_URL} alt="" style={bgStyle} />
+          <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0 }} />
+          <div style={contentStyle}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 10, textAlign: "center" }}>
+              Avaliação Postural
+            </div>
+            <Divider />
+            <p style={{ fontSize: 11, lineHeight: 1.8, margin: 0, textAlign: "justify", whiteSpace: "pre-wrap", color: "#222" }}>
+              {planData.avaliacao_postural}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* ============ PAGE CÂMERA TERMAL ============ */}
       {safeArray(planData?.fotos_camera_termal).length > 0 && (
         <div id="plan-page-termal" style={pageStyle}>
