@@ -289,9 +289,7 @@ export default function PlanDocument({ plan, patientData }) {
             Análise da Câmera Termal
           </div>
           <Divider />
-          <p style={{ fontSize: 12, lineHeight: 1.8, margin: 0, textAlign: "justify", whiteSpace: "pre-wrap", color: "#222" }}>
-            {planData.analise_camera_termal || planData.resultado_camera_termal}
-          </p>
+          <ThermalAnalysisText text={planData.analise_camera_termal || planData.resultado_camera_termal} />
         </PageWrapper>
       )}
 
