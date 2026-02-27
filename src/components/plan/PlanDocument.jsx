@@ -94,10 +94,12 @@ export default function PlanDocument({ plan, patientData }) {
 
   const contentStyle = {
     flex: 1,
-    padding: "50mm 12mm 38mm 12mm",
+    padding: "50mm 12mm 42mm 12mm",
     position: "relative",
     zIndex: 1,
     overflow: "hidden",
+    maxHeight: "297mm",
+    boxSizing: "border-box",
   };
 
   const PageWrapper = ({ children, id }) => (
