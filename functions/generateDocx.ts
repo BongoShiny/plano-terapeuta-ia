@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } from 'npm:docx@9.0.0';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType } from 'npm:docx@8.5.0';
 
 Deno.serve(async (req) => {
   try {
@@ -86,6 +86,27 @@ Deno.serve(async (req) => {
         );
       }
 
+      // ---- ANÁLISE CÂMERA TERMAL ----
+      if (planData.analise_camera_termal) {
+        children.push(
+          new Paragraph({ text: "Análise da Câmera Termal", heading: HeadingLevel.HEADING_2, spacing: { before: 200, after: 100 } }),
+        );
+        // Parse [ALERTA]...[/ALERTA] blocks
+        const analiseText = planData.analise_camera_termal;
+        const paragraphs = analiseText.split(/\n+/).filter(p => p.trim());
+        for (const para of paragraphs) {
+          const parts = para.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\])/g);
+          const runs = parts.map(part => {
+            if (part.startsWith("[ALERTA]")) {
+              const content = "⚠ " + part.replace(/^\[ALERTA\]/, "").replace(/\[\/ALERTA\]$/, "");
+              return new TextRun({ text: content, bold: true, size: 20, color: "7B2D00" });
+            }
+            return new TextRun({ text: part, size: 20 });
+          });
+          children.push(new Paragraph({ children: runs, spacing: { after: 100 } }));
+        }
+      }
+
       // ---- OBJETIVOS ----
       if (safeArray(planData.objetivos_tratamento).length) {
         children.push(
@@ -135,7 +156,6 @@ Deno.serve(async (req) => {
           }),
         );
 
-        // Table for ciclos
         const headerRow = new TableRow({
           children: [
             new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: "Ciclo", bold: true, size: 20 })] })], width: { size: 20, type: WidthType.PERCENTAGE } }),
@@ -174,7 +194,6 @@ Deno.serve(async (req) => {
         );
       }
     } else if (plan.plano_completo) {
-      // Fallback: plain text
       children.push(
         new Paragraph({ children: [new TextRun({ text: plan.plano_completo, size: 20 })] }),
       );
