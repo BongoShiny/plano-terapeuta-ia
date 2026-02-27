@@ -78,9 +78,14 @@ Estruture em: Vista Frontal (Plano Coronal) e Vista Lateral (Plano Sagital). Par
 
 Identifique todos os pontos em vermelho, laranja ou quente nas imagens, que indicam inflamação, tensão muscular e pontos de dor ativos.
 
-Escreva em texto corrido e parágrafos, sem usar markdown, asteriscos, hashtags, travessões decorativos ou qualquer símbolo de formatação. Apenas texto simples e profissional.
+Escreva em parágrafos. Use a marcação [ALERTA] no início de frases que descrevem consequências sérias de não tratar — essas frases devem ser impactantes e urgentes. Use [/ALERTA] para fechar. Não use outros símbolos de formatação como asteriscos, hashtags ou travessões.
 
-Aborde: pontos de dor identificados e o que representam clinicamente; análise de cada região afetada indicando o músculo ou articulação afetada, o nível de inflamação e como impacta a rotina de ${data.nome || "o paciente"}; e por que o plano de 24 sessões da Vibe Terapias é o caminho mais eficaz para eliminar esses pontos de dor e restaurar a qualidade de vida. Mencione o nome ${data.nome || "do paciente"} várias vezes.`,
+Estruture assim:
+1. Introdução com os achados gerais.
+2. Para cada região afetada: o que foi identificado, o que representa clinicamente, e [ALERTA]o que pode acontecer se não for tratado — seja específico, impactante e urgente, mencionando perda de mobilidade, agravamento da dor, impacto no trabalho e na qualidade de vida de ${data.nome || "o paciente"}[/ALERTA].
+3. Conclusão persuasiva sobre por que o plano de 24 sessões da Vibe Terapias é urgente e necessário para ${data.nome || "o paciente"}.
+
+Mencione o nome ${data.nome || "do paciente"} várias vezes.`,
       file_urls: data.fotos_camera_termal,
     });
     onChange("analise_camera_termal", result);
