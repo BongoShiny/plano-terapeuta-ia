@@ -189,57 +189,55 @@ export default function PlanDocument({ plan, patientData }) {
       </div>
 
       {/* ============ PAGE 2+ - Etapas ============ */}
-      {etapas.map((etapa, ei) => (
-        <div key={ei} id={`plan-page-etapa-${ei + 1}`} style={pageStyle}>
-          <img src={BG_IMAGE_URL} alt="" style={bgStyle} />
-          <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0 }} />
-          <div style={contentStyle}>
+      {etapas.map((etapa, ei) => {
+        const isLast = ei === etapas.length - 1;
+        return (
+          <div key={ei} id={`plan-page-etapa-${ei + 1}`} style={pageStyle}>
+            <img src={BG_IMAGE_URL} alt="" style={bgStyle} />
+            <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0 }} />
+            <div style={contentStyle}>
 
-            <div style={{ textAlign: "center", marginBottom: 12 }}>
-              <span style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B" }}>
-                Etapa {etapa.numero}: {etapa.nome}
-              </span>
-            </div>
-
-            <div style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: 12.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Objetivo:</div>
-              <div style={{
-                fontSize: 13, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6,
-                textTransform: "uppercase", paddingLeft: 16
-              }}>
-                {etapa.objetivo_etapa}
+              <div style={{ textAlign: "center", marginBottom: 12 }}>
+                <span style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B" }}>
+                  Etapa {etapa.numero}: {etapa.nome}
+                </span>
               </div>
+
+              <div style={{ marginBottom: 12 }}>
+                <div style={{ fontSize: 12.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Objetivo:</div>
+                <div style={{
+                  fontSize: 13, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6,
+                  textTransform: "uppercase", paddingLeft: 16
+                }}>
+                  {etapa.objetivo_etapa}
+                </div>
+              </div>
+
+              <Divider />
+
+              <div style={{ marginBottom: 6 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Intervenções</div>
+                {safeArray(etapa.ciclos).map((ciclo, ci) => (
+                  <CicloBlock key={ci} ciclo={ciclo} />
+                ))}
+              </div>
+
+              {isLast && planData?.resumo_final && (
+                <>
+                  <Divider />
+                  <div style={{ marginBottom: 16 }}>
+                    <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
+                    <p style={{ fontSize: 12.5, lineHeight: 1.8, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
+                      {planData.resumo_final}
+                    </p>
+                  </div>
+                </>
+              )}
+
             </div>
-
-            <Divider />
-
-            <div style={{ marginBottom: 6 }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Intervenções</div>
-              {safeArray(etapa.ciclos).map((ciclo, ci) => (
-                <CicloBlock key={ci} ciclo={ciclo} />
-              ))}
-            </div>
-
           </div>
-        </div>
-      ))}
-
-      {/* ============ PAGE RESUMO ============ */}
-      {planData?.resumo_final && (
-        <div id="plan-page-resumo" style={pageStyle}>
-          <img src={BG_IMAGE_URL} alt="" style={bgStyle} />
-          <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0 }} />
-          <div style={contentStyle}>
-            <Divider />
-            <div style={{ marginBottom: 16 }}>
-              <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
-              <p style={{ fontSize: 12.5, lineHeight: 1.8, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
-                {planData.resumo_final}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
+        );
+      })}
 
       {/* ============ PAGE FOTOS POSTURAIS ============ */}
       {(planData?.foto_postural_1 || planData?.foto_postural_2) && (
