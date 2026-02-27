@@ -58,15 +58,11 @@ export default function StepFour({ data, onChange }) {
     setAnalyzing(true);
     const fileUrls = [data.foto_postural_1, data.foto_postural_2].filter(Boolean);
     const result = await base44.integrations.Core.InvokeLLM({
-      prompt: `Você é um especialista em avaliação postural da clínica Vibe Terapias. Analise as fotos posturais do paciente ${data.nome} (${data.sexo}, ${data.idade} anos) com queixas em: ${(data.areas_afetadas || []).join(", ")}.
-      
-Realize uma avaliação postural detalhada e profissional em português, estruturada em:
-1. Vista Frontal (Plano Coronal) - se disponível
-2. Vista Lateral (Plano Sagital) - se disponível
+      prompt: `Você é um fisioterapeuta especialista em avaliação postural da clínica Vibe Terapias. Analise as fotos posturais clínicas do paciente ${data.nome} (${data.sexo}, ${data.idade} anos) com queixas em: ${(data.areas_afetadas || []).join(", ")}.
 
-Para cada vista analise: cabeça, cervical, ombros, coluna torácica, coluna lombar e pelve, joelhos, tornozelos e pés.
-Identifique desvios, assimetrias, compensações musculares e relate com as queixas do paciente.
-Use linguagem profissional e acolhedora. Seja detalhado e relacione os achados posturais com as queixas de dor.`,
+Realize uma avaliação postural detalhada e profissional em português. Escreva em texto corrido, sem usar markdown, asteriscos, hashtags, travessões decorativos ou qualquer símbolo de formatação. Use apenas parágrafos e texto simples.
+
+Estruture em: Vista Frontal (Plano Coronal) e Vista Lateral (Plano Sagital). Para cada vista analise: cabeça, cervical, ombros, coluna torácica, coluna lombar e pelve, joelhos, tornozelos e pés. Identifique desvios, assimetrias, compensações musculares e relacione com as queixas do paciente. Use linguagem profissional e acolhedora.`,
       file_urls: fileUrls,
     });
     onChange("avaliacao_postural", result);
