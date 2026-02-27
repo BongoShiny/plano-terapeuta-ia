@@ -94,9 +94,10 @@ export default function PlanDocument({ plan, patientData }) {
 
   const contentStyle = {
     flex: 1,
-    padding: "50mm 10mm 15mm 10mm",
+    padding: "50mm 12mm 38mm 12mm",
     position: "relative",
     zIndex: 1,
+    overflow: "hidden",
   };
 
   return (
@@ -281,7 +282,7 @@ export default function PlanDocument({ plan, patientData }) {
             </div>
             {(planData?.analise_camera_termal || planData?.resultado_camera_termal) && (
               <div style={{ marginTop: 16 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8 }}>Análise da Câmera Termal com IA</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8 }}>Análise da Câmera Termal</div>
                 <Divider />
                 <p style={{ fontSize: 11, lineHeight: 1.7, margin: 0, textAlign: "justify", whiteSpace: "pre-wrap" }}>
                   {planData.analise_camera_termal || planData.resultado_camera_termal}

@@ -149,11 +149,11 @@ Com base em todos os pontos identificados, explique de forma convincente e acolh
             style={{ background: analyzing ? "#E5E7EB" : "linear-gradient(135deg, #1B3A4B 0%, #2A4F63 100%)", color: analyzing ? "#9CA3AF" : "white" }}
           >
             {analyzing ? (
-              <><Loader2 className="w-4 h-4 animate-spin" />Analisando fotos com IA...</>
+              <><Loader2 className="w-4 h-4 animate-spin" />Analisando fotos posturais...</>
             ) : analyzed ? (
               <><CheckCircle className="w-4 h-4" />Análise realizada! Analisar novamente</>
             ) : (
-              <><Sparkles className="w-4 h-4" />Analisar Fotos com IA</>
+              <><Sparkles className="w-4 h-4" />Analisar Fotos Posturais</>
             )}
           </button>
         )}
@@ -192,11 +192,11 @@ Com base em todos os pontos identificados, explique de forma convincente e acolh
             style={{ background: analyzingThermal ? "#E5E7EB" : "linear-gradient(135deg, #C17F6A 0%, #A5634F 100%)", color: analyzingThermal ? "#9CA3AF" : "white" }}
           >
             {analyzingThermal ? (
-              <><Loader2 className="w-4 h-4 animate-spin" />Identificando pontos de dor com IA...</>
+              <><Loader2 className="w-4 h-4 animate-spin" />Identificando pontos de dor...</>
             ) : analyzedThermal ? (
               <><CheckCircle className="w-4 h-4" />Análise realizada! Analisar novamente</>
             ) : (
-              <><Sparkles className="w-4 h-4" />Analisar Câmera Termal com IA</>
+              <><Sparkles className="w-4 h-4" />Analisar Câmera Termal</>
             )}
           </button>
         )}
@@ -265,7 +265,7 @@ Com base em todos os pontos identificados, explique de forma convincente e acolh
         style={{ background: "linear-gradient(135deg, #1B3A4B 0%, #2A4F63 100%)" }}
       >
         <p className="text-white text-sm font-medium mb-1">
-          🤖 A IA da Vibe Terapias está pronta para gerar
+          ✦ Vibe Terapias — Plano Personalizado
         </p>
         <p className="text-sm" style={{ color: "#B0C4CF" }}>
           Clique em "Gerar Plano Terapêutico" para criar um plano personalizado
