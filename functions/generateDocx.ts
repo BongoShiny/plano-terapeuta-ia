@@ -1,5 +1,4 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
-import { zipSync, strToU8 } from 'npm:fflate@0.8.2';
 
 function esc(str) {
   if (!str) return "";
@@ -11,106 +10,44 @@ function esc(str) {
     .replace(/'/g, "&apos;");
 }
 
-function para(text, { bold = false, size = 20, color = "000000", align = "left", spaceBefore = 0, spaceAfter = 100, heading = null } = {}) {
-  const style = heading ? `<w:pStyle w:val="${heading}"/>` : "";
-  const spacing = `<w:spacing w:before="${spaceBefore}" w:after="${spaceAfter}"/>`;
-  const jc = align === "center" ? `<w:jc w:val="center"/>` : align === "both" ? `<w:jc w:val="both"/>` : "";
-  const rpr = `<w:rPr>${bold ? "<w:b/>" : ""}<w:sz w:val="${size}"/><w:color w:val="${color}"/></w:rPr>`;
-  return `<w:p><w:pPr>${style}${spacing}${jc}</w:pPr><w:r>${rpr}<w:t xml:space="preserve">${esc(text)}</w:t></w:r></w:p>`;
+function makeRun(text, { bold = false, size = 20, color = null } = {}) {
+  const b = bold ? "<w:b/><w:bCs/>" : "";
+  const c = color ? `<w:color w:val="${color}"/>` : "";
+  return `<w:r><w:rPr>${b}<w:sz w:val="${size}"/><w:szCs w:val="${size}"/>${c}</w:rPr><w:t xml:space="preserve">${esc(text)}</w:t></w:r>`;
 }
 
-function paraRuns(runs, { align = "left", spaceBefore = 0, spaceAfter = 100 } = {}) {
-  const jc = align === "center" ? `<w:jc w:val="center"/>` : align === "both" ? `<w:jc w:val="both"/>` : "";
-  const spacing = `<w:spacing w:before="${spaceBefore}" w:after="${spaceAfter}"/>`;
-  const runsXml = runs.map(r => {
-    const rpr = `<w:rPr>${r.bold ? "<w:b/>" : ""}<w:sz w:val="${r.size || 20}"/><w:color w:val="${r.color || "000000"}"/></w:rPr>`;
-    return `<w:r>${rpr}<w:t xml:space="preserve">${esc(r.text)}</w:t></w:r>`;
-  }).join("");
-  return `<w:p><w:pPr>${spacing}${jc}</w:pPr>${runsXml}</w:p>`;
+function makePara(runs, { align = null, spaceBefore = 0, spaceAfter = 120 } = {}) {
+  const jc = align ? `<w:jc w:val="${align}"/>` : "";
+  const spacing = `<w:spacing w:before="${spaceBefore}" w:after="${spaceAfter}" w:line="276" w:lineRule="auto"/>`;
+  return `<w:p><w:pPr>${spacing}${jc}</w:pPr>${runs}</w:p>`;
 }
 
-function tableXml(headers, rows) {
-  const borderProps = `<w:top w:val="single" w:sz="4" w:space="0" w:color="AAAAAA"/>
-    <w:left w:val="single" w:sz="4" w:space="0" w:color="AAAAAA"/>
-    <w:bottom w:val="single" w:sz="4" w:space="0" w:color="AAAAAA"/>
-    <w:right w:val="single" w:sz="4" w:space="0" w:color="AAAAAA"/>
-    <w:insideH w:val="single" w:sz="4" w:space="0" w:color="AAAAAA"/>
-    <w:insideV w:val="single" w:sz="4" w:space="0" w:color="AAAAAA"/>`;
+function makeHeading(text, level = 1) {
+  const size = level === 1 ? 28 : 24;
+  const color = "1B3A4B";
+  return makePara(makeRun(text, { bold: true, size, color }), { spaceBefore: 200, spaceAfter: 100 });
+}
 
-  const cellW = Math.floor(9000 / headers.length);
+function makeTable(headers, rows) {
+  const pct = Math.floor(5000 / headers.length);
+  const border = `<w:top w:val="single" w:sz="4" w:color="CCCCCC"/><w:left w:val="single" w:sz="4" w:color="CCCCCC"/><w:bottom w:val="single" w:sz="4" w:color="CCCCCC"/><w:right w:val="single" w:sz="4" w:color="CCCCCC"/><w:insideH w:val="single" w:sz="4" w:color="CCCCCC"/><w:insideV w:val="single" w:sz="4" w:color="CCCCCC"/>`;
 
-  function cell(text, bold = false, shade = false) {
-    const fill = shade ? `<w:shd w:val="clear" w:color="auto" w:fill="E8F0F5"/>` : "";
-    return `<w:tc>
-      <w:tcPr><w:tcW w:w="${cellW}" w:type="dxa"/><w:tcBorders>${borderProps}</w:tcBorders>${fill}</w:tcPr>
-      <w:p><w:pPr><w:spacing w:after="60"/></w:pPr><w:r><w:rPr>${bold ? "<w:b/>" : ""}<w:sz w:val="18"/></w:rPr><w:t xml:space="preserve">${esc(text)}</w:t></w:r></w:p>
-    </w:tc>`;
+  function makeCell(text, isHeader = false) {
+    const fill = isHeader ? `<w:shd w:val="clear" w:color="auto" w:fill="E0EAF0"/>` : "";
+    const p = makePara(makeRun(text, { bold: isHeader, size: 18, color: isHeader ? "1B3A4B" : null }), { spaceAfter: 60 });
+    return `<w:tc><w:tcPr><w:tcW w:w="${pct}" w:type="pct"/><w:tcBorders>${border}</w:tcBorders>${fill}<w:tcMar><w:top w:w="60" w:type="dxa"/><w:left w:w="108" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/><w:right w:w="108" w:type="dxa"/></w:tcMar></w:tcPr>${p}</w:tc>`;
   }
 
-  const headerRow = `<w:tr>${headers.map(h => cell(h, true, true)).join("")}</w:tr>`;
-  const dataRows = rows.map(row => `<w:tr>${row.map(c => cell(c)).join("")}</w:tr>`).join("");
+  const headerRow = `<w:tr><w:trPr><w:tblHeader/></w:trPr>${headers.map(h => makeCell(h, true)).join("")}</w:tr>`;
+  const dataRows = rows.map(row => `<w:tr>${row.map(c => makeCell(String(c || ""))).join("")}</w:tr>`).join("");
 
-  return `<w:tbl>
-    <w:tblPr>
-      <w:tblW w:w="9000" w:type="dxa"/>
-      <w:tblBorders>${borderProps}</w:tblBorders>
-    </w:tblPr>
-    ${headerRow}${dataRows}
-  </w:tbl>`;
+  return `<w:tbl><w:tblPr><w:tblW w:w="5000" w:type="pct"/><w:tblBorders>${border}</w:tblBorders><w:tblCellMar><w:top w:w="60" w:type="dxa"/><w:left w:w="108" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/><w:right w:w="108" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${headers.map(() => `<w:gridCol/>`).join("")}</w:tblGrid>${headerRow}${dataRows}</w:tbl>`;
 }
 
-function buildDocumentXml(bodyContent) {
-  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:o="urn:schemas-microsoft-com:office:office"
-  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-  xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-  xmlns:v="urn:schemas-microsoft-com:vml"
-  xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
-  xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
-  xmlns:w10="urn:schemas-microsoft-com:office:word"
-  xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-  xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
-  xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
-  xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
-  xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
-  xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
-  mc:Ignorable="w14 wp14">
-  <w:body>
-    ${bodyContent}
-    <w:sectPr>
-      <w:pgSz w:w="12240" w:h="15840"/>
-      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/>
-    </w:sectPr>
-  </w:body>
-</w:document>`;
+function buildDocXml(bodyParts) {
+  const body = bodyParts.join("\n") + `\n<w:sectPr><w:pgSz w:w="12240" w:h="15840" w:orient="portrait"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="709" w:footer="709" w:gutter="0"/></w:sectPr>`;
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\r\n<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup" xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml" xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape" mc:Ignorable="w14 wp14"><w:body>${body}</w:body></w:document>`;
 }
-
-const RELS = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
-</Relationships>`;
-
-const STYLES = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-  <w:style w:type="paragraph" w:styleId="Normal">
-    <w:name w:val="Normal"/>
-    <w:rPr><w:sz w:val="20"/></w:rPr>
-  </w:style>
-  <w:style w:type="paragraph" w:styleId="Heading1">
-    <w:name w:val="heading 1"/>
-    <w:basedOn w:val="Normal"/>
-    <w:pPr><w:spacing w:before="240" w:after="120"/></w:pPr>
-    <w:rPr><w:b/><w:sz w:val="28"/><w:color w:val="1B3A4B"/></w:rPr>
-  </w:style>
-  <w:style w:type="paragraph" w:styleId="Heading2">
-    <w:name w:val="heading 2"/>
-    <w:basedOn w:val="Normal"/>
-    <w:pPr><w:spacing w:before="200" w:after="100"/></w:pPr>
-    <w:rPr><w:b/><w:sz w:val="24"/><w:color w:val="1B3A4B"/></w:rPr>
-  </w:style>
-</w:styles>`;
 
 const CONTENT_TYPES = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
@@ -124,6 +61,114 @@ const ROOT_RELS = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
 </Relationships>`;
+
+const DOC_RELS = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+</Relationships>`;
+
+const STYLES = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+  <w:docDefaults>
+    <w:rPrDefault><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="pt-BR"/></w:rPr></w:rPrDefault>
+    <w:pPrDefault><w:pPr><w:spacing w:after="120" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault>
+  </w:docDefaults>
+  <w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style>
+</w:styles>`;
+
+// Simple ZIP builder without external deps
+function u8(str) {
+  return new TextEncoder().encode(str);
+}
+
+function crc32(buf) {
+  const table = new Uint32Array(256);
+  for (let i = 0; i < 256; i++) {
+    let c = i;
+    for (let j = 0; j < 8; j++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+    table[i] = c;
+  }
+  let crc = 0xFFFFFFFF;
+  for (const byte of buf) crc = table[(crc ^ byte) & 0xFF] ^ (crc >>> 8);
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+
+function le16(n) { return [(n & 0xff), (n >> 8) & 0xff]; }
+function le32(n) { return [(n & 0xff), (n >> 8) & 0xff, (n >> 16) & 0xff, (n >> 24) & 0xff]; }
+
+function buildZip(files) {
+  const parts = [];
+  const centralDir = [];
+  let offset = 0;
+
+  for (const [name, content] of files) {
+    const nameBytes = u8(name);
+    const data = typeof content === "string" ? u8(content) : content;
+    const crc = crc32(data);
+    const size = data.length;
+
+    const localHeader = new Uint8Array([
+      0x50, 0x4B, 0x03, 0x04, // local file header sig
+      0x14, 0x00,             // version needed
+      0x00, 0x00,             // general flags
+      0x00, 0x00,             // compression (stored)
+      0x00, 0x00,             // mod time
+      0x00, 0x00,             // mod date
+      ...le32(crc),
+      ...le32(size),
+      ...le32(size),
+      ...le16(nameBytes.length),
+      0x00, 0x00,             // extra field length
+      ...nameBytes,
+    ]);
+
+    const cdEntry = new Uint8Array([
+      0x50, 0x4B, 0x01, 0x02, // central dir sig
+      0x14, 0x00,             // version made by
+      0x14, 0x00,             // version needed
+      0x00, 0x00,             // flags
+      0x00, 0x00,             // compression
+      0x00, 0x00,             // mod time
+      0x00, 0x00,             // mod date
+      ...le32(crc),
+      ...le32(size),
+      ...le32(size),
+      ...le16(nameBytes.length),
+      0x00, 0x00,             // extra field length
+      0x00, 0x00,             // file comment length
+      0x00, 0x00,             // disk number start
+      0x00, 0x00,             // int file attrs
+      0x00, 0x00, 0x00, 0x00, // ext file attrs
+      ...le32(offset),
+      ...nameBytes,
+    ]);
+
+    parts.push(localHeader, data);
+    centralDir.push(cdEntry);
+    offset += localHeader.length + data.length;
+  }
+
+  const cdStart = offset;
+  const cdBytes = centralDir.reduce((a, b) => a + b.length, 0);
+
+  const eocd = new Uint8Array([
+    0x50, 0x4B, 0x05, 0x06, // end of central dir sig
+    0x00, 0x00,             // disk number
+    0x00, 0x00,             // disk with start of central dir
+    ...le16(centralDir.length),
+    ...le16(centralDir.length),
+    ...le32(cdBytes),
+    ...le32(cdStart),
+    0x00, 0x00,             // comment length
+  ]);
+
+  const allParts = [...parts, ...centralDir, eocd];
+  const total = allParts.reduce((s, p) => s + p.length, 0);
+  const result = new Uint8Array(total);
+  let pos = 0;
+  for (const p of allParts) { result.set(p, pos); pos += p.length; }
+  return result;
+}
 
 Deno.serve(async (req) => {
   try {
@@ -144,117 +189,115 @@ Deno.serve(async (req) => {
       } catch (e) {}
     }
 
-    const safeArray = (v) => Array.isArray(v) ? v : [];
+    const safeArr = (v) => Array.isArray(v) ? v : [];
     const parts = [];
 
     // Header
-    parts.push(para("VIBE TERAPIAS — PLANO TERAPÊUTICO", { bold: true, size: 32, color: "1B3A4B", align: "center", spaceAfter: 60 }));
-    parts.push(para("Clínica Especializada em Dor", { size: 22, color: "C17F6A", align: "center", spaceAfter: 60 }));
-    parts.push(para("LONDRINA/PR: (43) 9 8857-4142  |  SÃO PAULO/SP: (11) 9 4707-3114", { size: 18, color: "555555", align: "center", spaceAfter: 200 }));
+    parts.push(makePara(makeRun("VIBE TERAPIAS — PLANO TERAPÊUTICO", { bold: true, size: 32, color: "1B3A4B" }), { align: "center", spaceBefore: 0, spaceAfter: 60 }));
+    parts.push(makePara(makeRun("Clínica Especializada em Dor", { size: 22, color: "C17F6A" }), { align: "center", spaceAfter: 60 }));
+    parts.push(makePara(makeRun("LONDRINA/PR: (43) 9 8857-4142  |  SÃO PAULO/SP: (11) 9 4707-3114", { size: 18, color: "555555" }), { align: "center", spaceAfter: 200 }));
 
-    // Patient info
-    parts.push(paraRuns([
-      { text: "Paciente: ", bold: true, size: 22 },
-      { text: `${plan.patient_nome || ""}    `, size: 22 },
-      { text: "Terapia Especial: ", bold: true, size: 22 },
-      { text: plan.terapia_especial || "", size: 22 },
-    ], { spaceAfter: 60 }));
-    parts.push(paraRuns([
-      { text: "Telefone: ", bold: true, size: 22 },
-      { text: plan.patient_telefone || "", size: 22 },
-    ], { spaceAfter: 200 }));
+    // Patient
+    parts.push(makePara(
+      makeRun("Paciente: ", { bold: true, size: 22 }) + makeRun(`${plan.patient_nome || ""}    `, { size: 22 }) +
+      makeRun("Terapia Especial: ", { bold: true, size: 22 }) + makeRun(plan.terapia_especial || "", { size: 22 }),
+      { spaceAfter: 60 }
+    ));
+    parts.push(makePara(makeRun("Telefone: ", { bold: true, size: 22 }) + makeRun(plan.patient_telefone || "", { size: 22 }), { spaceAfter: 200 }));
 
     if (planData) {
       if (planData.resumo_queixas) {
-        parts.push(para("Resumo das Queixas e Dores", { bold: true, size: 24, color: "1B3A4B", spaceBefore: 200, spaceAfter: 100 }));
-        parts.push(para(planData.resumo_queixas, { size: 20, align: "both", spaceAfter: 120 }));
+        parts.push(makeHeading("Resumo das Queixas e Dores", 2));
+        parts.push(makePara(makeRun(planData.resumo_queixas, { size: 20 }), { align: "both", spaceAfter: 120 }));
       }
 
       if (planData.resultado_camera_termal) {
-        parts.push(paraRuns([
-          { text: "Resultado da Câmera Termal: ", bold: true, size: 20, color: "1B3A4B" },
-          { text: planData.resultado_camera_termal, size: 20 },
-        ], { spaceAfter: 120 }));
+        parts.push(makePara(
+          makeRun("Resultado da Câmera Termal: ", { bold: true, size: 20, color: "1B3A4B" }) +
+          makeRun(planData.resultado_camera_termal, { size: 20 }),
+          { spaceAfter: 120 }
+        ));
       }
 
       if (planData.analise_camera_termal) {
-        parts.push(para("Análise da Câmera Termal", { bold: true, size: 24, color: "1B3A4B", spaceBefore: 200, spaceAfter: 100 }));
-        const paragraphs = planData.analise_camera_termal.split(/\n+/).filter(p => p.trim());
-        for (const paragraph of paragraphs) {
-          const segments = paragraph.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\])/g);
-          const runs = segments.map(seg => {
+        parts.push(makeHeading("Análise da Câmera Termal", 2));
+        const paras = planData.analise_camera_termal.split(/\n+/).filter(p => p.trim());
+        for (const p of paras) {
+          const segs = p.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\])/g);
+          const runs = segs.map(seg => {
             if (seg.startsWith("[ALERTA]")) {
               const content = "⚠ " + seg.replace(/^\[ALERTA\]/, "").replace(/\[\/ALERTA\]$/, "");
-              return { text: content, bold: true, size: 20, color: "7B2D00" };
+              return makeRun(content, { bold: true, size: 20, color: "7B2D00" });
             }
-            return { text: seg, size: 20 };
-          }).filter(r => r.text);
-          if (runs.length) parts.push(paraRuns(runs, { align: "both", spaceAfter: 100 }));
+            return makeRun(seg, { size: 20 });
+          }).join("");
+          if (runs) parts.push(makePara(runs, { align: "both", spaceAfter: 100 }));
         }
       }
 
-      if (safeArray(planData.objetivos_tratamento).length) {
-        parts.push(para("Objetivos do Tratamento", { bold: true, size: 24, color: "1B3A4B", spaceBefore: 200, spaceAfter: 100 }));
-        for (const obj of safeArray(planData.objetivos_tratamento)) {
-          parts.push(para(`• ${obj}`, { size: 20, spaceAfter: 60 }));
+      if (safeArr(planData.objetivos_tratamento).length) {
+        parts.push(makeHeading("Objetivos do Tratamento", 2));
+        for (const obj of safeArr(planData.objetivos_tratamento)) {
+          parts.push(makePara(makeRun(`\u2022 ${obj}`, { size: 20 }), { spaceAfter: 60 }));
         }
       }
 
       if (planData.objetivo_geral) {
-        parts.push(para("Objetivo Geral", { bold: true, size: 24, color: "1B3A4B", spaceBefore: 200, spaceAfter: 100 }));
-        parts.push(para(planData.objetivo_geral, { size: 20, align: "both", spaceAfter: 120 }));
+        parts.push(makeHeading("Objetivo Geral", 2));
+        parts.push(makePara(makeRun(planData.objetivo_geral, { size: 20 }), { align: "both", spaceAfter: 120 }));
       }
 
       if (planData.explicacao_terapia) {
-        parts.push(para("Explicação da Terapia Especial", { bold: true, size: 24, color: "1B3A4B", spaceBefore: 200, spaceAfter: 100 }));
-        parts.push(para(planData.explicacao_terapia, { size: 20, align: "both", spaceAfter: 200 }));
+        parts.push(makeHeading("Explicação da Terapia Especial", 2));
+        parts.push(makePara(makeRun(planData.explicacao_terapia, { size: 20 }), { align: "both", spaceAfter: 200 }));
       }
 
-      parts.push(para("PLANO DE TRATAMENTO E FASES INTEGRADAS", { bold: true, size: 28, color: "1B3A4B", spaceBefore: 300, spaceAfter: 200 }));
+      parts.push(makeHeading("PLANO DE TRATAMENTO E FASES INTEGRADAS", 1));
 
-      for (const etapa of safeArray(planData.etapas)) {
-        parts.push(para(`Etapa ${etapa.numero}: ${etapa.nome}`, { bold: true, size: 24, color: "1B3A4B", spaceBefore: 240, spaceAfter: 120 }));
-        parts.push(para(etapa.objetivo_etapa || "", { bold: true, size: 20, spaceAfter: 140 }));
-
-        const ciclos = safeArray(etapa.ciclos);
+      for (const etapa of safeArr(planData.etapas)) {
+        parts.push(makePara(makeRun(`Etapa ${etapa.numero}: ${etapa.nome}`, { bold: true, size: 24, color: "1B3A4B" }), { spaceBefore: 240, spaceAfter: 120 }));
+        if (etapa.objetivo_etapa) {
+          parts.push(makePara(makeRun(etapa.objetivo_etapa, { bold: true, size: 20 }), { spaceAfter: 140 }));
+        }
+        const ciclos = safeArr(etapa.ciclos);
         if (ciclos.length) {
-          parts.push(tableXml(
+          parts.push(makeTable(
             ["Ciclo", "Objetivo", "Técnicas", "Músculos"],
             ciclos.map(c => [`Ciclo ${c.numero}`, c.objetivo || "", c.tecnicas || "", c.musculos || ""])
           ));
-          parts.push(para("", { spaceAfter: 200 }));
+          parts.push(makePara("", { spaceAfter: 200 }));
         }
       }
 
       if (planData.resumo_final) {
-        parts.push(para("Resumo do Plano Terapêutico", { bold: true, size: 24, color: "1B3A4B", spaceBefore: 200, spaceAfter: 100 }));
-        parts.push(para(planData.resumo_final, { size: 20, align: "both", spaceAfter: 200 }));
+        parts.push(makeHeading("Resumo do Plano Terapêutico", 2));
+        parts.push(makePara(makeRun(planData.resumo_final, { size: 20 }), { align: "both", spaceAfter: 200 }));
       }
     } else if (plan.plano_completo) {
-      parts.push(para(plan.plano_completo, { size: 20 }));
+      parts.push(makePara(makeRun(plan.plano_completo, { size: 20 })));
     }
 
-    // Footer
-    parts.push(para("", { spaceBefore: 300 }));
-    parts.push(para("LONDRINA/PR – R. Alvarenga Peixoto, 26  |  SÃO PAULO/SP – Av. Rouxinol, 1041  |  Av. Paulista, 1337", { size: 16, color: "777777", align: "center" }));
+    parts.push(makePara("", { spaceBefore: 300 }));
+    parts.push(makePara(makeRun("LONDRINA/PR – R. Alvarenga Peixoto, 26  |  SÃO PAULO/SP – Av. Rouxinol, 1041  |  Av. Paulista, 1337", { size: 16, color: "777777" }), { align: "center" }));
 
-    const documentXml = buildDocumentXml(parts.join("\n"));
+    const docXml = buildDocXml(parts);
 
-    const zipData = zipSync({
-      "[Content_Types].xml": strToU8(CONTENT_TYPES),
-      "_rels/.rels": strToU8(ROOT_RELS),
-      "word/document.xml": strToU8(documentXml),
-      "word/styles.xml": strToU8(STYLES),
-      "word/_rels/document.xml.rels": strToU8(RELS),
-    });
+    const zipBytes = buildZip([
+      ["[Content_Types].xml", CONTENT_TYPES],
+      ["_rels/.rels", ROOT_RELS],
+      ["word/document.xml", docXml],
+      ["word/styles.xml", STYLES],
+      ["word/_rels/document.xml.rels", DOC_RELS],
+    ]);
 
     const filename = `Plano_Vibe_${(plan.patient_nome || "Paciente").replace(/\s+/g, "_")}.docx`;
 
-    return new Response(zipData, {
+    return new Response(zipBytes, {
       status: 200,
       headers: {
         "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "Content-Disposition": `attachment; filename="${filename}"`,
+        "Content-Length": String(zipBytes.length),
       },
     });
   } catch (error) {
