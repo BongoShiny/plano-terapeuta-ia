@@ -34,10 +34,11 @@ function ThermalAnalysisText({ text }) {
                     display: "inline",
                     background: "#FFF3CD",
                     color: "#7B2D00",
-                    fontWeight: 700,
-                    borderLeft: "3px solid #C17F6A",
-                    paddingLeft: 6,
-                    paddingRight: 4,
+                    fontWeight: 900,
+                    fontSize: 13.5,
+                    borderLeft: "4px solid #C17F6A",
+                    paddingLeft: 7,
+                    paddingRight: 5,
                     borderRadius: 2,
                   }}>
                     ⚠ {content}
