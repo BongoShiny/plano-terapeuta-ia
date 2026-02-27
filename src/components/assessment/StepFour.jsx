@@ -76,18 +76,11 @@ Estruture em: Vista Frontal (Plano Coronal) e Vista Lateral (Plano Sagital). Par
     const result = await base44.integrations.Core.InvokeLLM({
       prompt: `Você é um especialista em termografia clínica da Vibe Terapias. Analise as imagens da câmera termal do paciente ${data.nome || "o paciente"} (${data.sexo || ""}, ${data.idade || ""} anos), com queixas em: ${(data.areas_afetadas || []).join(", ") || "diversas regiões"}.
 
-Identifique TODOS os pontos em vermelho/laranja/quente nas imagens, que indicam inflamação, tensão muscular e pontos de dor ativos.
+Identifique todos os pontos em vermelho, laranja ou quente nas imagens, que indicam inflamação, tensão muscular e pontos de dor ativos.
 
-Estruture a análise:
+Escreva em texto corrido e parágrafos, sem usar markdown, asteriscos, hashtags, travessões decorativos ou qualquer símbolo de formatação. Apenas texto simples e profissional.
 
-**PONTOS DE DOR IDENTIFICADOS NA CÂMERA TERMAL:**
-Liste cada região com ponto quente identificado e o que representa clinicamente.
-
-**ANÁLISE DETALHADA DE CADA REGIÃO:**
-Para cada ponto identificado: músculo/articulação afetada, nível de inflamação aparente, e como isso impacta a rotina diária de ${data.nome || "o paciente"}.
-
-**CONCLUSÃO — POR QUE 24 SESSÕES SÃO O IDEAL:**
-Com base em todos os pontos identificados, explique de forma convincente e acolhedora por que o plano de 24 sessões da Vibe Terapias, dividido em 3 etapas progressivas, é o caminho mais eficaz para eliminar todos os pontos de dor, restaurar a mobilidade e garantir que ${data.nome || "o paciente"} consiga realizar sua rotina do dia a dia com qualidade de vida e sem dor. Mencione o nome ${data.nome || "do paciente"} várias vezes.`,
+Aborde: pontos de dor identificados e o que representam clinicamente; análise de cada região afetada indicando o músculo ou articulação afetada, o nível de inflamação e como impacta a rotina de ${data.nome || "o paciente"}; e por que o plano de 24 sessões da Vibe Terapias é o caminho mais eficaz para eliminar esses pontos de dor e restaurar a qualidade de vida. Mencione o nome ${data.nome || "do paciente"} várias vezes.`,
       file_urls: data.fotos_camera_termal,
     });
     onChange("analise_camera_termal", result);
