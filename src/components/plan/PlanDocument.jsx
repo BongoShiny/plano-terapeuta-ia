@@ -230,7 +230,6 @@ export default function PlanDocument({ plan, patientData }) {
           <img src={BG_IMAGE_URL} alt="" style={bgStyle} />
           <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0 }} />
           <div style={contentStyle}>
-
             <Divider />
             <div style={{ marginBottom: 16 }}>
               <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
@@ -238,27 +237,42 @@ export default function PlanDocument({ plan, patientData }) {
                 {planData.resumo_final}
               </p>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============ PAGE FOTOS POSTURAIS ============ */}
+      {(planData?.foto_postural_1 || planData?.foto_postural_2) && (
+        <div id="plan-page-fotos-posturais" style={pageStyle}>
+          <img src={BG_IMAGE_URL} alt="" style={bgStyle} />
+          <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0 }} />
+          <div style={contentStyle}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 10, textAlign: "center" }}>
+              Fotos da Avaliação Postural
+            </div>
             <Divider />
-
-            {/* Fotos Posturais */}
-            {(planData?.foto_postural_1 || planData?.foto_postural_2) && (
-              <div style={{ marginTop: 20 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Fotos da Avaliação Postural</div>
-                <div style={{ display: "flex", gap: 16 }}>
-                  {planData?.foto_postural_1 && (
-                    <div style={{ flex: 1 }}>
-                      <img src={planData.foto_postural_1} alt="Foto Postural 1" style={{ width: "100%", maxHeight: "100px", borderRadius: 8, objectFit: "contain", objectPosition: "top", display: "block" }} />
-                    </div>
-                  )}
-                  {planData?.foto_postural_2 && (
-                    <div style={{ flex: 1 }}>
-                      <img src={planData.foto_postural_2} alt="Foto Postural 2" style={{ width: "100%", maxHeight: "100px", borderRadius: 8, objectFit: "contain", objectPosition: "top", display: "block" }} />
-                    </div>
-                  )}
+            <div style={{ display: "flex", gap: 20, marginTop: 16 }}>
+              {planData?.foto_postural_1 && (
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                  <p style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", margin: 0 }}>Vista Frontal</p>
+                  <img
+                    src={planData.foto_postural_1}
+                    alt="Foto Postural 1"
+                    style={{ width: "100%", maxHeight: "160mm", borderRadius: 8, objectFit: "contain", display: "block" }}
+                  />
                 </div>
-              </div>
-            )}
-
+              )}
+              {planData?.foto_postural_2 && (
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                  <p style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", margin: 0 }}>Vista Lateral</p>
+                  <img
+                    src={planData.foto_postural_2}
+                    alt="Foto Postural 2"
+                    style={{ width: "100%", maxHeight: "160mm", borderRadius: 8, objectFit: "contain", display: "block" }}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
