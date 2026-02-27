@@ -20,7 +20,7 @@ function ThermalAnalysisText({ text }) {
   // Split text into paragraphs, then within each paragraph handle [ALERTA] blocks
   const paragraphs = text.split(/\n+/).filter(p => p.trim());
   return (
-    <div style={{ fontSize: 11.5, lineHeight: 1.8, color: "#222", textAlign: "justify" }}>
+    <div style={{ fontSize: 13, lineHeight: 1.9, color: "#222", textAlign: "justify" }}>
       {paragraphs.map((para, pi) => {
         // Split paragraph by [ALERTA]...[/ALERTA]
         const parts = para.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\])/g);
