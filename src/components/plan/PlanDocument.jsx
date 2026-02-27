@@ -265,7 +265,7 @@ export default function PlanDocument({ plan, patientData }) {
         </PageWrapper>
       )}
 
-      {/* ============ PAGE CÂMERA TERMAL ============ */}
+      {/* ============ PAGE CÂMERA TERMAL - FOTOS ============ */}
       {safeArray(planData?.fotos_camera_termal).length > 0 && (
         <PageWrapper id="plan-page-termal">
           <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 16, textAlign: "center" }}>
@@ -279,15 +279,19 @@ export default function PlanDocument({ plan, patientData }) {
               </div>
             ))}
           </div>
-          {(planData?.analise_camera_termal || planData?.resultado_camera_termal) && (
-            <div style={{ marginTop: 16 }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8 }}>Análise da Câmera Termal</div>
-              <Divider />
-              <p style={{ fontSize: 11, lineHeight: 1.7, margin: 0, textAlign: "justify", whiteSpace: "pre-wrap" }}>
-                {planData.analise_camera_termal || planData.resultado_camera_termal}
-              </p>
-            </div>
-          )}
+        </PageWrapper>
+      )}
+
+      {/* ============ PAGE CÂMERA TERMAL - ANÁLISE ============ */}
+      {(planData?.analise_camera_termal || planData?.resultado_camera_termal) && (
+        <PageWrapper id="plan-page-termal-analise">
+          <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 10, textAlign: "center" }}>
+            Análise da Câmera Termal
+          </div>
+          <Divider />
+          <p style={{ fontSize: 12, lineHeight: 1.8, margin: 0, textAlign: "justify", whiteSpace: "pre-wrap", color: "#222" }}>
+            {planData.analise_camera_termal || planData.resultado_camera_termal}
+          </p>
         </PageWrapper>
       )}
 
