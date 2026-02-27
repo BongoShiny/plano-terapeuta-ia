@@ -46,6 +46,7 @@ REGRAS OBRIGATÓRIAS — SIGA À RISCA:
 4. SEGURANÇA E ÉTICA: Ventosaterapia, Dry Needling e Eletroestimulação SEMPRE devem ser seguidas de "(CASO O CLIENTE APROVAR)" — nunca omita isso.
 5. LINGUAGEM: Persuasiva, acolhedora e profissional. O objetivo é que o paciente se sinta cuidado e confiante para fechar o pacote completo.
 6. Retorne SOMENTE o JSON, sem nenhum texto antes ou depois.
+7. FORMATAÇÃO: NUNCA use markdown nos textos. Proibido usar ###, ##, **, __, --, "---", aspas decorativas (" "), asteriscos ou qualquer símbolo de formatação. Todos os campos de texto devem ser texto simples, sem marcações.
 
 JSON a retornar (preencha todos os campos com conteúdo real e personalizado para ${data.nome}):
 
