@@ -244,15 +244,15 @@ export default function PlanDocument({ plan, patientData }) {
             {(planData?.foto_postural_1 || planData?.foto_postural_2) && (
               <div style={{ marginTop: 20 }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Fotos da Avaliação Postural</div>
-                <div style={{ display: "flex", gap: 16, maxHeight: 140 }}>
+                <div style={{ display: "flex", gap: 16 }}>
                   {planData?.foto_postural_1 && (
-                    <div style={{ flex: 1, maxHeight: 140, overflow: "hidden" }}>
-                      <img src={planData.foto_postural_1} alt="Foto Postural 1" style={{ width: "100%", height: "140px", borderRadius: 8, objectFit: "contain", objectPosition: "top" }} />
+                    <div style={{ flex: 1 }}>
+                      <img src={planData.foto_postural_1} alt="Foto Postural 1" style={{ width: "100%", maxHeight: "100px", borderRadius: 8, objectFit: "contain", objectPosition: "top", display: "block" }} />
                     </div>
                   )}
                   {planData?.foto_postural_2 && (
-                    <div style={{ flex: 1, maxHeight: 140, overflow: "hidden" }}>
-                      <img src={planData.foto_postural_2} alt="Foto Postural 2" style={{ width: "100%", height: "140px", borderRadius: 8, objectFit: "contain", objectPosition: "top" }} />
+                    <div style={{ flex: 1 }}>
+                      <img src={planData.foto_postural_2} alt="Foto Postural 2" style={{ width: "100%", maxHeight: "100px", borderRadius: 8, objectFit: "contain", objectPosition: "top", display: "block" }} />
                     </div>
                   )}
                 </div>
