@@ -35,8 +35,7 @@ export default function PlanView() {
   const downloadDocx = async () => {
     setDownloading(true);
     try {
-      const response = await base44.functions.invoke("generateDocx", { planId: plan.id });
-      // response.data is arraybuffer
+      const response = await base44.functions.invoke("generateDocx", { planId: plan.id }, { responseType: "arraybuffer" });
       const blob = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
       });
