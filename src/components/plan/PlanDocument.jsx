@@ -246,12 +246,12 @@ export default function PlanDocument({ plan, patientData }) {
                 <div style={{ display: "flex", gap: 16 }}>
                   {planData?.foto_postural_1 && (
                     <div style={{ flex: 1 }}>
-                      <img src={planData.foto_postural_1} alt="Foto Postural 1" style={{ width: "100%", borderRadius: 8, objectFit: "cover", maxHeight: 300 }} />
+                      <img src={planData.foto_postural_1} alt="Foto Postural 1" style={{ width: "100%", borderRadius: 8, objectFit: "contain" }} />
                     </div>
                   )}
                   {planData?.foto_postural_2 && (
                     <div style={{ flex: 1 }}>
-                      <img src={planData.foto_postural_2} alt="Foto Postural 2" style={{ width: "100%", borderRadius: 8, objectFit: "cover", maxHeight: 300 }} />
+                      <img src={planData.foto_postural_2} alt="Foto Postural 2" style={{ width: "100%", borderRadius: 8, objectFit: "contain" }} />
                     </div>
                   )}
                 </div>
@@ -279,12 +279,32 @@ export default function PlanDocument({ plan, patientData }) {
                 </div>
               ))}
             </div>
-            {planData?.resultado_camera_termal && (
-              <div style={{ marginTop: 20 }}>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8 }}>Resultado da Avaliação</div>
-                <p style={{ fontSize: 12.5, lineHeight: 1.7, margin: 0, textAlign: "justify" }}>{planData.resultado_camera_termal}</p>
+            {(planData?.analise_camera_termal || planData?.resultado_camera_termal) && (
+              <div style={{ marginTop: 16 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8 }}>Análise da Câmera Termal com IA</div>
+                <Divider />
+                <p style={{ fontSize: 11, lineHeight: 1.7, margin: 0, textAlign: "justify", whiteSpace: "pre-wrap" }}>
+                  {planData.analise_camera_termal || planData.resultado_camera_termal}
+                </p>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* ============ PAGE AVALIAÇÃO POSTURAL ============ */}
+      {planData?.avaliacao_postural && (
+        <div id="plan-page-avaliacao-postural" style={pageStyle}>
+          <img src={BG_IMAGE_URL} alt="" style={bgStyle} />
+          <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0 }} />
+          <div style={contentStyle}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 10, textAlign: "center" }}>
+              Avaliação Postural
+            </div>
+            <Divider />
+            <p style={{ fontSize: 11, lineHeight: 1.8, margin: 0, textAlign: "justify", whiteSpace: "pre-wrap", color: "#222" }}>
+              {planData.avaliacao_postural}
+            </p>
           </div>
         </div>
       )}

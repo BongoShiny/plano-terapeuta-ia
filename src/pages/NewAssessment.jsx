@@ -36,6 +36,7 @@ DADOS DO PACIENTE:
 - Condições Preexistentes: ${(data.condicoes_preexistentes || []).join(", ") || "Nenhuma"}
 - Medicamentos: ${data.medicamentos || "Nenhum"}
 - Resultado Câmera Termal: ${data.resultado_camera_termal || "A ser realizado na primeira sessão"}
+- Análise Detalhada Câmera Termal (IA): ${data.analise_camera_termal ? data.analise_camera_termal.substring(0, 800) : "Não realizada"}
 - Objetivos do Paciente: ${data.objetivos_paciente || "Não informado"}
 
 REGRAS OBRIGATÓRIAS — SIGA À RISCA:
@@ -204,6 +205,7 @@ export default function NewAssessment() {
           if (data.fotos_camera_termal?.length) obj.fotos_camera_termal = data.fotos_camera_termal;
           if (data.avaliacao_postural) obj.avaliacao_postural = data.avaliacao_postural;
           if (data.resultado_camera_termal) obj.resultado_camera_termal = data.resultado_camera_termal;
+          if (data.analise_camera_termal) obj.analise_camera_termal = data.analise_camera_termal;
           finalPlan = JSON.stringify(obj);
         }
       } catch (e) {}
