@@ -207,64 +207,82 @@ Deno.serve(async (req) => {
     const safeArr = (v) => Array.isArray(v) ? v : [];
     const parts = [];
 
-    // Header
-    parts.push(makePara(makeRun("VIBE TERAPIAS — PLANO TERAPÊUTICO", { bold: true, size: 32, color: "1B3A4B" }), { align: "center", spaceBefore: 0, spaceAfter: 60 }));
-    parts.push(makePara(makeRun("Clínica Especializada em Dor", { size: 22, color: "C17F6A" }), { align: "center", spaceAfter: 60 }));
-    parts.push(makePara(makeRun("LONDRINA/PR: (43) 9 8857-4142  |  SÃO PAULO/SP: (11) 9 4707-3114", { size: 18, color: "555555" }), { align: "center", spaceAfter: 200 }));
-
-    // Patient
+    // Header title with bullet dot
     parts.push(makePara(
-      makeRun("Paciente: ", { bold: true, size: 22 }) + makeRun(`${plan.patient_nome || ""}    `, { size: 22 }) +
-      makeRun("Terapia Especial: ", { bold: true, size: 22 }) + makeRun(plan.terapia_especial || "", { size: 22 }),
-      { spaceAfter: 60 }
+      makeRun("● ", { bold: true, size: 26, color: "C17F6A" }) +
+      makeRun("PLANO TERAPÊUTICO – VIBE TERAPIAS", { bold: true, size: 26, color: "1B3A4B" }),
+      { spaceBefore: 0, spaceAfter: 160 }
     ));
-    parts.push(makePara(makeRun("Telefone: ", { bold: true, size: 22 }) + makeRun(plan.patient_telefone || "", { size: 22 }), { spaceAfter: 200 }));
+
+    // Patient info block (bold labels + normal values)
+    const patientInfoRows = [
+      ["Paciente: ", plan.patient_nome || ""],
+      ["Sexo: ", patientData?.sexo || ""],
+      ["Telefone: ", plan.patient_telefone || ""],
+      ["Terapia Especial: ", plan.terapia_especial || ""],
+    ];
+    for (const [label, val] of patientInfoRows) {
+      parts.push(makePara(makeRun(label, { bold: true, size: 20 }) + makeRun(val, { size: 20 }), { spaceAfter: 40 }));
+    }
+    parts.push(makePara("", { spaceAfter: 80 }));
+
+    // Helper: render body text paragraphs with [ALERTA] support, indented
+    function renderBodyParas(text) {
+      const paras = text.split(/\n+/).filter(p => p.trim());
+      for (const p of paras) {
+        const segs = p.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\])/g);
+        const runs = segs.map(seg => {
+          if (seg.startsWith("[ALERTA]")) {
+            const content = seg.replace(/^\[ALERTA\]/, "").replace(/\[\/ALERTA\]$/, "");
+            return makeRun(content, { bold: true, size: 20, color: "7B2D00" });
+          }
+          // Handle **bold** markdown inline
+          const boldParts = seg.split(/(\*\*[^*]+\*\*)/g);
+          return boldParts.map(bp => {
+            if (bp.startsWith("**") && bp.endsWith("**")) {
+              return makeRun(bp.slice(2, -2), { bold: true, size: 20 });
+            }
+            return makeRun(bp, { size: 20 });
+          }).join("");
+        }).join("");
+        if (runs.trim() !== "" || runs !== "") {
+          parts.push(makeIndentedPara(runs, { spaceAfter: 100 }));
+        }
+      }
+    }
 
     if (planData) {
       if (planData.resumo_queixas) {
-        parts.push(makeHeading("Resumo das Queixas e Dores", 2));
-        parts.push(makePara(makeRun(planData.resumo_queixas, { size: 20 }), { align: "both", spaceAfter: 120 }));
+        parts.push(makeHeading("Resumo das Queixas, Dores e Áreas Afetadas", 2));
+        renderBodyParas(planData.resumo_queixas);
       }
 
       if (planData.resultado_camera_termal) {
-        parts.push(makePara(
-          makeRun("Resultado da Câmera Termal: ", { bold: true, size: 20, color: "1B3A4B" }) +
-          makeRun(planData.resultado_camera_termal, { size: 20 }),
-          { spaceAfter: 120 }
-        ));
+        parts.push(makeHeading("Resultado da Avaliação com a câmera termal:", 2));
+        renderBodyParas(planData.resultado_camera_termal);
       }
 
-      if (planData.analise_camera_termal) {
-        parts.push(makeHeading("Análise da Câmera Termal", 2));
-        const paras = planData.analise_camera_termal.split(/\n+/).filter(p => p.trim());
-        for (const p of paras) {
-          const segs = p.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\])/g);
-          const runs = segs.map(seg => {
-            if (seg.startsWith("[ALERTA]")) {
-              const content = "⚠ " + seg.replace(/^\[ALERTA\]/, "").replace(/\[\/ALERTA\]$/, "");
-              return makeRun(content, { bold: true, size: 20, color: "7B2D00" });
-            }
-            return makeRun(seg, { size: 20 });
-          }).join("");
-          if (runs) parts.push(makePara(runs, { align: "both", spaceAfter: 100 }));
-        }
+      if (planData.analise_camera_termal && !planData.resultado_camera_termal) {
+        parts.push(makeHeading("Resultado da Avaliação com a câmera termal:", 2));
+        renderBodyParas(planData.analise_camera_termal);
       }
 
       if (safeArr(planData.objetivos_tratamento).length) {
         parts.push(makeHeading("Objetivos do Tratamento", 2));
         for (const obj of safeArr(planData.objetivos_tratamento)) {
-          parts.push(makePara(makeRun(`\u2022 ${obj}`, { size: 20 }), { spaceAfter: 60 }));
+          parts.push(makeBulletPara(obj));
         }
+        parts.push(makePara("", { spaceAfter: 60 }));
       }
 
       if (planData.objetivo_geral) {
-        parts.push(makeHeading("Objetivo Geral", 2));
-        parts.push(makePara(makeRun(planData.objetivo_geral, { size: 20 }), { align: "both", spaceAfter: 120 }));
+        parts.push(makeHeading("Objetivo Geral do Tratamento", 2));
+        renderBodyParas(planData.objetivo_geral);
       }
 
       if (planData.explicacao_terapia) {
         parts.push(makeHeading("Explicação da Terapia Especial", 2));
-        parts.push(makePara(makeRun(planData.explicacao_terapia, { size: 20 }), { align: "both", spaceAfter: 200 }));
+        renderBodyParas(planData.explicacao_terapia);
       }
 
       parts.push(makeHeading("PLANO DE TRATAMENTO E FASES INTEGRADAS", 1));
@@ -286,7 +304,7 @@ Deno.serve(async (req) => {
 
       if (planData.resumo_final) {
         parts.push(makeHeading("Resumo do Plano Terapêutico", 2));
-        parts.push(makePara(makeRun(planData.resumo_final, { size: 20 }), { align: "both", spaceAfter: 200 }));
+        renderBodyParas(planData.resumo_final);
       }
     } else if (plan.plano_completo) {
       parts.push(makePara(makeRun(plan.plano_completo, { size: 20 })));
