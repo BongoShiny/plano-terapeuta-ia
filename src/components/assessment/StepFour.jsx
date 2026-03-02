@@ -74,18 +74,18 @@ Estruture em: Vista Frontal (Plano Coronal) e Vista Lateral (Plano Sagital). Par
     if (!data.fotos_camera_termal?.length) return;
     setAnalyzingThermal(true);
     const result = await base44.integrations.Core.InvokeLLM({
-      prompt: `Você é um especialista em termografia clínica da Vibe Terapias. Analise as imagens da câmera termal do paciente ${data.nome || "o paciente"} (${data.sexo || ""}, ${data.idade || ""} anos), com queixas em: ${(data.areas_afetadas || []).join(", ") || "diversas regiões"}.
+      prompt: `Você é um fisioterapeuta clínico especializado em termografia da clínica Vibe Terapias. As imagens anexadas são imagens termográficas clínicas (termogramas) utilizadas para avaliação muscular e fascial do paciente ${data.nome || "o paciente"} (${data.sexo || ""}, ${data.idade || ""} anos), com queixas relatadas em: ${(data.areas_afetadas || []).join(", ") || "diversas regiões"}.
 
-Identifique todos os pontos em vermelho, laranja ou quente nas imagens, que indicam inflamação, tensão muscular e pontos de dor ativos.
+Nas imagens termográficas, as áreas em vermelho/laranja indicam regiões com maior temperatura superficial, associadas a tensão muscular, pontos-gatilho, inflamação fascial ou sobrecarga postural. Realize uma análise termográfica clínica completa.
 
-Escreva em parágrafos. Use a marcação [ALERTA] no início de frases que descrevem consequências sérias de não tratar — essas frases devem ser impactantes e urgentes. Use [/ALERTA] para fechar. Não use outros símbolos de formatação como asteriscos, hashtags ou travessões.
+Escreva um laudo termográfico clínico em português, em parágrafos corridos. Use a marcação [ALERTA] antes de frases sobre riscos clínicos de não tratar e [/ALERTA] para fechar. Não use asteriscos, hashtags ou outros símbolos de formatação.
 
-Estruture assim:
-1. Introdução com os achados gerais.
-2. Para cada região afetada: o que foi identificado, o que representa clinicamente, e [ALERTA]o que pode acontecer se não for tratado — seja específico, impactante e urgente, mencionando perda de mobilidade, agravamento da dor, impacto no trabalho e na qualidade de vida de ${data.nome || "o paciente"}[/ALERTA].
-3. Conclusão persuasiva sobre por que o plano de 24 sessões da Vibe Terapias é urgente e necessário para ${data.nome || "o paciente"}.
+Estruture o laudo assim:
+1. Achados termográficos gerais.
+2. Para cada região com alteração térmica: descrição do achado, correlação clínica, e [ALERTA]risco clínico caso não seja tratado com o plano terapêutico adequado — mencione impacto funcional, progressão da dor e qualidade de vida de ${data.nome || "o paciente"}[/ALERTA].
+3. Conclusão clínica recomendando o plano de 24 sessões da Vibe Terapias.
 
-Mencione o nome ${data.nome || "do paciente"} várias vezes.`,
+Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
       file_urls: data.fotos_camera_termal,
     });
     onChange("analise_camera_termal", result);
