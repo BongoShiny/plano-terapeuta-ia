@@ -23,24 +23,45 @@ function makePara(runs, { align = null, spaceBefore = 0, spaceAfter = 120 } = {}
 }
 
 function makeHeading(text, level = 1) {
-  const size = level === 1 ? 28 : 22;
+  const size = level === 1 ? 26 : 21;
   const color = "1B3A4B";
-  // Bottom border line under heading
-  const pBdr = `<w:pBdr><w:bottom w:val="single" w:sz="6" w:space="4" w:color="D1C4B0"/></w:pBdr>`;
-  const spacing = `<w:spacing w:before="${level === 1 ? 300 : 180}" w:after="80" w:line="276" w:lineRule="auto"/>`;
+  const pBdr = `<w:pBdr><w:bottom w:val="single" w:sz="6" w:space="3" w:color="D1C4B0"/></w:pBdr>`;
+  const before = level === 1 ? 200 : 140;
+  const spacing = `<w:spacing w:before="${before}" w:after="60" w:line="260" w:lineRule="auto"/>`;
   return `<w:p><w:pPr>${spacing}${pBdr}</w:pPr>${makeRun(text, { bold: true, size, color })}</w:p>`;
 }
 
-function makeIndentedPara(runs, { spaceAfter = 120, indent = 720 } = {}) {
-  const spacing = `<w:spacing w:before="0" w:after="${spaceAfter}" w:line="276" w:lineRule="auto"/>`;
+function makeIndentedPara(runs, { spaceAfter = 80, indent = 580 } = {}) {
+  const spacing = `<w:spacing w:before="0" w:after="${spaceAfter}" w:line="260" w:lineRule="auto"/>`;
   const ind = `<w:ind w:left="${indent}"/>`;
   return `<w:p><w:pPr>${spacing}${ind}<w:jc w:val="both"/></w:pPr>${runs}</w:p>`;
 }
 
-function makeBulletPara(text) {
-  const spacing = `<w:spacing w:before="0" w:after="60" w:line="276" w:lineRule="auto"/>`;
-  const ind = `<w:ind w:left="720" w:hanging="360"/>`;
-  return `<w:p><w:pPr>${spacing}${ind}</w:pPr>${makeRun("\u2022  " + text, { size: 20 })}</w:p>`;
+function makeBulletPara(text, size = 19) {
+  const spacing = `<w:spacing w:before="0" w:after="50" w:line="260" w:lineRule="auto"/>`;
+  const ind = `<w:ind w:left="580" w:hanging="300"/>`;
+  return `<w:p><w:pPr>${spacing}${ind}</w:pPr>${makeRun("\u2022  " + text, { size })}</w:p>`;
+}
+
+function makePageBreak() {
+  return `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+}
+
+// Compact ciclo block: "• Ciclo N: Objetivo | Técnicas | Músculos"
+function makeCicloCompact(ciclo) {
+  const spacing = `<w:spacing w:before="40" w:after="30" w:line="240" w:lineRule="auto"/>`;
+  const ind = `<w:ind w:left="360" w:hanging="220"/>`;
+  const num = makeRun(`● Ciclo ${ciclo.numero}: `, { bold: true, size: 18, color: "C17F6A" });
+  const obj = makeRun(`${ciclo.objetivo || ""}`, { size: 17 });
+  const tec = ciclo.tecnicas ? makeRun(` | ${ciclo.tecnicas}`, { size: 17, color: "444444" }) : "";
+  const mus = ciclo.musculos ? makeRun(` | ${ciclo.musculos}`, { size: 17, color: "666666" }) : "";
+  return `<w:p><w:pPr>${spacing}${ind}<w:jc w:val="both"/></w:pPr>${num}${obj}${tec}${mus}</w:p>`;
+}
+
+// Truncate text to max chars
+function trunc(text, max) {
+  if (!text) return "";
+  return text.length > max ? text.slice(0, max).trimEnd() + "..." : text;
 }
 
 function makeTable(headers, rows) {
