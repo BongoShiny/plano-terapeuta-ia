@@ -149,50 +149,64 @@ export default function PlanDocument({ plan, patientData }) {
     </div>
   );
 
+  // Compact ciclo row
+  function CicloCompact({ ciclo }) {
+    return (
+      <div style={{ display: "flex", gap: 6, marginBottom: 5, fontSize: 11.5, lineHeight: 1.5 }}>
+        <span style={{ color: "#C17F6A", fontWeight: 700, flexShrink: 0 }}>● C{ciclo.numero}:</span>
+        <span><strong>{ciclo.objetivo}</strong>{ciclo.tecnicas ? ` | ${ciclo.tecnicas}` : ""}{ciclo.musculos ? ` | ${ciclo.musculos}` : ""}</span>
+      </div>
+    );
+  }
+
+  const hasPostural = planData?.foto_postural_1 || planData?.foto_postural_2 || planData?.avaliacao_postural;
+  const hasThermal = safeArray(planData?.fotos_camera_termal).length > 0 || planData?.analise_camera_termal;
+
   return (
     <div style={{ fontFamily: "'Arial', 'Helvetica', sans-serif", color: "#222", lineHeight: 1.5 }}>
 
-      {/* ============ PAGE 1 ============ */}
+      {/* ============ PAGE 1: Info + Resumos ============ */}
       <PageWrapper id="plan-page-1">
-        <div style={{ marginBottom: 14 }}>
-          <div style={{ fontSize: 12, lineHeight: 1.4 }}>
-            <span style={{ fontWeight: 700 }}>Paciente: </span>{plan.patient_nome}<br />
-            <span style={{ fontWeight: 700 }}>Sexo: </span>{patientData?.sexo || "–"}<br />
-            <span style={{ fontWeight: 700 }}>Telefone: </span>{plan.patient_telefone}<br />
-            <span style={{ fontWeight: 700 }}>Terapia Especial: </span>{plan.terapia_especial}
+        <div style={{ marginBottom: 10 }}>
+          <div style={{ fontSize: 11.5, lineHeight: 1.5 }}>
+            <span style={{ fontWeight: 700 }}>Paciente: </span>{plan.patient_nome} &nbsp;|&nbsp;
+            <span style={{ fontWeight: 700 }}>Sexo: </span>{patientData?.sexo || "–"} &nbsp;|&nbsp;
+            <span style={{ fontWeight: 700 }}>Telefone: </span>{plan.patient_telefone} &nbsp;|&nbsp;
+            <span style={{ fontWeight: 700 }}>Terapia: </span>{plan.terapia_especial}
           </div>
         </div>
-
         <Divider />
 
-        <div style={{ marginBottom: 14 }}>
-          <SectionTitle>Resumo das Queixas, Dores e Áreas Afetadas</SectionTitle>
-          <p style={{ fontSize: 12.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
-            {planData?.resumo_queixas || patientData?.queixas_principais || "–"}
-          </p>
-        </div>
+        {planData?.resumo_queixas && (
+          <div style={{ marginBottom: 10 }}>
+            <SectionTitle>Resumo das Queixas e Áreas Afetadas</SectionTitle>
+            <p style={{ fontSize: 11.5, lineHeight: 1.6, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
+              {planData.resumo_queixas.substring(0, 400)}
+            </p>
+          </div>
+        )}
 
-        {planData?.resultado_camera_termal && (
+        {(planData?.resultado_camera_termal || planData?.analise_camera_termal) && (
           <>
-            <div style={{ marginBottom: 14 }}>
-              <SectionTitle>Resultado da Avaliação com a câmera termal:</SectionTitle>
-              <p style={{ fontSize: 12.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
-                {planData.resultado_camera_termal}
+            <Divider />
+            <div style={{ marginBottom: 10 }}>
+              <SectionTitle>Resultado da Câmera Termal</SectionTitle>
+              <p style={{ fontSize: 11.5, lineHeight: 1.6, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
+                {(planData.resultado_camera_termal || planData.analise_camera_termal || "").substring(0, 350)}
               </p>
             </div>
-            <Divider />
           </>
         )}
 
         {safeArray(planData?.objetivos_tratamento).length > 0 && (
           <>
             <Divider />
-            <div style={{ marginBottom: 14 }}>
+            <div style={{ marginBottom: 10 }}>
               <SectionTitle>Objetivos do Tratamento</SectionTitle>
               <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                {safeArray(planData?.objetivos_tratamento).map((obj, i) => (
-                  <li key={i} style={{ display: "flex", gap: 8, fontSize: 12.5, marginBottom: 5, lineHeight: 1.5 }}>
-                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#1B3A4B", flexShrink: 0, marginTop: 4 }} />
+                {safeArray(planData.objetivos_tratamento).slice(0, 5).map((obj, i) => (
+                  <li key={i} style={{ display: "flex", gap: 6, fontSize: 11.5, marginBottom: 3, lineHeight: 1.5 }}>
+                    <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#1B3A4B", flexShrink: 0, marginTop: 5 }} />
                     <span>{obj}</span>
                   </li>
                 ))}
@@ -201,130 +215,141 @@ export default function PlanDocument({ plan, patientData }) {
           </>
         )}
 
-        <Divider />
-
         {planData?.objetivo_geral && (
           <>
-            <div style={{ marginBottom: 14 }}>
-              <SectionTitle>Objetivo Geral do Tratamento</SectionTitle>
-              <p style={{ fontSize: 12.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
-                {planData.objetivo_geral}
+            <Divider />
+            <div style={{ marginBottom: 10 }}>
+              <SectionTitle>Objetivo Geral</SectionTitle>
+              <p style={{ fontSize: 11.5, lineHeight: 1.6, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
+                {planData.objetivo_geral.substring(0, 300)}
               </p>
             </div>
-            <Divider />
           </>
         )}
 
         {planData?.explicacao_terapia && (
-          <div style={{ marginBottom: 14 }}>
-            <SectionTitle>Explicação da Terapia Especial</SectionTitle>
-            <p style={{ fontSize: 12.5, lineHeight: 1.7, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
-              {planData.explicacao_terapia}
-            </p>
-          </div>
+          <>
+            <Divider />
+            <div style={{ marginBottom: 10 }}>
+              <SectionTitle>Explicação da Terapia Especial</SectionTitle>
+              <p style={{ fontSize: 11.5, lineHeight: 1.6, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
+                {planData.explicacao_terapia.substring(0, 300)}
+              </p>
+            </div>
+          </>
         )}
       </PageWrapper>
 
-      {/* ============ PAGE 2+ - Etapas ============ */}
-      {etapas.map((etapa, ei) => {
-        const isLast = ei === etapas.length - 1;
-        return (
-          <PageWrapper key={ei} id={`plan-page-etapa-${ei + 1}`}>
-            <div style={{ textAlign: "center", marginBottom: 12 }}>
-              <span style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B" }}>
+      {/* ============ PAGE 2: Etapas 1 + 2 ============ */}
+      {etapas.length > 0 && (
+        <PageWrapper id="plan-page-etapas-12">
+          {etapas.slice(0, 2).map((etapa, ei) => (
+            <div key={ei} style={{ marginBottom: 18 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>
                 Etapa {etapa.numero}: {etapa.nome}
-              </span>
-            </div>
-
-            <div style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: 12.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Objetivo:</div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6, textTransform: "uppercase", paddingLeft: 16 }}>
-                {etapa.objetivo_etapa}
               </div>
-            </div>
-
-            <Divider />
-
-            <div style={{ marginBottom: 6 }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>Intervenções</div>
-              {safeArray(etapa.ciclos).map((ciclo, ci) => (
-                <CicloBlock key={ci} ciclo={ciclo} />
-              ))}
-            </div>
-
-            {isLast && planData?.resumo_final && (
-              <>
-                <Divider />
-                <div style={{ marginBottom: 16 }}>
-                  <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
-                  <p style={{ fontSize: 12.5, lineHeight: 1.8, margin: 0, paddingLeft: 8, textAlign: "justify" }}>
-                    {planData.resumo_final}
-                  </p>
+              {etapa.objetivo_etapa && (
+                <div style={{ fontSize: 11.5, color: "#444", marginBottom: 6, paddingLeft: 8 }}>
+                  <strong>Objetivo:</strong> {etapa.objetivo_etapa.substring(0, 180)}
                 </div>
-              </>
-            )}
-          </PageWrapper>
-        );
-      })}
-
-      {/* ============ PAGE FOTOS POSTURAIS ============ */}
-      {(planData?.foto_postural_1 || planData?.foto_postural_2) && (
-        <PageWrapper id="plan-page-fotos-posturais">
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 10, textAlign: "center" }}>
-            Fotos da Avaliação Postural
-          </div>
-          <Divider />
-          <div style={{ display: "flex", gap: 20, marginTop: 16 }}>
-            {planData?.foto_postural_1 && (
-              <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
-                <p style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", margin: 0 }}>Vista Frontal</p>
-                <img src={planData.foto_postural_1} alt="Foto Postural 1" style={{ width: "100%", maxHeight: "160mm", borderRadius: 8, objectFit: "contain", display: "block" }} />
-              </div>
-            )}
-            {planData?.foto_postural_2 && (
-              <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
-                <p style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", margin: 0 }}>Vista Lateral</p>
-                <img src={planData.foto_postural_2} alt="Foto Postural 2" style={{ width: "100%", maxHeight: "160mm", borderRadius: 8, objectFit: "contain", display: "block" }} />
-              </div>
-            )}
-          </div>
+              )}
+              <div style={{ fontSize: 11.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Intervenções:</div>
+              {safeArray(etapa.ciclos).map((ciclo, ci) => (
+                <CicloCompact key={ci} ciclo={ciclo} />
+              ))}
+              {ei === 0 && <Divider />}
+            </div>
+          ))}
         </PageWrapper>
       )}
 
-      {/* ============ PAGE AVALIAÇÃO POSTURAL ============ */}
-      {planData?.avaliacao_postural && (
-        <PageWrapper id="plan-page-avaliacao-postural">
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 10, textAlign: "center" }}>
+      {/* ============ PAGE 3: Etapa 3 + Resumo Final ============ */}
+      {etapas.length > 2 && (
+        <PageWrapper id="plan-page-etapa-3">
+          <div style={{ marginBottom: 18 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>
+              Etapa {etapas[2].numero}: {etapas[2].nome}
+            </div>
+            {etapas[2].objetivo_etapa && (
+              <div style={{ fontSize: 11.5, color: "#444", marginBottom: 6, paddingLeft: 8 }}>
+                <strong>Objetivo:</strong> {etapas[2].objetivo_etapa.substring(0, 180)}
+              </div>
+            )}
+            <div style={{ fontSize: 11.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Intervenções:</div>
+            {safeArray(etapas[2].ciclos).map((ciclo, ci) => (
+              <CicloCompact key={ci} ciclo={ciclo} />
+            ))}
+          </div>
+
+          {planData?.resumo_final && (
+            <>
+              <Divider />
+              <div>
+                <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
+                <p style={{ fontSize: 11.5, lineHeight: 1.6, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
+                  {planData.resumo_final.substring(0, 500)}
+                </p>
+              </div>
+            </>
+          )}
+        </PageWrapper>
+      )}
+
+      {/* ============ PAGE 4: Fotos Posturais + Avaliação Postural ============ */}
+      {hasPostural && (
+        <PageWrapper id="plan-page-postural">
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8, textAlign: "center" }}>
             Avaliação Postural
           </div>
           <Divider />
-          <p style={{ fontSize: 11, lineHeight: 1.8, margin: 0, textAlign: "justify", whiteSpace: "pre-wrap", color: "#222" }}>
-            {planData.avaliacao_postural}
-          </p>
+          {(planData?.foto_postural_1 || planData?.foto_postural_2) && (
+            <div style={{ display: "flex", gap: 12, marginBottom: 10 }}>
+              {planData?.foto_postural_1 && (
+                <div style={{ flex: 1, textAlign: "center" }}>
+                  <p style={{ fontSize: 10, fontWeight: 700, color: "#1B3A4B", margin: "0 0 4px 0" }}>Vista Frontal</p>
+                  <img src={planData.foto_postural_1} alt="Postural 1" style={{ width: "100%", maxHeight: "90mm", borderRadius: 6, objectFit: "contain" }} />
+                </div>
+              )}
+              {planData?.foto_postural_2 && (
+                <div style={{ flex: 1, textAlign: "center" }}>
+                  <p style={{ fontSize: 10, fontWeight: 700, color: "#1B3A4B", margin: "0 0 4px 0" }}>Vista Lateral</p>
+                  <img src={planData.foto_postural_2} alt="Postural 2" style={{ width: "100%", maxHeight: "90mm", borderRadius: 6, objectFit: "contain" }} />
+                </div>
+              )}
+            </div>
+          )}
+          {planData?.avaliacao_postural && (
+            <>
+              <Divider />
+              <p style={{ fontSize: 10.5, lineHeight: 1.7, margin: 0, textAlign: "justify", whiteSpace: "pre-wrap", color: "#222" }}>
+                {planData.avaliacao_postural.substring(0, 1200)}
+              </p>
+            </>
+          )}
         </PageWrapper>
       )}
 
-      {/* ============ PAGE CÂMERA TERMAL - FOTOS ============ */}
+      {/* ============ PAGE 5: Câmera Termal - Fotos ============ */}
       {safeArray(planData?.fotos_camera_termal).length > 0 && (
-        <PageWrapper id="plan-page-termal">
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 16, textAlign: "center" }}>
-            Avaliação com Câmera Termal
+        <PageWrapper id="plan-page-termal-fotos">
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8, textAlign: "center" }}>
+            Fotos da Câmera Termal
           </div>
           <Divider />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginTop: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10, marginTop: 10 }}>
             {safeArray(planData.fotos_camera_termal).map((url, i) => (
-              <div key={i} style={{ borderRadius: 8, overflow: "hidden", border: "1px solid #E5E7EB" }}>
-                <img src={url} alt={`Câmera Termal ${i + 1}`} style={{ width: "100%", display: "block", objectFit: "cover", height: 180 }} />
+              <div key={i} style={{ borderRadius: 6, overflow: "hidden", border: "1px solid #E5E7EB" }}>
+                <img src={url} alt={`Termal ${i + 1}`} style={{ width: "100%", display: "block", objectFit: "cover", height: 160 }} />
               </div>
             ))}
           </div>
         </PageWrapper>
       )}
 
-      {/* ============ PAGE CÂMERA TERMAL - ANÁLISE ============ */}
+      {/* ============ PAGE 6: Análise Câmera Termal ============ */}
       {(planData?.analise_camera_termal || planData?.resultado_camera_termal) && (
         <PageWrapper id="plan-page-termal-analise">
-          <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 10, textAlign: "center" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8, textAlign: "center" }}>
             Análise da Câmera Termal
           </div>
           <Divider />
