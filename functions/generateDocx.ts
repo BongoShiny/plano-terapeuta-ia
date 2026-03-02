@@ -196,6 +196,12 @@ Deno.serve(async (req) => {
     if (!plans.length) return Response.json({ error: 'Plan not found' }, { status: 404 });
     const plan = plans[0];
 
+    let patientData = null;
+    if (plan.patient_id) {
+      const patients = await base44.entities.Patient.filter({ id: plan.patient_id });
+      if (patients.length) patientData = patients[0];
+    }
+
     let planData = null;
     if (plan.plano_completo) {
       try {
