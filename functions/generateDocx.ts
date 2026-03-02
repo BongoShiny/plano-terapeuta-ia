@@ -23,9 +23,24 @@ function makePara(runs, { align = null, spaceBefore = 0, spaceAfter = 120 } = {}
 }
 
 function makeHeading(text, level = 1) {
-  const size = level === 1 ? 28 : 24;
+  const size = level === 1 ? 28 : 22;
   const color = "1B3A4B";
-  return makePara(makeRun(text, { bold: true, size, color }), { spaceBefore: 200, spaceAfter: 100 });
+  // Bottom border line under heading
+  const pBdr = `<w:pBdr><w:bottom w:val="single" w:sz="6" w:space="4" w:color="D1C4B0"/></w:pBdr>`;
+  const spacing = `<w:spacing w:before="${level === 1 ? 300 : 180}" w:after="80" w:line="276" w:lineRule="auto"/>`;
+  return `<w:p><w:pPr>${spacing}${pBdr}</w:pPr>${makeRun(text, { bold: true, size, color })}</w:p>`;
+}
+
+function makeIndentedPara(runs, { spaceAfter = 120, indent = 720 } = {}) {
+  const spacing = `<w:spacing w:before="0" w:after="${spaceAfter}" w:line="276" w:lineRule="auto"/>`;
+  const ind = `<w:ind w:left="${indent}"/>`;
+  return `<w:p><w:pPr>${spacing}${ind}<w:jc w:val="both"/></w:pPr>${runs}</w:p>`;
+}
+
+function makeBulletPara(text) {
+  const spacing = `<w:spacing w:before="0" w:after="60" w:line="276" w:lineRule="auto"/>`;
+  const ind = `<w:ind w:left="720" w:hanging="360"/>`;
+  return `<w:p><w:pPr>${spacing}${ind}</w:pPr>${makeRun("\u2022  " + text, { size: 20 })}</w:p>`;
 }
 
 function makeTable(headers, rows) {
