@@ -235,111 +235,127 @@ Deno.serve(async (req) => {
     const safeArr = (v) => Array.isArray(v) ? v : [];
     const parts = [];
 
-    // Header title with bullet dot
+    // Helper: render a single paragraph (first para only, truncated)
+    function renderSinglePara(text, maxChars = 480) {
+      const firstPara = text.split(/\n+/).find(p => p.trim()) || "";
+      const truncated = trunc(firstPara, maxChars);
+      const segs = truncated.split(/(\*\*[^*]+\*\*)/g);
+      const runs = segs.map(seg => {
+        if (seg.startsWith("**") && seg.endsWith("**")) return makeRun(seg.slice(2, -2), { bold: true, size: 19 });
+        return makeRun(seg, { size: 19 });
+      }).join("");
+      parts.push(makeIndentedPara(runs, { spaceAfter: 80, indent: 480 }));
+    }
+
+    // ── PAGE 1: Info + Resumo + Câmera + Objetivos + Objetivo Geral + Explicação ──
+    // Title
     parts.push(makePara(
-      makeRun("● ", { bold: true, size: 26, color: "C17F6A" }) +
-      makeRun("PLANO TERAPÊUTICO – VIBE TERAPIAS", { bold: true, size: 26, color: "1B3A4B" }),
-      { spaceBefore: 0, spaceAfter: 160 }
+      makeRun("● ", { bold: true, size: 24, color: "C17F6A" }) +
+      makeRun("PLANO TERAPÊUTICO – VIBE TERAPIAS", { bold: true, size: 24, color: "1B3A4B" }),
+      { spaceBefore: 0, spaceAfter: 120 }
     ));
 
-    // Patient info block (bold labels + normal values)
-    const patientInfoRows = [
+    // Patient info
+    const infoRows = [
       ["Paciente: ", plan.patient_nome || ""],
       ["Sexo: ", patientData?.sexo || ""],
       ["Telefone: ", plan.patient_telefone || ""],
       ["Terapia Especial: ", plan.terapia_especial || ""],
     ];
-    for (const [label, val] of patientInfoRows) {
-      parts.push(makePara(makeRun(label, { bold: true, size: 20 }) + makeRun(val, { size: 20 }), { spaceAfter: 40 }));
+    for (const [label, val] of infoRows) {
+      parts.push(makePara(makeRun(label, { bold: true, size: 19 }) + makeRun(val, { size: 19 }), { spaceAfter: 30 }));
     }
-    parts.push(makePara("", { spaceAfter: 80 }));
-
-    // Helper: render body text paragraphs with [ALERTA] support, indented
-    function renderBodyParas(text) {
-      const paras = text.split(/\n+/).filter(p => p.trim());
-      for (const p of paras) {
-        const segs = p.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\])/g);
-        const runs = segs.map(seg => {
-          if (seg.startsWith("[ALERTA]")) {
-            const content = seg.replace(/^\[ALERTA\]/, "").replace(/\[\/ALERTA\]$/, "");
-            return makeRun(content, { bold: true, size: 20, color: "7B2D00" });
-          }
-          // Handle **bold** markdown inline
-          const boldParts = seg.split(/(\*\*[^*]+\*\*)/g);
-          return boldParts.map(bp => {
-            if (bp.startsWith("**") && bp.endsWith("**")) {
-              return makeRun(bp.slice(2, -2), { bold: true, size: 20 });
-            }
-            return makeRun(bp, { size: 20 });
-          }).join("");
-        }).join("");
-        if (runs.trim() !== "" || runs !== "") {
-          parts.push(makeIndentedPara(runs, { spaceAfter: 100 }));
-        }
-      }
-    }
+    parts.push(makePara("", { spaceAfter: 40 }));
 
     if (planData) {
       if (planData.resumo_queixas) {
         parts.push(makeHeading("Resumo das Queixas, Dores e Áreas Afetadas", 2));
-        renderBodyParas(planData.resumo_queixas);
+        renderSinglePara(planData.resumo_queixas, 520);
       }
 
-      if (planData.resultado_camera_termal) {
+      const termalText = planData.resultado_camera_termal || planData.analise_camera_termal;
+      if (termalText) {
         parts.push(makeHeading("Resultado da Avaliação com a câmera termal:", 2));
-        renderBodyParas(planData.resultado_camera_termal);
-      }
-
-      if (planData.analise_camera_termal && !planData.resultado_camera_termal) {
-        parts.push(makeHeading("Resultado da Avaliação com a câmera termal:", 2));
-        renderBodyParas(planData.analise_camera_termal);
+        renderSinglePara(termalText, 480);
       }
 
       if (safeArr(planData.objetivos_tratamento).length) {
         parts.push(makeHeading("Objetivos do Tratamento", 2));
         for (const obj of safeArr(planData.objetivos_tratamento)) {
-          parts.push(makeBulletPara(obj));
+          parts.push(makeBulletPara(trunc(obj, 120), 19));
         }
-        parts.push(makePara("", { spaceAfter: 60 }));
+        parts.push(makePara("", { spaceAfter: 40 }));
       }
 
       if (planData.objetivo_geral) {
         parts.push(makeHeading("Objetivo Geral do Tratamento", 2));
-        renderBodyParas(planData.objetivo_geral);
+        renderSinglePara(planData.objetivo_geral, 400);
       }
 
       if (planData.explicacao_terapia) {
         parts.push(makeHeading("Explicação da Terapia Especial", 2));
-        renderBodyParas(planData.explicacao_terapia);
+        renderSinglePara(planData.explicacao_terapia, 420);
       }
 
-      parts.push(makeHeading("PLANO DE TRATAMENTO E FASES INTEGRADAS", 1));
+      // ── PAGE 2: Etapa 1 + Etapa 2 (compact) ──
+      const etapas = safeArr(planData.etapas);
+      if (etapas.length > 0) {
+        parts.push(makePageBreak());
 
-      for (const etapa of safeArr(planData.etapas)) {
-        parts.push(makePara(makeRun(`Etapa ${etapa.numero}: ${etapa.nome}`, { bold: true, size: 24, color: "1B3A4B" }), { spaceBefore: 240, spaceAfter: 120 }));
-        if (etapa.objetivo_etapa) {
-          parts.push(makePara(makeRun(etapa.objetivo_etapa, { bold: true, size: 20 }), { spaceAfter: 140 }));
-        }
-        const ciclos = safeArr(etapa.ciclos);
-        if (ciclos.length) {
-          parts.push(makeTable(
-            ["Ciclo", "Objetivo", "Técnicas", "Músculos"],
-            ciclos.map(c => [`Ciclo ${c.numero}`, c.objetivo || "", c.tecnicas || "", c.musculos || ""])
-          ));
-          parts.push(makePara("", { spaceAfter: 200 }));
-        }
-      }
+        // Etapas 1 and 2 on same page
+        const etapas12 = etapas.slice(0, 2);
+        for (const etapa of etapas12) {
+          const etapaSpacing = `<w:spacing w:before="100" w:after="40" w:line="240" w:lineRule="auto"/>`;
+          parts.push(`<w:p><w:pPr>${etapaSpacing}</w:pPr>${makeRun(`Etapa ${etapa.numero}: ${etapa.nome}`, { bold: true, size: 21, color: "1B3A4B" })}</w:p>`);
 
-      if (planData.resumo_final) {
-        parts.push(makeHeading("Resumo do Plano Terapêutico", 2));
-        renderBodyParas(planData.resumo_final);
+          if (etapa.objetivo_etapa) {
+            const objSpacing = `<w:spacing w:before="20" w:after="30" w:line="240" w:lineRule="auto"/>`;
+            const ind = `<w:ind w:left="300"/>`;
+            parts.push(`<w:p><w:pPr>${objSpacing}${ind}</w:pPr>${makeRun("Objetivo: ", { bold: true, size: 18, color: "1B3A4B" })}${makeRun(trunc(etapa.objetivo_etapa, 200), { bold: true, size: 17 })}</w:p>`);
+          }
+
+          const cicloLbl = `<w:spacing w:before="30" w:after="20" w:line="240" w:lineRule="auto"/>`;
+          parts.push(`<w:p><w:pPr>${cicloLbl}</w:pPr>${makeRun("Intervenções", { bold: true, size: 19, color: "1B3A4B" })}</w:p>`);
+
+          for (const ciclo of safeArr(etapa.ciclos)) {
+            parts.push(makeCicloCompact(ciclo));
+          }
+          parts.push(makePara("", { spaceAfter: 60 }));
+        }
+
+        // ── PAGE 3: Etapa 3 (compact) + Resumo + Photos ──
+        if (etapas.length > 2) {
+          parts.push(makePageBreak());
+
+          const etapa3 = etapas[2];
+          const etapaSpacing = `<w:spacing w:before="80" w:after="40" w:line="240" w:lineRule="auto"/>`;
+          parts.push(`<w:p><w:pPr>${etapaSpacing}</w:pPr>${makeRun(`Etapa ${etapa3.numero}: ${etapa3.nome}`, { bold: true, size: 21, color: "1B3A4B" })}</w:p>`);
+
+          if (etapa3.objetivo_etapa) {
+            const objSpacing = `<w:spacing w:before="20" w:after="30" w:line="240" w:lineRule="auto"/>`;
+            const ind = `<w:ind w:left="300"/>`;
+            parts.push(`<w:p><w:pPr>${objSpacing}${ind}</w:pPr>${makeRun("Objetivo: ", { bold: true, size: 18, color: "1B3A4B" })}${makeRun(trunc(etapa3.objetivo_etapa, 200), { bold: true, size: 17 })}</w:p>`);
+          }
+
+          const cicloLbl = `<w:spacing w:before="30" w:after="20" w:line="240" w:lineRule="auto"/>`;
+          parts.push(`<w:p><w:pPr>${cicloLbl}</w:pPr>${makeRun("Intervenções", { bold: true, size: 19, color: "1B3A4B" })}</w:p>`);
+
+          for (const ciclo of safeArr(etapa3.ciclos)) {
+            parts.push(makeCicloCompact(ciclo));
+          }
+
+          if (planData.resumo_final) {
+            parts.push(makePara("", { spaceAfter: 60 }));
+            const pBdr = `<w:pBdr><w:bottom w:val="single" w:sz="6" w:space="3" w:color="D1C4B0"/></w:pBdr>`;
+            const hSpacing = `<w:spacing w:before="120" w:after="60" w:line="240" w:lineRule="auto"/>`;
+            parts.push(`<w:p><w:pPr>${hSpacing}${pBdr}</w:pPr>${makeRun("Resumo do Plano Terapêutico", { bold: true, size: 21, color: "1B3A4B" })}</w:p>`);
+            renderSinglePara(planData.resumo_final, 420);
+          }
+        }
       }
     } else if (plan.plano_completo) {
-      parts.push(makePara(makeRun(plan.plano_completo, { size: 20 })));
+      parts.push(makePara(makeRun(plan.plano_completo, { size: 19 })));
     }
-
-    parts.push(makePara("", { spaceBefore: 300 }));
-    parts.push(makePara(makeRun("LONDRINA/PR – R. Alvarenga Peixoto, 26  |  SÃO PAULO/SP – Av. Rouxinol, 1041  |  Av. Paulista, 1337", { size: 16, color: "777777" }), { align: "center" }));
 
     const docXml = buildDocXml(parts);
 
