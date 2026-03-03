@@ -95,9 +95,9 @@ function ThermalPreview({ text }) {
             </div>
           )}
           {section.content.map((line, j) => (
-            <div key={j} style={{ display: "flex", gap: 8, marginBottom: 4, paddingLeft: section.title ? 15 : 0, alignItems: "flex-start" }}>
-              {!section.title && <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />}
-              <span style={{ fontSize: 12, color: "#374151", lineHeight: 1.7 }}>{line}</span>
+            <div key={j} style={{ display: "flex", gap: 8, marginBottom: 4, alignItems: "flex-start" }}>
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
+              <span style={{ fontSize: 12, color: "#374151", lineHeight: 1.7, fontWeight: j === 0 && !section.title ? 700 : 400 }}>{line}</span>
             </div>
           ))}
         </div>
