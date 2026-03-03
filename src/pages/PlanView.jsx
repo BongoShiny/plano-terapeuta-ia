@@ -185,6 +185,16 @@ export default function PlanView() {
           )}
 
           <button
+            onClick={exportPdf}
+            disabled={exportingPdf}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border"
+            style={{ color: "#C17F6A", borderColor: "#C17F6A", background: "white" }}
+          >
+            {exportingPdf ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileDown className="w-3.5 h-3.5" />}
+            <span className="hidden sm:inline">{exportingPdf ? "Gerando PDF..." : "Baixar PDF"}</span>
+          </button>
+
+          <button
             onClick={downloadDocx}
             disabled={downloading}
             className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border"
