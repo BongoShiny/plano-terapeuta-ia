@@ -72,13 +72,16 @@ function ThermalAnalysisText({ text }) {
   if (!text) return null;
 
   const sections = [
-  { title: "Análises termográficas gerais", pattern: /an[aá]lises? termogr[aá]ficos? gerais/i },
+  { title: null, pattern: /an[aá]lises? termogr[aá]ficos? gerais/i },
   { title: null, pattern: /laudo termogr[aá]fico cl[ií]nico/i },
   { title: "Região cervical", pattern: /regi[aã]o cervical/i },
   { title: "Região lombar", pattern: /regi[aã]o lombar/i },
   { title: "Região craniana", pattern: /regi[aã]o craniana/i },
+  { title: "Região torácica", pattern: /regi[aã]o tor[aá]cica/i },
+  { title: "Região dos ombros", pattern: /regi[aã]o dos ombros/i },
+  { title: "Região do quadril e glúteos", pattern: /regi[aã]o do quadril/i },
+  { title: "Região abdominal", pattern: /regi[aã]o abdominal/i },
   { title: "Conclusão clínica", pattern: /conclus[aã]o cl[ií]nica/i }];
-
 
   const lines = text.split(/\n+/).map((l) => l.trim()).filter((l) => l.length > 0);
   const structured = [];
@@ -90,7 +93,6 @@ function ThermalAnalysisText({ text }) {
 
     if (matchedSection) {
       if (matchedSection.title === null) {
-        // Skip this line entirely (e.g. "Laudo Termográfico Clínico")
         continue;
       }
       if (currentSection && currentContent.length > 0) {
@@ -100,17 +102,16 @@ function ThermalAnalysisText({ text }) {
       currentContent = [];
     } else if (line.length > 0) {
       if (!currentSection) {
-        currentSection = "Análises termográficas gerais";
+        currentSection = null;
       }
       currentContent.push(line);
     }
   }
 
-  if (currentSection && currentContent.length > 0) {
+  if (currentContent.length > 0) {
     structured.push({ title: currentSection, content: currentContent });
   }
 
-  // If no sections found, show all text as paragraphs
   if (structured.length === 0) {
     return (
       <div style={{ fontSize: 13, lineHeight: 1.9, color: "#222", textAlign: "justify" }}>
@@ -120,38 +121,66 @@ function ThermalAnalysisText({ text }) {
           </p>
         )}
       </div>);
-
   }
 
   return (
     <div style={{ fontSize: 13, lineHeight: 1.9, color: "#222" }}>
       {structured.map((section, si) =>
-      <div key={si} style={{ marginBottom: 10 }}>
-          <div style={{ display: "flex", gap: 8, marginBottom: 8, alignItems: "flex-start" }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
-            <span style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B" }}>{section.title}</span>
-          </div>
+      <div key={si} style={{ marginBottom: 14 }}>
+          {section.title &&
+            <div style={{ display: "flex", gap: 8, marginBottom: 8, alignItems: "flex-start" }}>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
+              <span style={{ fontSize: 13, fontWeight: 800, color: "#1B3A4B" }}>{section.title}</span>
+            </div>
+          }
           <div style={{ paddingLeft: 0 }}>
             {section.content.map((line, li) => {
-            const isFirstContent = li === 0;
+            // Split line into normal text and alert parts
+            const alertParts = line.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\])/g);
+            const hasAlert = alertParts.some(p => p.startsWith("[ALERTA]"));
+
+            if (hasAlert) {
+              return (
+                <div key={li}>
+                  {alertParts.map((part, pi) => {
+                    if (part.startsWith("[ALERTA]")) {
+                      return (
+                        <div key={pi} style={{ display: "flex", gap: 8, marginBottom: 6, marginTop: 6, alignItems: "flex-start" }}>
+                          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
+                          <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, textAlign: "justify" }}>
+                            {renderInlineText(part)}
+                          </p>
+                        </div>
+                      );
+                    }
+                    if (part.trim()) {
+                      return (
+                        <div key={pi} style={{ display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start" }}>
+                          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
+                          <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, textAlign: "justify", fontWeight: 400 }}>
+                            {part}
+                          </p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
+              );
+            }
+
             return (
               <div key={li} style={{ display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start" }}>
                   <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
-                  <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, textAlign: "justify" }}>
-                    {isFirstContent ?
-                  <strong>{renderInlineText(line.replace(/\s+e\/ou\s+/g, " e "))}</strong> :
-
-                  renderInlineText(line)
-                  }
+                  <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, textAlign: "justify", fontWeight: 400 }}>
+                    {renderInlineText(line)}
                   </p>
                 </div>);
-
           })}
           </div>
         </div>
       )}
     </div>);
-
 }
 
 function PosturalBullets({ text }) {
