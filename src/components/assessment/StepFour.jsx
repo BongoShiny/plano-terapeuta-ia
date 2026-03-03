@@ -163,9 +163,9 @@ export default function StepFour({ data, onChange }) {
     const result = await base44.integrations.Core.InvokeLLM({
       prompt: `Você é um fisioterapeuta especialista em avaliação postural da clínica Vibe Terapias. Analise as fotos posturais clínicas do paciente ${data.nome} (${data.sexo}, ${data.idade} anos) com queixas em: ${(data.areas_afetadas || []).join(", ")}.
 
-Realize uma avaliação postural detalhada e profissional em português. Escreva em texto corrido, sem usar markdown, asteriscos, hashtags, travessões decorativos ou qualquer símbolo de formatação. Use apenas parágrafos e texto simples.
+  Realize uma avaliação postural concisa e profissional em português. IMPORTANTE: Mantenha o texto COMPACTO e OBJETIVO — use sentenças curtas e diretas. Escreva em texto corrido, sem usar markdown, asteriscos, hashtags, travessões decorativos ou qualquer símbolo de formatação.
 
-Estruture em: Vista Frontal (Plano Coronal) e Vista Lateral (Plano Sagital). Para cada vista analise: cabeça, cervical, ombros, coluna torácica, coluna lombar e pelve, joelhos, tornozelos e pés. Identifique desvios, assimetrias, compensações musculares e relacione com as queixas do paciente. Use linguagem profissional e acolhedora.`,
+  Estruture em: Vista Frontal (Plano Coronal) e Vista Lateral (Plano Sagital). Para cada vista, mencione apenas os achados mais relevantes: cabeça, cervical, ombros, coluna e pelve. Identifique os desvios principais, assimetrias críticas e relação com as queixas do paciente. Use linguagem profissional e concisa. O objetivo é um texto compact que sempre caiba em tamanho pequeno (S) na visualização.`,
       file_urls: fileUrls,
     });
     onChange("avaliacao_postural", result);
