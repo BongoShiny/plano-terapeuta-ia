@@ -290,7 +290,7 @@ export default function PlanDocument({ plan, patientData }) {
           <div style={{ marginBottom: 12 }}>
             <SectionTitle>Resumo das Queixas e Áreas Afetadas</SectionTitle>
             <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-              {planData.resumo_queixas.substring(0, 250)}
+              {truncateAtSentence(planData.resumo_queixas, 400)}
             </p>
           </div>
         )}
@@ -347,7 +347,7 @@ export default function PlanDocument({ plan, patientData }) {
             <div style={{ marginBottom: 12 }}>
               <SectionTitle>Objetivo Geral</SectionTitle>
               <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-                {planData.objetivo_geral.substring(0, 300)}
+                {truncateAtSentence(planData.objetivo_geral, 400)}
               </p>
             </div>
           </>
@@ -359,7 +359,7 @@ export default function PlanDocument({ plan, patientData }) {
             <div style={{ marginBottom: 12 }}>
               <SectionTitle>Explicação da Terapia Especial</SectionTitle>
               <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-                {planData.explicacao_terapia.substring(0, 300)}
+                {truncateAtSentence(planData.explicacao_terapia, 400)}
               </p>
             </div>
           </>
@@ -413,7 +413,7 @@ export default function PlanDocument({ plan, patientData }) {
               <div>
                 <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
                 <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-                  {planData.resumo_final.substring(0, 500)}
+                  {truncateAtSentence(planData.resumo_final, 600)}
                 </p>
               </div>
             </>
