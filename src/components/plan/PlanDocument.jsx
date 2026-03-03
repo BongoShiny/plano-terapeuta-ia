@@ -19,8 +19,8 @@ function SectionTitle({ children }) {
   return (
     <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 8 }}>
       {children}
-    </div>
-  );
+    </div>);
+
 }
 
 function renderInlineText(text) {
@@ -39,11 +39,11 @@ function renderInlineText(text) {
           borderLeft: "4px solid #C17F6A",
           paddingLeft: 7,
           paddingRight: 5,
-          borderRadius: 2,
+          borderRadius: 2
         }}>
           ⚠ {content}
-        </span>
-      );
+        </span>);
+
     }
     if (part.startsWith("**") && part.endsWith("**")) {
       return <strong key={i}>{part.slice(2, -2)}</strong>;
@@ -54,16 +54,16 @@ function renderInlineText(text) {
 
 function ThermalAnalysisText({ text }) {
   if (!text) return null;
-  const paragraphs = text.split(/\n+/).filter(p => p.trim());
+  const paragraphs = text.split(/\n+/).filter((p) => p.trim());
   return (
     <div style={{ fontSize: 13.5, lineHeight: 1.9, color: "#222", textAlign: "justify" }}>
-      {paragraphs.map((para, pi) => (
-        <p key={pi} style={{ margin: "0 0 10px 0" }}>
+      {paragraphs.map((para, pi) =>
+      <p key={pi} style={{ margin: "0 0 10px 0" }}>
           {renderInlineText(para)}
         </p>
-      ))}
-    </div>
-  );
+      )}
+    </div>);
+
 }
 
 function PosturalBullets({ text }) {
@@ -79,42 +79,42 @@ function PosturalBullets({ text }) {
   const lateralText = parts[1] || "";
 
   const toSentences = (str) =>
-    str
-      .split(/(?<=[.!?])\s+/)
-      .map(s => s.trim())
-      .filter(s => s.length > 10)
-      .slice(0, 4);
+  str.
+  split(/(?<=[.!?])\s+/).
+  map((s) => s.trim()).
+  filter((s) => s.length > 10).
+  slice(0, 4);
 
   const frontalSentences = toSentences(frontalText);
   const lateralSentences = toSentences(lateralText);
 
-  const BulletList = ({ sentences }) => (
-    <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-      {sentences.map((s, i) => (
-        <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 4, lineHeight: 1.5, color: "#222" }}>
+  const BulletList = ({ sentences }) =>
+  <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+      {sentences.map((s, i) =>
+    <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 4, lineHeight: 1.5, color: "#222" }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
           <span>{s}</span>
         </li>
-      ))}
-    </ul>
-  );
+    )}
+    </ul>;
+
 
   return (
     <div>
-      {frontalSentences.length > 0 && (
-        <div style={{ marginBottom: 8 }}>
+      {frontalSentences.length > 0 &&
+      <div style={{ marginBottom: 8 }}>
           <div style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Na vista frontal (plano coronal)</div>
           <BulletList sentences={frontalSentences} />
         </div>
-      )}
-      {lateralSentences.length > 0 && (
-        <div>
+      }
+      {lateralSentences.length > 0 &&
+      <div>
           <div style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Na vista lateral (plano sagital)</div>
           <BulletList sentences={lateralSentences} />
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
 
 function PosturalColumns({ text }) {
@@ -128,39 +128,39 @@ function PosturalColumns({ text }) {
   const lateralText = parts[1] || "";
 
   const toSentences = (str, limit = 3) =>
-    str
-      .split(/(?<=[.!?])\s+/)
-      .map(s => s.trim())
-      .filter(s => s.length > 10)
-      .slice(0, limit);
+  str.
+  split(/(?<=[.!?])\s+/).
+  map((s) => s.trim()).
+  filter((s) => s.length > 10).
+  slice(0, limit);
 
   const frontalSentences = toSentences(frontalText, 2);
   const lateralSentences = toSentences(lateralText, 3);
 
-  const BulletList = ({ sentences }) => (
-    <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-      {sentences.map((s, i) => (
-        <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
+  const BulletList = ({ sentences }) =>
+  <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+      {sentences.map((s, i) =>
+    <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
-          <span>{s}</span>
+          <span className="text-base font-semibold text-justify normal-case">{s}</span>
         </li>
-      ))}
-    </ul>
-  );
+    )}
+    </ul>;
+
 
   return (
     <div style={{ display: "flex", gap: 12 }}>
     <div style={{ flex: 1 }}>
-      <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>Na vista frontal (plano coronal)</div>
+      <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }} className="mx-3 rounded">Na vista frontal (plano coronal)</div>
       <BulletList sentences={frontalSentences} />
     </div>
     <div style={{ width: 1, background: "#D1C4B0", flexShrink: 0 }} />
     <div style={{ flex: 1 }}>
-      <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>Na vista lateral (plano sagital)</div>
+      <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }} className="mx-3">Na vista lateral (plano sagital)</div>
       <BulletList sentences={lateralSentences} />
     </div>
-    </div>
-  );
+    </div>);
+
 }
 
 function DiamondIcon() {
@@ -194,8 +194,8 @@ function CicloBlock({ ciclo }) {
           </p>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 export default function PlanDocument({ plan, patientData }) {
@@ -226,7 +226,7 @@ export default function PlanDocument({ plan, patientData }) {
     display: "flex",
     flexDirection: "column",
     pageBreakAfter: "always",
-    pageBreakInside: "avoid",
+    pageBreakInside: "avoid"
   };
 
   const bgStyle = {
@@ -237,7 +237,7 @@ export default function PlanDocument({ plan, patientData }) {
     height: "100%",
     objectFit: "fill",
     zIndex: 0,
-    pointerEvents: "none",
+    pointerEvents: "none"
   };
 
   const contentStyle = {
@@ -247,21 +247,21 @@ export default function PlanDocument({ plan, patientData }) {
     zIndex: 1,
     overflow: "hidden",
     maxHeight: "297mm",
-    boxSizing: "border-box",
+    boxSizing: "border-box"
   };
 
   const contentStylePage1 = {
     ...contentStyle,
-    padding: "45mm 12mm 42mm 12mm",
+    padding: "45mm 12mm 42mm 12mm"
   };
 
-  const PageWrapper = ({ children, id, isFirstPage }) => (
-    <div id={id} style={pageStyle}>
+  const PageWrapper = ({ children, id, isFirstPage }) =>
+  <div id={id} style={pageStyle}>
       <img src={BG_IMAGE_URL} alt="" style={bgStyle} />
       <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0 }} />
       <div style={isFirstPage ? contentStylePage1 : contentStyle}>{children}</div>
-    </div>
-  );
+    </div>;
+
 
   // Compact ciclo row
   function CicloCompact({ ciclo }) {
@@ -269,8 +269,8 @@ export default function PlanDocument({ plan, patientData }) {
       <div style={{ display: "flex", gap: 6, marginBottom: 6, fontSize: 13, lineHeight: 1.6 }}>
         <span style={{ color: "#C17F6A", fontWeight: 700, flexShrink: 0 }}>●</span>
         <span><strong>{ciclo.objetivo}</strong>{ciclo.tecnicas ? ` | ${ciclo.tecnicas}` : ""}{ciclo.musculos ? ` | ${ciclo.musculos}` : ""}</span>
-      </div>
-    );
+      </div>);
+
   }
 
   const hasPostural = planData?.foto_postural_1 || planData?.foto_postural_2 || planData?.avaliacao_postural;
@@ -291,63 +291,63 @@ export default function PlanDocument({ plan, patientData }) {
         </div>
         <Divider />
 
-        {planData?.resumo_queixas && (
-          <div style={{ marginBottom: 12 }}>
+        {planData?.resumo_queixas &&
+        <div style={{ marginBottom: 12 }}>
             <SectionTitle>Resumo das Queixas e Áreas Afetadas</SectionTitle>
             <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
               {truncateAtSentence(planData.resumo_queixas, 400)}
             </p>
           </div>
-        )}
+        }
 
-        {(planData?.resultado_camera_termal || planData?.analise_camera_termal) && (
-          <>
+        {(planData?.resultado_camera_termal || planData?.analise_camera_termal) &&
+        <>
             <Divider />
             <div style={{ marginBottom: 12 }}>
               <SectionTitle>Resultado da Câmera Termal</SectionTitle>
               {(() => {
-                const termalText = planData.resultado_camera_termal || planData.analise_camera_termal || "";
-                // Extract sentences and show up to 3 as bullets
-                const sentences = termalText
-                  .replace(/\n+/g, " ")
-                  .split(/(?<=[.!?])\s+/)
-                  .map(s => s.trim())
-                  .filter(s => s.length > 15)
-                  .slice(1, 4);
-                return (
-                  <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                    {sentences.map((s, i) => (
-                      <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 5, lineHeight: 1.6 }}>
+              const termalText = planData.resultado_camera_termal || planData.analise_camera_termal || "";
+              // Extract sentences and show up to 3 as bullets
+              const sentences = termalText.
+              replace(/\n+/g, " ").
+              split(/(?<=[.!?])\s+/).
+              map((s) => s.trim()).
+              filter((s) => s.length > 15).
+              slice(1, 4);
+              return (
+                <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                    {sentences.map((s, i) =>
+                  <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 5, lineHeight: 1.6 }}>
                         <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
                         <span>{s}</span>
                       </li>
-                    ))}
-                  </ul>
-                );
-              })()}
+                  )}
+                  </ul>);
+
+            })()}
             </div>
           </>
-        )}
+        }
 
-        {safeArray(planData?.objetivos_tratamento).length > 0 && (
-          <>
+        {safeArray(planData?.objetivos_tratamento).length > 0 &&
+        <>
             <Divider />
             <div style={{ marginBottom: 12 }}>
               <SectionTitle>Objetivos do Tratamento</SectionTitle>
               <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                {safeArray(planData.objetivos_tratamento).slice(0, 5).map((obj, i) => (
-                  <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 4, lineHeight: 1.6 }}>
+                {safeArray(planData.objetivos_tratamento).slice(0, 5).map((obj, i) =>
+              <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 4, lineHeight: 1.6 }}>
                     <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
                     <span>{obj}</span>
                   </li>
-                ))}
+              )}
               </ul>
             </div>
           </>
-        )}
+        }
 
-        {planData?.objetivo_geral && (
-          <>
+        {planData?.objetivo_geral &&
+        <>
             <Divider />
             <div style={{ marginBottom: 12 }}>
               <SectionTitle>Objetivo Geral</SectionTitle>
@@ -356,10 +356,10 @@ export default function PlanDocument({ plan, patientData }) {
               </p>
             </div>
           </>
-        )}
+        }
 
-        {planData?.explicacao_terapia && (
-          <>
+        {planData?.explicacao_terapia &&
+        <>
             <Divider />
             <div style={{ marginBottom: 12 }}>
               <SectionTitle>Explicação da Terapia Especial</SectionTitle>
@@ -368,23 +368,23 @@ export default function PlanDocument({ plan, patientData }) {
               </p>
             </div>
           </>
-        )}
+        }
       </PageWrapper>
 
       {/* ============ PAGE 2: Resumo das 3 Etapas (Consolidado) ============ */}
-      {etapas.length > 0 && (
-        <PageWrapper id="plan-page-etapas-resumo">
+      {etapas.length > 0 &&
+      <PageWrapper id="plan-page-etapas-resumo">
           <div style={{ marginBottom: 20 }}>
             <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 12 }}>
               Etapa 1 a 8 sessões: Adaptação Muscular
             </div>
             <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-              {safeArray(etapas[0]?.ciclos).slice(0, 4).map((ciclo, i) => (
-                <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
+              {safeArray(etapas[0]?.ciclos).slice(0, 4).map((ciclo, i) =>
+            <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
                   <span><strong>{ciclo.objetivo}</strong></span>
                 </li>
-              ))}
+            )}
             </ul>
           </div>
 
@@ -395,12 +395,12 @@ export default function PlanDocument({ plan, patientData }) {
               Etapa 9 a 16: Correção postural e melhora da mobilidade
             </div>
             <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-              {safeArray(etapas[1]?.ciclos).slice(0, 4).map((ciclo, i) => (
-                <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
+              {safeArray(etapas[1]?.ciclos).slice(0, 4).map((ciclo, i) =>
+            <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
                   <span><strong>{ciclo.objetivo}</strong></span>
                 </li>
-              ))}
+            )}
             </ul>
           </div>
 
@@ -411,83 +411,83 @@ export default function PlanDocument({ plan, patientData }) {
               Etapa 17 a 24: Dores secundárias
             </div>
             <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-              {safeArray(etapas[2]?.ciclos).slice(0, 4).map((ciclo, i) => (
-                <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
+              {safeArray(etapas[2]?.ciclos).slice(0, 4).map((ciclo, i) =>
+            <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
                   <span><strong>{ciclo.objetivo}</strong></span>
                 </li>
-              ))}
+            )}
             </ul>
           </div>
         </PageWrapper>
-      )}
+      }
 
       {/* ============ PAGE 4: Fotos Posturais + Avaliação Postural ============ */}
-      {hasPostural && (
-        <PageWrapper id="plan-page-postural">
+      {hasPostural &&
+      <PageWrapper id="plan-page-postural">
           <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 6, textAlign: "center" }}>
             Avaliação Postural
           </div>
           <Divider />
           {/* Top: images side by side */}
           <div style={{ display: "flex", gap: 10, marginBottom: 10, justifyContent: "center" }}>
-            {planData?.foto_postural_1 && (
-              <div style={{ flex: 1, textAlign: "center" }}>
+            {planData?.foto_postural_1 &&
+          <div style={{ flex: 1, textAlign: "center" }}>
                 <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Frontal</p>
                 <img src={planData.foto_postural_1} alt="Postural 1" style={{ width: "100%", height: "100mm", objectFit: "contain", borderRadius: 4 }} />
               </div>
-            )}
-            {planData?.foto_postural_2 && (
-              <div style={{ flex: 1, textAlign: "center" }}>
+          }
+            {planData?.foto_postural_2 &&
+          <div style={{ flex: 1, textAlign: "center" }}>
                 <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Lateral</p>
                 <img src={planData.foto_postural_2} alt="Postural 2" style={{ width: "100%", height: "100mm", objectFit: "contain", borderRadius: 4 }} />
               </div>
-            )}
+          }
           </div>
           <Divider />
           {/* Bottom: text side by side */}
-          {planData?.avaliacao_postural && (
-            <PosturalColumns text={planData.avaliacao_postural} />
-          )}
+          {planData?.avaliacao_postural &&
+        <PosturalColumns text={planData.avaliacao_postural} />
+        }
         </PageWrapper>
-      )}
+      }
 
       {/* ============ PAGE 5: Câmera Termal - Fotos ============ */}
-      {safeArray(planData?.fotos_camera_termal).length > 0 && (
-        <PageWrapper id="plan-page-termal-fotos">
+      {safeArray(planData?.fotos_camera_termal).length > 0 &&
+      <PageWrapper id="plan-page-termal-fotos">
           <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8, textAlign: "center" }}>
             Fotos da Câmera Termal
           </div>
           <Divider />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, marginTop: 10 }}>
-            {safeArray(planData.fotos_camera_termal).map((url, i) => (
-              <div key={i} style={{ borderRadius: 6, overflow: "hidden", border: "1px solid #E5E7EB", display: "flex", alignItems: "center", justifyContent: "center", background: "#000", height: 340 }}>
+            {safeArray(planData.fotos_camera_termal).map((url, i) =>
+          <div key={i} style={{ borderRadius: 6, overflow: "hidden", border: "1px solid #E5E7EB", display: "flex", alignItems: "center", justifyContent: "center", background: "#000", height: 340 }}>
                 <img src={url} alt={`Termal ${i + 1}`} style={{ maxWidth: "100%", maxHeight: "100%", display: "block", objectFit: "contain" }} />
               </div>
-            ))}
+          )}
           </div>
         </PageWrapper>
-      )}
+      }
 
       {/* ============ PAGE 6: Análise Câmera Termal ============ */}
-      {(planData?.analise_camera_termal || planData?.resultado_camera_termal) && (
-        <PageWrapper id="plan-page-termal-analise">
+      {(planData?.analise_camera_termal || planData?.resultado_camera_termal) &&
+      <PageWrapper id="plan-page-termal-analise">
           <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8, textAlign: "center" }}>
             Análise da Câmera Termal
           </div>
           <Divider />
           <ThermalAnalysisText text={planData.analise_camera_termal || planData.resultado_camera_termal} />
         </PageWrapper>
-      )}
+      }
 
       {/* Fallback */}
-      {!planData && plan.plano_completo && (
-        <PageWrapper id="plan-page-fallback">
+      {!planData && plan.plano_completo &&
+      <PageWrapper id="plan-page-fallback">
           <pre style={{ fontSize: 11, whiteSpace: "pre-wrap", lineHeight: 1.7, fontFamily: "Arial, sans-serif" }}>
             {plan.plano_completo}
           </pre>
         </PageWrapper>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
