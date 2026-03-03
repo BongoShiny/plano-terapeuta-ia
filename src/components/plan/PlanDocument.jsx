@@ -388,32 +388,7 @@ export default function PlanDocument({ plan, patientData }) {
           </div>
         }
 
-        {(planData?.resultado_camera_termal || planData?.analise_camera_termal) &&
-        <>
-            <Divider />
-            <div style={{ marginBottom: 12 }}>
-              <SectionTitle>Resultado da Câmera Termal</SectionTitle>
-              {(() => {
-              const termalText = planData.resultado_camera_termal || planData.analise_camera_termal || "";
-              const sentences = termalText.
-              replace(/\n+/g, " ").
-              split(/(?<=[.!?])\s+/).
-              map((s) => s.trim()).
-              filter((s) => s.length > 15);
-              return (
-                <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                    {sentences.map((s, i) =>
-                  <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 5, lineHeight: 1.6 }}>
-                        <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                        <span style={{ fontWeight: i === 0 ? 700 : 400 }}>{s}</span>
-                      </li>
-                  )}
-                  </ul>);
 
-            })()}
-            </div>
-          </>
-        }
 
         {safeArray(planData?.objetivos_tratamento).length > 0 &&
         <>
