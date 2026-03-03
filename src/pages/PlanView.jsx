@@ -66,12 +66,16 @@ export default function PlanView() {
       const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
       const pdfWidth = 210;
       const pdfHeight = 297;
+      const A4_W_PX = 794;
+      const A4_H_PX = 1123;
 
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
-        // Use fixed pixel dimensions matching A4 at 96dpi
-        const A4_W_PX = 794;
-        const A4_H_PX = 1123;
+        // Scroll element into view to ensure it's rendered
+        page.scrollIntoView({ behavior: "instant", block: "start" });
+        // Small delay to let the browser render
+        await new Promise((r) => setTimeout(r, 300));
+
         const canvas = await html2canvas(page, {
           scale: 2,
           useCORS: true,
@@ -81,6 +85,16 @@ export default function PlanView() {
           height: A4_H_PX,
           windowWidth: A4_W_PX,
           windowHeight: A4_H_PX,
+          scrollX: 0,
+          scrollY: -window.scrollY,
+          logging: false,
+          onclone: (clonedDoc) => {
+            const clonedEl = clonedDoc.getElementById(page.id);
+            if (clonedEl) {
+              clonedEl.style.display = "block";
+              clonedEl.style.visibility = "visible";
+            }
+          }
         });
         const imgData = canvas.toDataURL("image/jpeg", 0.95);
         if (i > 0) pdf.addPage();
