@@ -210,15 +210,10 @@ Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
     });
     onChange("analise_camera_termal", result);
     if (!data.resultado_camera_termal) {
-      // Filter out header lines like "Laudo Termográfico Clínico", "Análises termográficos gerais" etc.
-      const headerPatterns = [/laudo termogr/i, /an[aá]lises? termogr/i];
-      const summaryLines = result.replace(/\*\*/g, '').replace(/\[ALERTA\]/g, '').replace(/\[\/ALERTA\]/g, '')
-        .split('\n')
-        .map(l => l.trim())
-        .filter(l => l.length > 0)
-        .filter(l => !headerPatterns.some(p => p.test(l)));
-      const summaryText = summaryLines.slice(0, 2).join(' ').substring(0, 350);
-      onChange("resultado_camera_termal", summaryText);
+      const summaryResult = await base44.integrations.Core.InvokeLLM({
+        prompt: `A partir da análise termográfica abaixo, gere um resumo ULTRA CURTO com no mínimo 2 e no máximo 5 tópicos. Cada tópico deve ter no máximo 1 frase curta. Formato: cada tópico em uma linha, sem numeração, sem marcadores, sem formatação. Apenas texto simples e direto. Não inclua títulos, cabeçalhos ou conclusões.\n\nAnálise:\n${result}`,
+      });
+      onChange("resultado_camera_termal", summaryResult.trim());
     }
     if (!data.objetivos_paciente) {
       const areas = (data.areas_afetadas || []).join(", ");
