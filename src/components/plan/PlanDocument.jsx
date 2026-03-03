@@ -88,25 +88,41 @@ function ThermalAnalysisText({ text }) {
     const matchedSection = sections.find(s => s.pattern.test(line));
     
     if (matchedSection) {
-      if (currentSection) {
+      if (currentSection && currentContent.length > 0) {
         structured.push({ title: currentSection, content: currentContent });
       }
       currentSection = matchedSection.title;
       currentContent = [];
-    } else if (currentSection) {
+    } else if (line.length > 0) {
+      if (!currentSection) {
+        currentSection = "Análises termográficas gerais";
+      }
       currentContent.push(line);
     }
   }
   
-  if (currentSection) {
+  if (currentSection && currentContent.length > 0) {
     structured.push({ title: currentSection, content: currentContent });
   }
 
+  // If no sections found, show all text as paragraphs
+  if (structured.length === 0) {
+    return (
+      <div style={{ fontSize: 13, lineHeight: 1.9, color: "#222", textAlign: "justify" }}>
+        {lines.map((line, i) => (
+          <p key={i} style={{ margin: "0 0 8px 0" }}>
+            {renderInlineText(line)}
+          </p>
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div style={{ fontSize: 13.5, lineHeight: 1.9, color: "#222" }}>
+    <div style={{ fontSize: 13, lineHeight: 1.9, color: "#222" }}>
       {structured.map((section, si) => (
-        <div key={si} style={{ marginBottom: 12 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>
+        <div key={si} style={{ marginBottom: 10 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 5 }}>
             • {section.title}
           </div>
           <div style={{ paddingLeft: 12 }}>
