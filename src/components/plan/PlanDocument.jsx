@@ -24,8 +24,8 @@ function SectionTitle({ children }) {
 }
 
 function renderInlineText(text) {
-  // Split by [ALERTA]...[/ALERTA] and **bold**
-  const parts = text.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\]|\*\*[^*]+\*\*)/g);
+  // Split by [ALERTA]...[/ALERTA], [PODE_IMPACTO]...[/PODE_IMPACTO] and **bold**
+  const parts = text.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\]|\[PODE_IMPACTO\][\s\S]*?\[\/PODE_IMPACTO\]|\*\*[^*]+\*\*)/g);
   return parts.map((part, i) => {
     if (part.startsWith("[ALERTA]")) {
       const content = part.replace(/^\[ALERTA\]/, "").replace(/\[\/ALERTA\]$/, "");
@@ -43,7 +43,23 @@ function renderInlineText(text) {
         }}>
           ⚠ {content}
         </span>);
-
+    }
+    if (part.startsWith("[PODE_IMPACTO]")) {
+      const content = part.replace(/^\[PODE_IMPACTO\]/, "").replace(/\[\/PODE_IMPACTO\]$/, "");
+      return (
+        <span key={i} style={{
+          display: "inline",
+          background: "#E8F4F8",
+          color: "#1B3A4B",
+          fontWeight: 600,
+          fontSize: 13.5,
+          borderLeft: "4px solid #7A9DB0",
+          paddingLeft: 7,
+          paddingRight: 5,
+          borderRadius: 2
+        }}>
+          ℹ {content}
+        </span>);
     }
     if (part.startsWith("**") && part.endsWith("**")) {
       return <strong key={i}>{part.slice(2, -2)}</strong>;
