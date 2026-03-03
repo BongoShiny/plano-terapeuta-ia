@@ -70,23 +70,23 @@ function renderInlineText(text) {
 
 function ThermalAnalysisText({ text }) {
   if (!text) return null;
-  
-  const sections = [
-    { title: "Análises termográficas gerais", pattern: /an[aá]lises? termogr[aá]ficos? gerais/i },
-    { title: "Região cervical", pattern: /regi[aã]o cervical/i },
-    { title: "Região lombar", pattern: /regi[aã]o lombar/i },
-    { title: "Região craniana", pattern: /regi[aã]o craniana/i },
-    { title: "Conclusão clínica", pattern: /conclus[aã]o cl[ií]nica/i }
-  ];
 
-  const lines = text.split(/\n+/).map(l => l.trim()).filter(l => l.length > 0);
+  const sections = [
+  { title: "Análises termográficas gerais", pattern: /an[aá]lises? termogr[aá]ficos? gerais/i },
+  { title: "Região cervical", pattern: /regi[aã]o cervical/i },
+  { title: "Região lombar", pattern: /regi[aã]o lombar/i },
+  { title: "Região craniana", pattern: /regi[aã]o craniana/i },
+  { title: "Conclusão clínica", pattern: /conclus[aã]o cl[ií]nica/i }];
+
+
+  const lines = text.split(/\n+/).map((l) => l.trim()).filter((l) => l.length > 0);
   const structured = [];
   let currentSection = null;
   let currentContent = [];
 
   for (const line of lines) {
-    const matchedSection = sections.find(s => s.pattern.test(line));
-    
+    const matchedSection = sections.find((s) => s.pattern.test(line));
+
     if (matchedSection) {
       if (currentSection && currentContent.length > 0) {
         structured.push({ title: currentSection, content: currentContent });
@@ -100,7 +100,7 @@ function ThermalAnalysisText({ text }) {
       currentContent.push(line);
     }
   }
-  
+
   if (currentSection && currentContent.length > 0) {
     structured.push({ title: currentSection, content: currentContent });
   }
@@ -109,44 +109,44 @@ function ThermalAnalysisText({ text }) {
   if (structured.length === 0) {
     return (
       <div style={{ fontSize: 13, lineHeight: 1.9, color: "#222", textAlign: "justify" }}>
-        {lines.map((line, i) => (
-          <p key={i} style={{ margin: "0 0 8px 0" }}>
+        {lines.map((line, i) =>
+        <p key={i} style={{ margin: "0 0 8px 0" }}>
             {renderInlineText(line)}
           </p>
-        ))}
-      </div>
-    );
+        )}
+      </div>);
+
   }
 
   return (
     <div style={{ fontSize: 13, lineHeight: 1.9, color: "#222" }}>
-      {structured.map((section, si) => (
-        <div key={si} style={{ marginBottom: 10 }}>
+      {structured.map((section, si) =>
+      <div key={si} style={{ marginBottom: 10 }}>
           <div style={{ display: "flex", gap: 8, marginBottom: 8, alignItems: "flex-start" }}>
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
             <span style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B" }}>{section.title}</span>
           </div>
           <div style={{ paddingLeft: 0 }}>
             {section.content.map((line, li) => {
-              const isFirstContent = li === 0;
-              return (
-                <div key={li} style={{ display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start" }}>
+            const isFirstContent = li === 0;
+            return (
+              <div key={li} style={{ display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start" }}>
                   <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
                   <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, textAlign: "justify" }}>
-                    {isFirstContent ? (
-                      <strong>{renderInlineText(line.replace(/\s+e\/ou\s+/g, " e "))}</strong>
-                    ) : (
-                      renderInlineText(line)
-                    )}
+                    {isFirstContent ?
+                  <strong>{renderInlineText(line.replace(/\s+e\/ou\s+/g, " e "))}</strong> :
+
+                  renderInlineText(line)
+                  }
                   </p>
-                </div>
-              );
-            })}
+                </div>);
+
+          })}
           </div>
         </div>
-      ))}
-    </div>
-  );
+      )}
+    </div>);
+
 }
 
 function PosturalBullets({ text }) {
@@ -225,7 +225,7 @@ function PosturalColumns({ text }) {
       {sentences.map((s, i) =>
     <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
-          <span className="text-sm font-semibold text-justify normal-case">{s}</span>
+          <span className="text-sm font-extrabold text-justify normal-case">{s}</span>
         </li>
     )}
     </ul>;
@@ -463,7 +463,7 @@ export default function PlanDocument({ plan, patientData }) {
               {safeArray(etapas[0]?.ciclos).slice(0, 4).map((ciclo, i) =>
             <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                  <span><strong>{ciclo.objetivo}</strong></span>
+                  <span><strong className="font-extrabold">{ciclo.objetivo}</strong></span>
                 </li>
             )}
             </ul>
@@ -479,7 +479,7 @@ export default function PlanDocument({ plan, patientData }) {
               {safeArray(etapas[1]?.ciclos).slice(0, 4).map((ciclo, i) =>
             <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                  <span><strong>{ciclo.objetivo}</strong></span>
+                  <span><strong className="font-extrabold">{ciclo.objetivo}</strong></span>
                 </li>
             )}
             </ul>
@@ -495,25 +495,25 @@ export default function PlanDocument({ plan, patientData }) {
               {safeArray(etapas[2]?.ciclos).slice(0, 4).map((ciclo, i) =>
             <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                  <span><strong>{ciclo.objetivo}</strong></span>
+                  <span><strong className="font-extrabold">{ciclo.objetivo}</strong></span>
                 </li>
             )}
             </ul>
           </div>
 
           {planData?.objetivo_geral &&
-          <>
+        <>
             <Divider />
             <div style={{ marginBottom: 12 }}>
               <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>
                 Resumo do Plano Terapêutico
               </div>
-              <p style={{ fontSize: 13, lineHeight: 1.8, color: "#222", textAlign: "justify", margin: 0 }}>
+              <p style={{ fontSize: 13, lineHeight: 1.8, color: "#222", textAlign: "justify", margin: 0 }} className="font-extrabold">
                 {plan.patient_nome} receberá um plano terapêutico completo, focado no alívio das dores do(a) {(patientData?.areas_afetadas || []).slice(0, 2).join(" e ")}, relaxamento da musculatura e prevenção de novas crises. O tratamento é progressivo, dividido em três etapas bem estruturadas, garantindo resultados duradouros, mais conforto no dia a dia e melhora significativa da qualidade de vida. Fechar o plano terapêutico completo de 24 sessões é o caminho ideal para que {plan.patient_nome} viva sem dor e desfrute de uma vida plena e equilibrada.
               </p>
             </div>
           </>
-          }
+        }
         </PageWrapper>
       }
 
