@@ -282,7 +282,7 @@ export default function PlanDocument({ plan, patientData }) {
           <div style={{ marginBottom: 12 }}>
             <SectionTitle>Resumo das Queixas e Áreas Afetadas</SectionTitle>
             <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-              {planData.resumo_queixas.substring(0, 400)}
+              {planData.resumo_queixas.substring(0, 250)}
             </p>
           </div>
         )}
