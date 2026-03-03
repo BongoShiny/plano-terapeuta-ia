@@ -325,8 +325,8 @@ export default function PlanDocument({ plan, patientData }) {
           {planData?.avaliacao_postural && (
             <>
               <Divider />
-              <p style={{ fontSize: 12.5, lineHeight: 1.65, margin: 0, textAlign: "justify", whiteSpace: "pre-wrap", color: "#222" }}>
-                {planData.avaliacao_postural}
+              <p style={{ fontSize: 11.5, lineHeight: 1.55, margin: 0, textAlign: "justify", color: "#222", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 18, WebkitBoxOrient: "vertical" }}>
+                {planData.avaliacao_postural.substring(0, 900)}
               </p>
             </>
           )}
