@@ -60,23 +60,65 @@ function ThermalAnalysisText({ text }) {
 
 function PosturalBullets({ text }) {
   if (!text) return null;
-  // Split by sentences, take up to 7 meaningful ones
-  const sentences = text
+
+  // Extract frontal (coronal) observations
+  const frontalMatch = text.match(/frontal[\s\S]{0,800}?(?=lateral|sagital|$)/i);
+  const lateralMatch = text.match(/lateral[\s\S]{0,800}?(?=frontal|coronal|$)/i);
+
+  // Fallback: split all sentences evenly between the two views
+  const allSentences = text
     .replace(/\n+/g, " ")
     .split(/(?<=[.!?])\s+/)
     .map(s => s.trim())
-    .filter(s => s.length > 20)
-    .slice(0, 7);
+    .filter(s => s.length > 20);
+
+  let frontalSentences = [];
+  let lateralSentences = [];
+
+  if (frontalMatch || lateralMatch) {
+    const extractSentences = (block) =>
+      (block || "")
+        .split(/(?<=[.!?])\s+/)
+        .map(s => s.trim())
+        .filter(s => s.length > 20)
+        .slice(0, 3);
+    frontalSentences = extractSentences(frontalMatch?.[0]);
+    lateralSentences = extractSentences(lateralMatch?.[0]);
+  }
+
+  // If extraction didn't work well, split evenly
+  if (frontalSentences.length === 0 && lateralSentences.length === 0) {
+    const half = Math.ceil(allSentences.length / 2);
+    frontalSentences = allSentences.slice(0, half).slice(0, 3);
+    lateralSentences = allSentences.slice(half).slice(0, 3);
+  }
+
+  const BulletItem = ({ text }) => (
+    <li style={{ display: "flex", gap: 8, marginBottom: 5, fontSize: 13, lineHeight: 1.6, color: "#222" }}>
+      <span style={{ color: "#C17F6A", fontWeight: 700, flexShrink: 0, marginTop: 2 }}>◆</span>
+      <span>{text}</span>
+    </li>
+  );
 
   return (
-    <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-      {sentences.map((s, i) => (
-        <li key={i} style={{ display: "flex", gap: 8, marginBottom: 6, fontSize: 13.5, lineHeight: 1.6, color: "#222" }}>
-          <span style={{ color: "#C17F6A", fontWeight: 700, flexShrink: 0, marginTop: 2 }}>◆</span>
-          <span>{s}</span>
-        </li>
-      ))}
-    </ul>
+    <div style={{ display: "flex", gap: 16 }}>
+      <div style={{ flex: 1 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>
+          Vista Frontal — Plano Coronal
+        </div>
+        <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+          {frontalSentences.map((s, i) => <BulletItem key={i} text={s} />)}
+        </ul>
+      </div>
+      <div style={{ flex: 1 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>
+          Vista Lateral — Plano Sagital
+        </div>
+        <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+          {lateralSentences.map((s, i) => <BulletItem key={i} text={s} />)}
+        </ul>
+      </div>
+    </div>
   );
 }
 
