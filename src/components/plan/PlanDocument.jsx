@@ -74,7 +74,7 @@ function ThermalAnalysisText({ text }) {
   return (
     <div style={{ fontSize: 13.5, lineHeight: 1.9, color: "#222", textAlign: "justify" }}>
       {paragraphs.map((para, pi) =>
-      <p key={pi} style={{ margin: "0 0 10px 0" }} className="text-sm font-normal">
+      <p key={pi} style={{ margin: "0 0 10px 0" }} className={`text-sm ${pi === 0 ? 'font-bold' : 'font-normal'}`}>
           {renderInlineText(para)}
         </p>
       )}
