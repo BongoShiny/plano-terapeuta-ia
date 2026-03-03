@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { createPageUrl } from "@/utils";
 import PlanDocument from "../components/plan/PlanDocument";
-import { ArrowLeft, Printer, CheckCircle, Loader2, Users, FileText, Download } from "lucide-react";
+import { ArrowLeft, Printer, CheckCircle, Loader2, Users, FileText, Download, FileDown } from "lucide-react";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 
 export default function PlanView() {
   const navigate = useNavigate();
