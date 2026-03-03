@@ -250,11 +250,16 @@ export default function PlanDocument({ plan, patientData }) {
     boxSizing: "border-box",
   };
 
-  const PageWrapper = ({ children, id }) => (
+  const contentStylePage1 = {
+    ...contentStyle,
+    padding: "35mm 12mm 42mm 12mm",
+  };
+
+  const PageWrapper = ({ children, id, isFirstPage }) => (
     <div id={id} style={pageStyle}>
       <img src={BG_IMAGE_URL} alt="" style={bgStyle} />
       <img src={FOOTER_IMAGE_URL} alt="" style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0 }} />
-      <div style={contentStyle}>{children}</div>
+      <div style={isFirstPage ? contentStylePage1 : contentStyle}>{children}</div>
     </div>
   );
 
@@ -275,7 +280,7 @@ export default function PlanDocument({ plan, patientData }) {
     <div style={{ fontFamily: "'Arial', 'Helvetica', sans-serif", color: "#222", lineHeight: 1.5 }}>
 
       {/* ============ PAGE 1: Info + Resumos ============ */}
-      <PageWrapper id="plan-page-1">
+      <PageWrapper id="plan-page-1" isFirstPage={true}>
         <div style={{ marginBottom: 12 }}>
           <div style={{ fontSize: 13, lineHeight: 1.6 }}>
             <span style={{ fontWeight: 700 }}>Paciente: </span>{plan.patient_nome} &nbsp;|&nbsp;
