@@ -198,7 +198,15 @@ Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
     });
     onChange("analise_camera_termal", result);
     if (!data.resultado_camera_termal) {
-      onChange("resultado_camera_termal", result.replace(/\*\*/g, '').split('\n').filter(l => l.trim()).slice(0, 6).join(' ').substring(0, 1200));
+      // Filter out header lines like "Laudo Termográfico Clínico", "Análises termográficos gerais" etc.
+      const headerPatterns = [/laudo termogr/i, /an[aá]lises? termogr/i];
+      const summaryLines = result.replace(/\*\*/g, '').replace(/\[ALERTA\]/g, '').replace(/\[\/ALERTA\]/g, '')
+        .split('\n')
+        .map(l => l.trim())
+        .filter(l => l.length > 0)
+        .filter(l => !headerPatterns.some(p => p.test(l)));
+      const summaryText = summaryLines.slice(0, 6).join(' ').substring(0, 1200);
+      onChange("resultado_camera_termal", summaryText);
     }
     if (!data.objetivos_paciente) {
       const areas = (data.areas_afetadas || []).join(", ");
