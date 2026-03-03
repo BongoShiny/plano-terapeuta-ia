@@ -11,7 +11,7 @@ export default function CameraThermalUploader({ value = [], onChange }) {
     setUploading(true);
     const uploaded = await Promise.all(files.map((f) => base44.integrations.Core.UploadFile({ file: f })));
     const urls = uploaded.map((r) => r.file_url);
-    onChange([...value, ...urls].slice(0, 6));
+    onChange([...value, ...urls].slice(0, 4));
     setUploading(false);
   };
 
@@ -35,7 +35,7 @@ export default function CameraThermalUploader({ value = [], onChange }) {
             </button>
           </div>
         ))}
-        {value.length < 6 && (
+        {value.length < 4 && (
           <label
             className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed cursor-pointer transition-all"
             style={{ borderColor: "#D1D5DB", background: "#FAFAFA", aspectRatio: "1" }}
@@ -52,7 +52,7 @@ export default function CameraThermalUploader({ value = [], onChange }) {
           </label>
         )}
       </div>
-      <p className="text-xs text-gray-400">{value.length}/6 fotos adicionadas</p>
+      <p className="text-xs text-gray-400">{value.length}/4 fotos adicionadas</p>
     </div>
   );
 }

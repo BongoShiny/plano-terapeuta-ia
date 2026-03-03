@@ -12,7 +12,7 @@ function PosturalPreview({ text }) {
   const lateralText = parts[1] || "";
 
   const toSentences = (str) =>
-    str.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(s => s.length > 10).slice(0, 4);
+    str.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(s => s.length > 10).slice(0, 3);
 
   const frontalSentences = toSentences(frontalText);
   const lateralSentences = toSentences(lateralText);
@@ -236,9 +236,7 @@ Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
         )}
 
         {data.analise_camera_termal && (
-          <div className="mb-3 p-4 rounded-xl text-xs" style={{ background: "#FFF5F0", color: "#1B3A4B", whiteSpace: "pre-wrap", lineHeight: 1.7 }}>
-            {data.analise_camera_termal}
-          </div>
+          <ThermalPreview text={data.analise_camera_termal} />
         )}
 
         <label className="block text-xs font-semibold mb-1" style={{ color: "#374151" }}>
