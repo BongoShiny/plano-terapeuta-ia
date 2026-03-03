@@ -58,70 +58,6 @@ function ThermalAnalysisText({ text }) {
   );
 }
 
-function PosturalBullets({ text }) {
-  if (!text) return null;
-
-  // Extract frontal (coronal) observations
-  const frontalMatch = text.match(/frontal[\s\S]{0,800}?(?=lateral|sagital|$)/i);
-  const lateralMatch = text.match(/lateral[\s\S]{0,800}?(?=frontal|coronal|$)/i);
-
-  // Fallback: split all sentences evenly between the two views
-  const allSentences = text
-    .replace(/\n+/g, " ")
-    .split(/(?<=[.!?])\s+/)
-    .map(s => s.trim())
-    .filter(s => s.length > 20);
-
-  let frontalSentences = [];
-  let lateralSentences = [];
-
-  if (frontalMatch || lateralMatch) {
-    const extractSentences = (block) =>
-      (block || "")
-        .split(/(?<=[.!?])\s+/)
-        .map(s => s.trim())
-        .filter(s => s.length > 20)
-        .slice(0, 3);
-    frontalSentences = extractSentences(frontalMatch?.[0]);
-    lateralSentences = extractSentences(lateralMatch?.[0]);
-  }
-
-  // If extraction didn't work well, split evenly
-  if (frontalSentences.length === 0 && lateralSentences.length === 0) {
-    const half = Math.ceil(allSentences.length / 2);
-    frontalSentences = allSentences.slice(0, half).slice(0, 3);
-    lateralSentences = allSentences.slice(half).slice(0, 3);
-  }
-
-  const BulletItem = ({ text }) => (
-    <li style={{ display: "flex", gap: 8, marginBottom: 5, fontSize: 13, lineHeight: 1.6, color: "#222" }}>
-      <span style={{ color: "#C17F6A", fontWeight: 700, flexShrink: 0, marginTop: 2 }}>◆</span>
-      <span>{text}</span>
-    </li>
-  );
-
-  return (
-    <div style={{ display: "flex", gap: 16 }}>
-      <div style={{ flex: 1 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>
-          Vista Frontal — Plano Coronal
-        </div>
-        <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-          {frontalSentences.map((s, i) => <BulletItem key={i} text={s} />)}
-        </ul>
-      </div>
-      <div style={{ flex: 1 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>
-          Vista Lateral — Plano Sagital
-        </div>
-        <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-          {lateralSentences.map((s, i) => <BulletItem key={i} text={s} />)}
-        </ul>
-      </div>
-    </div>
-  );
-}
-
 function DiamondIcon() {
   return <span style={{ color: "#C17F6A", marginRight: 6, fontSize: 12 }}>◆</span>;
 }
@@ -201,7 +137,7 @@ export default function PlanDocument({ plan, patientData }) {
 
   const contentStyle = {
     flex: 1,
-    padding: "38mm 12mm 42mm 12mm",
+    padding: "50mm 12mm 42mm 12mm",
     position: "relative",
     zIndex: 1,
     overflow: "hidden",
@@ -375,13 +311,13 @@ export default function PlanDocument({ plan, patientData }) {
               {planData?.foto_postural_1 && (
                 <div style={{ textAlign: "center" }}>
                   <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Frontal</p>
-                  <img src={planData.foto_postural_1} alt="Postural 1" style={{ height: "100mm", width: "auto", maxWidth: "90mm", borderRadius: 4, objectFit: "contain" }} />
+                  <img src={planData.foto_postural_1} alt="Postural 1" style={{ height: "115mm", width: "auto", maxWidth: "90mm", borderRadius: 4, objectFit: "contain" }} />
                 </div>
               )}
               {planData?.foto_postural_2 && (
                 <div style={{ textAlign: "center" }}>
                   <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Lateral</p>
-                  <img src={planData.foto_postural_2} alt="Postural 2" style={{ height: "100mm", width: "auto", maxWidth: "90mm", borderRadius: 4, objectFit: "contain" }} />
+                  <img src={planData.foto_postural_2} alt="Postural 2" style={{ height: "115mm", width: "auto", maxWidth: "90mm", borderRadius: 4, objectFit: "contain" }} />
                 </div>
               )}
             </div>
@@ -389,7 +325,9 @@ export default function PlanDocument({ plan, patientData }) {
           {planData?.avaliacao_postural && (
             <>
               <Divider />
-              <PosturalBullets text={planData.avaliacao_postural} />
+              <p style={{ fontSize: 16, lineHeight: 1.6, margin: 0, textAlign: "justify", color: "#222", overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 10, WebkitBoxOrient: "vertical" }}>
+                {planData.avaliacao_postural.substring(0, 900)}
+              </p>
             </>
           )}
         </PageWrapper>
