@@ -58,6 +58,28 @@ function ThermalAnalysisText({ text }) {
   );
 }
 
+function PosturalBullets({ text }) {
+  if (!text) return null;
+  // Split into sentences and take first ~6 as bullet points
+  const sentences = text
+    .replace(/\n+/g, " ")
+    .split(/(?<=[.!?])\s+/)
+    .map(s => s.trim())
+    .filter(s => s.length > 10)
+    .slice(0, 6);
+
+  return (
+    <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+      {sentences.map((s, i) => (
+        <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 5, lineHeight: 1.5, color: "#222" }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
+          <span>{s}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function DiamondIcon() {
   return <span style={{ color: "#C17F6A", marginRight: 6, fontSize: 12 }}>◆</span>;
 }
