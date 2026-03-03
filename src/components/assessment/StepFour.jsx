@@ -217,7 +217,7 @@ Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
         .map(l => l.trim())
         .filter(l => l.length > 0)
         .filter(l => !headerPatterns.some(p => p.test(l)));
-      const summaryText = summaryLines.slice(0, 6).join(' ').substring(0, 1200);
+      const summaryText = summaryLines.slice(0, 2).join(' ').substring(0, 350);
       onChange("resultado_camera_termal", summaryText);
     }
     if (!data.objetivos_paciente) {
