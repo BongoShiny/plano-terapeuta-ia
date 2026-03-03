@@ -183,6 +183,21 @@ function ThermalAnalysisText({ text }) {
     </div>);
 }
 
+function ThermalSummaryBullets({ text }) {
+  if (!text) return null;
+  const lines = text.split(/\n+/).map(l => l.trim()).filter(l => l.length > 0).slice(0, 5);
+  return (
+    <ul style={{ margin: 0, paddingLeft: 6, listStyle: "none" }}>
+      {lines.map((line, i) => (
+        <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 4, lineHeight: 1.6 }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
+          <span>{line}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function PosturalBullets({ text }) {
   if (!text) return null;
 
