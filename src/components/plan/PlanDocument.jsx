@@ -158,7 +158,7 @@ function PosturalColumns({ text }) {
       {sentences.map((s, i) =>
     <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
-          <span className="text-base font-semibold text-justify normal-case">{s}</span>
+          <span className="text-sm font-semibold text-justify normal-case">{s}</span>
         </li>
     )}
     </ul>;
