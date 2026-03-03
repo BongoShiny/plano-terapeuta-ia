@@ -616,7 +616,7 @@ export default function PlanDocument({ plan, patientData }) {
       {/* ============ PAGE 6: Análise Câmera Termal ============ */}
       {(planData?.analise_camera_termal || planData?.resultado_camera_termal) &&
       <PageWrapper id="plan-page-termal-analise">
-          <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8, textAlign: "center" }}>
+          <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", marginBottom: 10, textAlign: "center", letterSpacing: 0.5 }}>
             Análise da Câmera Termal
           </div>
           <Divider />
