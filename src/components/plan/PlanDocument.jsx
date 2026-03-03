@@ -569,7 +569,7 @@ export default function PlanDocument({ plan, patientData }) {
       {/* ============ PAGE 3: Fotos Posturais + Avaliação Postural ============ */}
       {hasPostural &&
       <PageWrapper id="plan-page-postural">
-          <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 6, textAlign: "center" }}>
+          <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", marginBottom: 10, textAlign: "center", letterSpacing: 0.5 }}>
             Avaliação Postural
           </div>
           <Divider />
@@ -599,7 +599,7 @@ export default function PlanDocument({ plan, patientData }) {
       {/* ============ PAGE 5: Câmera Termal - Fotos ============ */}
       {safeArray(planData?.fotos_camera_termal).length > 0 &&
       <PageWrapper id="plan-page-termal-fotos">
-          <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8, textAlign: "center" }}>
+          <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", marginBottom: 10, textAlign: "center", letterSpacing: 0.5 }}>
             Fotos da Câmera Termal
           </div>
           <Divider />
