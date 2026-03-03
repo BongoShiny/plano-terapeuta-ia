@@ -127,15 +127,15 @@ function PosturalColumns({ text }) {
   const frontalText = parts[0] || "";
   const lateralText = parts[1] || "";
 
-  const toSentences = (str) =>
+  const toSentences = (str, limit = 3) =>
     str
       .split(/(?<=[.!?])\s+/)
       .map(s => s.trim())
       .filter(s => s.length > 10)
-      .slice(0, 3);
+      .slice(0, limit);
 
-  const frontalSentences = toSentences(frontalText);
-  const lateralSentences = toSentences(lateralText);
+  const frontalSentences = toSentences(frontalText, 2);
+  const lateralSentences = toSentences(lateralText, 3);
 
   const BulletList = ({ sentences }) => (
     <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
