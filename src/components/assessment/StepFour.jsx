@@ -227,7 +227,7 @@ Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
         </div>
         <div className="mb-3">
           <label className="block text-xs font-semibold mb-2" style={{ color: "#374151" }}>
-            Fotos da câmera termal (até 6 fotos)
+            Fotos da câmera termal (até 4 fotos)
           </label>
           <CameraThermalUploader
             value={data.fotos_camera_termal || []}
