@@ -48,6 +48,7 @@ REGRAS OBRIGATÓRIAS — SIGA À RISCA:
 6. Retorne SOMENTE o JSON, sem nenhum texto antes ou depois.
 7. FORMATAÇÃO: NUNCA use markdown nos textos. Proibido usar ###, ##, **, __, --, "---", aspas decorativas (" "), asteriscos ou qualquer símbolo de formatação. Todos os campos de texto devem ser texto simples, sem marcações.
 8. ANÁLISE TÉRMICA: Se gerar títulos de análises térmicas, SEMPRE use "Análises termográficos gerais:" em vez de "Achados". Mantenha coerência estrutural e profissionalismo.
+9. PROIBIDO: NUNCA use a palavra "fisioterapia" ou qualquer variação dela (fisioterapeuta, fisioterápico, etc). Use sempre "Liberação Miofascial", "tratamento terapêutico", "técnicas de relaxamento" ou "terapia especializada" em seu lugar.
 
 JSON a retornar (preencha todos os campos com conteúdo real e personalizado para ${data.nome}):
 
