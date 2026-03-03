@@ -81,7 +81,9 @@ function ThermalAnalysisText({ text }) {
   { title: "Região dos ombros", pattern: /regi[aã]o dos ombros/i },
   { title: "Região do quadril e glúteos", pattern: /regi[aã]o do quadril/i },
   { title: "Região abdominal", pattern: /regi[aã]o abdominal/i },
-  { title: "Conclusão clínica", pattern: /conclus[aã]o cl[ií]nica/i }];
+  { title: "Conclusão clínica", pattern: /conclus[aã]o cl[ií]nica/i },
+  { title: "Conclusão clínica", pattern: /^conclus[aã]o[.:]*$/i },
+  { title: "Conclusão clínica", pattern: /conclus[aã]o recomendada/i }];
 
   const lines = text.split(/\n+/).map((l) => l.trim()).filter((l) => l.length > 0);
   const structured = [];
@@ -92,14 +94,14 @@ function ThermalAnalysisText({ text }) {
     const matchedSection = line.length < 80 ? sections.find((s) => s.pattern.test(line)) : null;
 
     if (matchedSection) {
-      if (matchedSection.title === null) {
-        continue;
-      }
-      if (currentSection && currentContent.length > 0) {
-        structured.push({ title: currentSection, content: currentContent });
-      }
-      currentSection = matchedSection.title;
-      currentContent = [];
+    if (matchedSection.title === null) {
+      continue;
+    }
+    if (currentSection && currentContent.length > 0) {
+      structured.push({ title: currentSection, isConclusion: /conclus[aã]o/i.test(currentSection), content: currentContent });
+    }
+    currentSection = matchedSection.title;
+    currentContent = [];
     } else if (line.length > 0) {
       if (!currentSection) {
         currentSection = null;
@@ -109,7 +111,7 @@ function ThermalAnalysisText({ text }) {
   }
 
   if (currentContent.length > 0) {
-    structured.push({ title: currentSection, content: currentContent });
+    structured.push({ title: currentSection, isConclusion: /conclus[aã]o/i.test(currentSection || ""), content: currentContent });
   }
 
   if (structured.length === 0) {
