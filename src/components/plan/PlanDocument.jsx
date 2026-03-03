@@ -70,20 +70,56 @@ function renderInlineText(text) {
 
 function ThermalAnalysisText({ text }) {
   if (!text) return null;
-  const paragraphs = text.split(/\n+/).filter((p) => p.trim());
-  return (
-    <div style={{ fontSize: 13.5, lineHeight: 1.9, color: "#222", textAlign: "justify" }}>
-      {paragraphs.map((para, pi) => {
-        const trimmed = para.trim();
-        const isBold = /^(\d+\.|[\-\*]\s)/.test(trimmed);
-        return (
-          <p key={pi} style={{ margin: "0 0 10px 0", fontWeight: isBold ? 700 : 400 }} className="text-sm">
-            {renderInlineText(para)}
-          </p>
-        );
-      })}
-    </div>);
+  
+  const sections = [
+    { title: "Análises termográficas gerais", pattern: /an[aá]lises? termogr[aá]ficos? gerais/i },
+    { title: "Região cervical", pattern: /regi[aã]o cervical/i },
+    { title: "Região lombar", pattern: /regi[aã]o lombar/i },
+    { title: "Região craniana", pattern: /regi[aã]o craniana/i },
+    { title: "Conclusão clínica", pattern: /conclus[aã]o cl[ií]nica/i }
+  ];
 
+  const lines = text.split(/\n+/).map(l => l.trim()).filter(l => l.length > 0);
+  const structured = [];
+  let currentSection = null;
+  let currentContent = [];
+
+  for (const line of lines) {
+    const matchedSection = sections.find(s => s.pattern.test(line));
+    
+    if (matchedSection) {
+      if (currentSection) {
+        structured.push({ title: currentSection, content: currentContent });
+      }
+      currentSection = matchedSection.title;
+      currentContent = [];
+    } else if (currentSection) {
+      currentContent.push(line);
+    }
+  }
+  
+  if (currentSection) {
+    structured.push({ title: currentSection, content: currentContent });
+  }
+
+  return (
+    <div style={{ fontSize: 13.5, lineHeight: 1.9, color: "#222" }}>
+      {structured.map((section, si) => (
+        <div key={si} style={{ marginBottom: 12 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>
+            • {section.title}
+          </div>
+          <div style={{ paddingLeft: 12 }}>
+            {section.content.map((line, li) => (
+              <p key={li} style={{ margin: "0 0 6px 0", fontSize: 13, lineHeight: 1.7, textAlign: "justify" }}>
+                {renderInlineText(line)}
+              </p>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function PosturalBullets({ text }) {
