@@ -252,7 +252,7 @@ export default function PlanDocument({ plan, patientData }) {
 
   const contentStylePage1 = {
     ...contentStyle,
-    padding: "35mm 12mm 42mm 12mm",
+    padding: "45mm 12mm 42mm 12mm",
   };
 
   const PageWrapper = ({ children, id, isFirstPage }) => (
