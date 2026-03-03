@@ -69,22 +69,28 @@ export default function PlanView() {
 
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
+        // Use fixed pixel dimensions matching A4 at 96dpi
+        const A4_W_PX = 794;
+        const A4_H_PX = 1123;
         const canvas = await html2canvas(page, {
           scale: 2,
           useCORS: true,
           allowTaint: true,
           backgroundColor: "#ffffff",
-          width: page.offsetWidth,
-          height: page.offsetHeight,
+          width: A4_W_PX,
+          height: A4_H_PX,
+          windowWidth: A4_W_PX,
+          windowHeight: A4_H_PX,
         });
         const imgData = canvas.toDataURL("image/jpeg", 0.95);
         if (i > 0) pdf.addPage();
-        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight, undefined, "FAST");
       }
 
       pdf.save(`Plano_Vibe_${plan.patient_nome || "Paciente"}.pdf`);
     } catch (e) {
-      alert("Erro ao gerar o PDF. Tente novamente.");
+      console.error("PDF export error:", e);
+      alert("Erro ao gerar o PDF: " + e.message);
     } finally {
       setExportingPdf(false);
     }
