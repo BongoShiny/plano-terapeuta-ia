@@ -48,37 +48,40 @@ function PosturalPreview({ text }) {
 function ThermalPreview({ text }) {
   if (!text) return null;
 
-  // Split text into lines/paragraphs
   const lines = text.split(/\n+/).map(l => l.trim()).filter(l => l.length > 0);
 
-  // Parse into sections: each section has a title line and content lines
+  const skipPatterns = [
+    /^laudo termogr[aá]fico cl[ií]nico$/i,
+    /^an[aá]lises? termogr[aá]ficos? gerais\.?$/i,
+  ];
+
+  const sectionPatterns = [
+    { pattern: /regi[aã]o cervical/i, label: "Região cervical" },
+    { pattern: /regi[aã]o lombar/i, label: "Região lombar" },
+    { pattern: /regi[aã]o tor[aá]cica/i, label: "Região torácica" },
+    { pattern: /regi[aã]o dos ombros/i, label: "Região dos ombros" },
+    { pattern: /regi[aã]o do joelho/i, label: "Região do joelho" },
+    { pattern: /regi[aã]o dos quadris/i, label: "Região dos quadris" },
+    { pattern: /regi[aã]o craniana/i, label: "Região craniana" },
+    { pattern: /regi[aã]o abdominal/i, label: "Região abdominal" },
+    { pattern: /regi[aã]o do quadril/i, label: "Região do quadril e glúteos" },
+    { pattern: /conclus[aã]o/i, label: "Conclusão Recomendada" },
+  ];
+
+  const isSkip = (line) => skipPatterns.some(p => p.test(line));
+  const findSection = (line) => line.length < 80 ? sectionPatterns.find(s => s.pattern.test(line)) : null;
+
   const sections = [];
   let current = null;
 
-  // Known section title keywords
-  const titlePatterns = [
-    /laudo termogr[aá]fico cl[ií]nico/i,
-    /an[aá]lises termogr[aá]ficos gerais/i,
-    /regi[aã]o cervical/i,
-    /regi[aã]o lombar/i,
-    /regi[aã]o tor[aá]cica/i,
-    /conclus[aã]o cl[ií]nica/i,
-    /an[aá]lise por regi[aã]o/i,
-    /regi[aã]o dos ombros/i,
-    /regi[aã]o do joelho/i,
-    /regi[aã]o dos quadris/i,
-    /\d+\.\s/,
-  ];
-
-  const isTitle = (line) =>
-    titlePatterns.some(p => p.test(line)) || /^\d+\./.test(line);
-
   for (const line of lines) {
-    if (isTitle(line)) {
+    if (isSkip(line)) continue;
+    const matched = findSection(line);
+    if (matched) {
       if (current) sections.push(current);
-      current = { title: line.replace(/^\d+\.\s*/, ''), content: [] };
+      current = { title: matched.label, isConclusion: /conclus[aã]o/i.test(line), content: [] };
     } else {
-      if (!current) current = { title: null, content: [] };
+      if (!current) current = { title: null, isConclusion: false, content: [] };
       current.content.push(line);
     }
   }
@@ -87,19 +90,28 @@ function ThermalPreview({ text }) {
   return (
     <div className="mb-3 p-4 rounded-xl" style={{ background: "#FFF5F0" }}>
       {sections.map((section, i) => (
-        <div key={i} style={{ marginBottom: 10 }}>
+        <div key={i} style={{ marginBottom: 12 }}>
           {section.title && (
-            <div style={{ display: "flex", gap: 8, marginBottom: 4, alignItems: "flex-start" }}>
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6 }}>{section.title}</span>
+            <div style={{ display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start" }}>
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: section.isConclusion ? "#22C55E" : "#C17F6A", flexShrink: 0, marginTop: 5 }} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: section.isConclusion ? "#166534" : "#1B3A4B", lineHeight: 1.6 }}>{section.title}</span>
             </div>
           )}
-          {section.content.map((line, j) => (
-            <div key={j} style={{ display: "flex", gap: 8, marginBottom: 4, alignItems: "flex-start" }}>
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-              <span style={{ fontSize: 12, color: "#374151", lineHeight: 1.7, fontWeight: j === 0 && !section.title ? 700 : 400 }}>{line}</span>
-            </div>
-          ))}
+          {section.content.map((line, j) => {
+            if (section.isConclusion) {
+              return (
+                <div key={j} style={{ background: "#DCFCE7", borderLeft: "3px solid #22C55E", borderRadius: 8, padding: "8px 12px", marginBottom: 4 }}>
+                  <span style={{ fontSize: 12, color: "#166534", lineHeight: 1.7, fontWeight: 500 }}>{line}</span>
+                </div>
+              );
+            }
+            return (
+              <div key={j} style={{ display: "flex", gap: 8, marginBottom: 4, alignItems: "flex-start" }}>
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
+                <span style={{ fontSize: 12, color: "#374151", lineHeight: 1.7, fontWeight: 400 }}>{line}</span>
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>
