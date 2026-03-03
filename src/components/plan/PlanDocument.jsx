@@ -242,7 +242,7 @@ export default function PlanDocument({ plan, patientData }) {
 
   const contentStyle = {
     flex: 1,
-    padding: "50mm 12mm 42mm 12mm",
+    padding: "35mm 12mm 42mm 12mm",
     position: "relative",
     zIndex: 1,
     overflow: "hidden",
@@ -366,58 +366,54 @@ export default function PlanDocument({ plan, patientData }) {
         )}
       </PageWrapper>
 
-      {/* ============ PAGE 2: Etapas 1 + 2 ============ */}
+      {/* ============ PAGE 2: Resumo das 3 Etapas (Consolidado) ============ */}
       {etapas.length > 0 && (
-        <PageWrapper id="plan-page-etapas-12">
-          {etapas.slice(0, 2).map((etapa, ei) => (
-            <div key={ei} style={{ marginBottom: 18 }}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 5 }}>
-                Etapa {etapa.numero}: {etapa.nome}
-              </div>
-              {etapa.objetivo_etapa && (
-                <div style={{ fontSize: 13, color: "#444", marginBottom: 7, paddingLeft: 8 }}>
-                  <strong>Objetivo:</strong> {etapa.objetivo_etapa.substring(0, 180)}
-                </div>
-              )}
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 5 }}>Intervenções:</div>
-              {safeArray(etapa.ciclos).map((ciclo, ci) => (
-                <CicloCompact key={ci} ciclo={ciclo} />
+        <PageWrapper id="plan-page-etapas-resumo">
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 12 }}>
+              Etapa 1 a 8 sessões: Adaptação Muscular
+            </div>
+            <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+              {safeArray(etapas[0]?.ciclos).slice(0, 2).map((ciclo, i) => (
+                <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
+                  <span><strong>{ciclo.objetivo}</strong></span>
+                </li>
               ))}
-              {ei === 0 && <Divider />}
-            </div>
-          ))}
-        </PageWrapper>
-      )}
-
-      {/* ============ PAGE 3: Etapa 3 + Resumo Final ============ */}
-      {etapas.length > 2 && (
-        <PageWrapper id="plan-page-etapa-3">
-          <div style={{ marginBottom: 18 }}>
-            <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 5 }}>
-              Etapa {etapas[2].numero}: {etapas[2].nome}
-            </div>
-            {etapas[2].objetivo_etapa && (
-              <div style={{ fontSize: 13, color: "#444", marginBottom: 7, paddingLeft: 8 }}>
-                <strong>Objetivo:</strong> {etapas[2].objetivo_etapa.substring(0, 180)}
-              </div>
-            )}
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 5 }}>Intervenções:</div>
-            {safeArray(etapas[2].ciclos).map((ciclo, ci) => (
-              <CicloCompact key={ci} ciclo={ciclo} />
-            ))}
+            </ul>
           </div>
 
-          {planData?.resumo_final && (
-            <>
-              <Divider />
-              <div>
-                <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
-                <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-                  {truncateAtSentence(planData.resumo_final, 600)}
-                </p>
-              </div>
-            </>
-          )}
+          <Divider />
+
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 12 }}>
+              Etapa 9 a 16: Correção postural e melhora da mobilidade
+            </div>
+            <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+              {safeArray(etapas[1]?.ciclos).slice(0, 2).map((ciclo, i) => (
+                <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
+                  <span><strong>{ciclo.objetivo}</strong></span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Divider />
+
+          <div style={{ marginBottom: 12 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 12 }}>
+              Etapa 17 a 24: Dores secundárias
+            </div>
+            <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+              {safeArray(etapas[2]?.ciclos).slice(0, 2).map((ciclo, i) => (
+                <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
+                  <span><strong>{ciclo.objetivo}</strong></span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </PageWrapper>
       )}
 
