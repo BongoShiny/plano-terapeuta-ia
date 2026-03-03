@@ -152,7 +152,7 @@ export default function PlanDocument({ plan, patientData }) {
   // Compact ciclo row
   function CicloCompact({ ciclo }) {
     return (
-      <div style={{ display: "flex", gap: 6, marginBottom: 5, fontSize: 11.5, lineHeight: 1.5 }}>
+      <div style={{ display: "flex", gap: 6, marginBottom: 6, fontSize: 13, lineHeight: 1.6 }}>
         <span style={{ color: "#C17F6A", fontWeight: 700, flexShrink: 0 }}>● C{ciclo.numero}:</span>
         <span><strong>{ciclo.objetivo}</strong>{ciclo.tecnicas ? ` | ${ciclo.tecnicas}` : ""}{ciclo.musculos ? ` | ${ciclo.musculos}` : ""}</span>
       </div>
