@@ -167,8 +167,8 @@ export default function PlanDocument({ plan, patientData }) {
 
       {/* ============ PAGE 1: Info + Resumos ============ */}
       <PageWrapper id="plan-page-1">
-        <div style={{ marginBottom: 10 }}>
-          <div style={{ fontSize: 11.5, lineHeight: 1.5 }}>
+        <div style={{ marginBottom: 12 }}>
+          <div style={{ fontSize: 13, lineHeight: 1.6 }}>
             <span style={{ fontWeight: 700 }}>Paciente: </span>{plan.patient_nome} &nbsp;|&nbsp;
             <span style={{ fontWeight: 700 }}>Sexo: </span>{patientData?.sexo || "–"} &nbsp;|&nbsp;
             <span style={{ fontWeight: 700 }}>Telefone: </span>{plan.patient_telefone} &nbsp;|&nbsp;
@@ -178,9 +178,9 @@ export default function PlanDocument({ plan, patientData }) {
         <Divider />
 
         {planData?.resumo_queixas && (
-          <div style={{ marginBottom: 10 }}>
+          <div style={{ marginBottom: 12 }}>
             <SectionTitle>Resumo das Queixas e Áreas Afetadas</SectionTitle>
-            <p style={{ fontSize: 11.5, lineHeight: 1.6, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
+            <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
               {planData.resumo_queixas.substring(0, 400)}
             </p>
           </div>
@@ -189,9 +189,9 @@ export default function PlanDocument({ plan, patientData }) {
         {(planData?.resultado_camera_termal || planData?.analise_camera_termal) && (
           <>
             <Divider />
-            <div style={{ marginBottom: 10 }}>
+            <div style={{ marginBottom: 12 }}>
               <SectionTitle>Resultado da Câmera Termal</SectionTitle>
-              <p style={{ fontSize: 11.5, lineHeight: 1.6, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
+              <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
                 {(planData.resultado_camera_termal || planData.analise_camera_termal || "").substring(0, 350)}
               </p>
             </div>
@@ -201,12 +201,12 @@ export default function PlanDocument({ plan, patientData }) {
         {safeArray(planData?.objetivos_tratamento).length > 0 && (
           <>
             <Divider />
-            <div style={{ marginBottom: 10 }}>
+            <div style={{ marginBottom: 12 }}>
               <SectionTitle>Objetivos do Tratamento</SectionTitle>
               <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
                 {safeArray(planData.objetivos_tratamento).slice(0, 5).map((obj, i) => (
-                  <li key={i} style={{ display: "flex", gap: 6, fontSize: 11.5, marginBottom: 3, lineHeight: 1.5 }}>
-                    <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#1B3A4B", flexShrink: 0, marginTop: 5 }} />
+                  <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 4, lineHeight: 1.6 }}>
+                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#1B3A4B", flexShrink: 0, marginTop: 5 }} />
                     <span>{obj}</span>
                   </li>
                 ))}
@@ -218,9 +218,9 @@ export default function PlanDocument({ plan, patientData }) {
         {planData?.objetivo_geral && (
           <>
             <Divider />
-            <div style={{ marginBottom: 10 }}>
+            <div style={{ marginBottom: 12 }}>
               <SectionTitle>Objetivo Geral</SectionTitle>
-              <p style={{ fontSize: 11.5, lineHeight: 1.6, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
+              <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
                 {planData.objetivo_geral.substring(0, 300)}
               </p>
             </div>
@@ -230,9 +230,9 @@ export default function PlanDocument({ plan, patientData }) {
         {planData?.explicacao_terapia && (
           <>
             <Divider />
-            <div style={{ marginBottom: 10 }}>
+            <div style={{ marginBottom: 12 }}>
               <SectionTitle>Explicação da Terapia Especial</SectionTitle>
-              <p style={{ fontSize: 11.5, lineHeight: 1.6, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
+              <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
                 {planData.explicacao_terapia.substring(0, 300)}
               </p>
             </div>
