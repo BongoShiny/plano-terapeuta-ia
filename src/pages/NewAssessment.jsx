@@ -51,7 +51,7 @@ REGRAS OBRIGATÓRIAS — SIGA À RISCA:
 JSON a retornar (preencha todos os campos com conteúdo real e personalizado para ${data.nome}):
 
 {
-  "resumo_queixas": "Escreva UM parágrafo de no máximo 3 frases, acolhedor e completo, sobre as queixas de ${data.nome}. Mencione as áreas afetadas separadas por vírgula (${(data.areas_afetadas || []).join(", ")}), o tempo de dor (${data.tempo_dor}) e causas prováveis. NÃO use barra (/) para separar palavras. Termine sempre com ponto final.",
+  "resumo_queixas": "Escreva UM parágrafo de no máximo 3 frases, acolhedor e completo, sobre as queixas de ${data.nome}. Mencione as áreas afetadas de forma natural e fluida (áreas: ${(data.areas_afetadas || []).join(", ")}), o tempo de dor (${data.tempo_dor}) e causas prováveis. IMPORTANTE: reescreva os nomes das áreas de forma natural em português, SEM usar barra (/), SEM hífen entre nomes. Por exemplo, 'Pescoço / Cervical' vira 'região cervical', 'Lombar / Coluna Lombar' vira 'coluna lombar', 'Cabeça / Crânio' vira 'cabeça'. Termine sempre com ponto final.",
   "resultado_camera_termal": "${data.resultado_camera_termal ? data.resultado_camera_termal : "A câmera termal será utilizada na primeira sessão de " + data.nome + " para mapear os pontos de calor e inflamação, identificando com precisão as áreas de maior sobrecarga muscular e personalizando ainda mais o tratamento."}",
   "objetivos_tratamento": [
     "Objetivo específico 1 baseado nas queixas de ${data.nome} (ex: reduzir dor em área específica)",
