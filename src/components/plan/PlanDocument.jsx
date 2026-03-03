@@ -461,7 +461,7 @@ export default function PlanDocument({ plan, patientData }) {
           <Divider />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, marginTop: 10 }}>
             {safeArray(planData.fotos_camera_termal).map((url, i) => (
-              <div key={i} style={{ borderRadius: 6, overflow: "hidden", border: "1px solid #E5E7EB", display: "flex", alignItems: "center", justifyContent: "center", background: "#000", minHeight: 400 }}>
+              <div key={i} style={{ borderRadius: 6, overflow: "hidden", border: "1px solid #E5E7EB", display: "flex", alignItems: "center", justifyContent: "center", background: "#000", height: 340 }}>
                 <img src={url} alt={`Termal ${i + 1}`} style={{ maxWidth: "100%", maxHeight: "100%", display: "block", objectFit: "contain" }} />
               </div>
             ))}
