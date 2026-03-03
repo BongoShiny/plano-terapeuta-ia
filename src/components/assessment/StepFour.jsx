@@ -153,9 +153,7 @@ Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
         )}
 
         {data.avaliacao_postural && (
-          <div className="mt-4 p-4 rounded-xl text-xs" style={{ background: "#F0F7FF", color: "#1B3A4B", whiteSpace: "pre-wrap", lineHeight: 1.7 }}>
-            {data.avaliacao_postural}
-          </div>
+          <PosturalPreview text={data.avaliacao_postural} />
         )}
       </div>
 
