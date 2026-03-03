@@ -126,17 +126,20 @@ function ThermalAnalysisText({ text }) {
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
             <span style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B" }}>{section.title}</span>
           </div>
-          <div style={{ paddingLeft: 16 }}>
+          <div style={{ paddingLeft: 0 }}>
             {section.content.map((line, li) => {
               const isPresent = line.toLowerCase().startsWith("o presente");
               return (
-                <p key={li} style={{ margin: "0 0 6px 0", fontSize: 13, lineHeight: 1.7, textAlign: "justify" }}>
-                  {isPresent ? (
-                    <strong>{renderInlineText(line.replace(/\s+e\/ou\s+/g, " e "))}</strong>
-                  ) : (
-                    renderInlineText(line)
-                  )}
-                </p>
+                <div key={li} style={{ display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start" }}>
+                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
+                  <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, textAlign: "justify" }}>
+                    {isPresent ? (
+                      <strong>{renderInlineText(line.replace(/\s+e\/ou\s+/g, " e "))}</strong>
+                    ) : (
+                      renderInlineText(line)
+                    )}
+                  </p>
+                </div>
               );
             })}
           </div>
