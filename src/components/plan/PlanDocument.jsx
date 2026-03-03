@@ -140,7 +140,7 @@ function PosturalColumns({ text }) {
   const BulletList = ({ sentences }) => (
     <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
       {sentences.map((s, i) => (
-        <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
+        <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
           <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
           <span>{s}</span>
         </li>
@@ -151,12 +151,12 @@ function PosturalColumns({ text }) {
   return (
     <div style={{ display: "flex", gap: 12 }}>
     <div style={{ flex: 1 }}>
-      <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>Na vista frontal (plano coronal)</div>
+      <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>Na vista frontal (plano coronal)</div>
       <BulletList sentences={frontalSentences} />
     </div>
     <div style={{ width: 1, background: "#D1C4B0", flexShrink: 0 }} />
     <div style={{ flex: 1 }}>
-      <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>Na vista lateral (plano sagital)</div>
+      <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>Na vista lateral (plano sagital)</div>
       <BulletList sentences={lateralSentences} />
     </div>
     </div>
