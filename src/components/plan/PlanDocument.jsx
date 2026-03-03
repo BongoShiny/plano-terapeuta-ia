@@ -3,6 +3,14 @@ import React from "react";
 const BG_IMAGE_URL = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/ef18c5b4c_image.png";
 const FOOTER_IMAGE_URL = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/ac819d2fc_image.png";
 
+function truncateAtSentence(text, maxChars) {
+  if (!text || text.length <= maxChars) return text;
+  const trimmed = text.substring(0, maxChars);
+  const lastPeriod = Math.max(trimmed.lastIndexOf('. '), trimmed.lastIndexOf('! '), trimmed.lastIndexOf('? '));
+  if (lastPeriod > 0) return trimmed.substring(0, lastPeriod + 1);
+  return trimmed;
+}
+
 function Divider() {
   return <div style={{ height: 1, background: "#D1C4B0", margin: "14px 0" }} />;
 }
