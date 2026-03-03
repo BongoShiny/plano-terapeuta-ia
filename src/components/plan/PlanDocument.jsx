@@ -15,41 +15,45 @@ function SectionTitle({ children }) {
   );
 }
 
+function renderInlineText(text) {
+  // Split by [ALERTA]...[/ALERTA] and **bold**
+  const parts = text.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\]|\*\*[^*]+\*\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("[ALERTA]")) {
+      const content = part.replace(/^\[ALERTA\]/, "").replace(/\[\/ALERTA\]$/, "");
+      return (
+        <span key={i} style={{
+          display: "inline",
+          background: "#FFF3CD",
+          color: "#7B2D00",
+          fontWeight: 900,
+          fontSize: 13.5,
+          borderLeft: "4px solid #C17F6A",
+          paddingLeft: 7,
+          paddingRight: 5,
+          borderRadius: 2,
+        }}>
+          ⚠ {content}
+        </span>
+      );
+    }
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>;
+    }
+    return <span key={i}>{part}</span>;
+  });
+}
+
 function ThermalAnalysisText({ text }) {
   if (!text) return null;
-  // Split text into paragraphs, then within each paragraph handle [ALERTA] blocks
   const paragraphs = text.split(/\n+/).filter(p => p.trim());
   return (
     <div style={{ fontSize: 13.5, lineHeight: 1.9, color: "#222", textAlign: "justify" }}>
-      {paragraphs.map((para, pi) => {
-        // Split paragraph by [ALERTA]...[/ALERTA]
-        const parts = para.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\])/g);
-        return (
-          <p key={pi} style={{ margin: "0 0 10px 0" }}>
-            {parts.map((part, i) => {
-              if (part.startsWith("[ALERTA]")) {
-                const content = part.replace(/^\[ALERTA\]/, "").replace(/\[\/ALERTA\]$/, "");
-                return (
-                  <span key={i} style={{
-                    display: "inline",
-                    background: "#FFF3CD",
-                    color: "#7B2D00",
-                    fontWeight: 900,
-                    fontSize: 13.5,
-                    borderLeft: "4px solid #C17F6A",
-                    paddingLeft: 7,
-                    paddingRight: 5,
-                    borderRadius: 2,
-                  }}>
-                    ⚠ {content}
-                  </span>
-                );
-              }
-              return <span key={i}>{part}</span>;
-            })}
-          </p>
-        );
-      })}
+      {paragraphs.map((para, pi) => (
+        <p key={pi} style={{ margin: "0 0 10px 0" }}>
+          {renderInlineText(para)}
+        </p>
+      ))}
     </div>
   );
 }
