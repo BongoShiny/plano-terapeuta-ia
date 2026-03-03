@@ -276,7 +276,6 @@ export default function PlanDocument({ plan, patientData }) {
 
       {/* ============ PAGE 1: Info + Resumos ============ */}
       <PageWrapper id="plan-page-1">
-        <div style={{ padding: "30mm 12mm 0 12mm", position: "relative", zIndex: 1 }}>
         <div style={{ marginBottom: 12 }}>
           <div style={{ fontSize: 13, lineHeight: 1.6 }}>
             <span style={{ fontWeight: 700 }}>Paciente: </span>{plan.patient_nome} &nbsp;|&nbsp;
@@ -365,7 +364,6 @@ export default function PlanDocument({ plan, patientData }) {
             </div>
           </>
         )}
-        </div>
       </PageWrapper>
 
       {/* ============ PAGE 2: Resumo das 3 Etapas (Consolidado) ============ */}
