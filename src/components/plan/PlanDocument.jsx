@@ -89,6 +89,10 @@ function ThermalAnalysisText({ text }) {
     const matchedSection = line.length < 80 ? sections.find((s) => s.pattern.test(line)) : null;
 
     if (matchedSection) {
+      if (matchedSection.title === null) {
+        // Skip this line entirely (e.g. "Laudo Termográfico Clínico")
+        continue;
+      }
       if (currentSection && currentContent.length > 0) {
         structured.push({ title: currentSection, content: currentContent });
       }
