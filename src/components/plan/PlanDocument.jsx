@@ -446,14 +446,14 @@ export default function PlanDocument({ plan, patientData }) {
       {etapas.length > 0 &&
       <PageWrapper id="plan-page-etapas-resumo">
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 12 }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 12 }}>
               Etapa 1 a 8 sessões: Adaptação Muscular
             </div>
             <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
               {safeArray(etapas[0]?.ciclos).slice(0, 4).map((ciclo, i) =>
             <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                  <span><strong className="font-extrabold">{ciclo.objetivo}</strong></span>
+                  <span style={{ fontWeight: 600 }}>{ciclo.objetivo}</span>
                 </li>
             )}
             </ul>
@@ -462,14 +462,14 @@ export default function PlanDocument({ plan, patientData }) {
           <Divider />
 
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 12 }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 12 }}>
               Etapa 9 a 16: Correção postural e melhora da mobilidade
             </div>
             <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
               {safeArray(etapas[1]?.ciclos).slice(0, 4).map((ciclo, i) =>
             <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                  <span><strong className="font-extrabold">{ciclo.objetivo}</strong></span>
+                  <span style={{ fontWeight: 600 }}>{ciclo.objetivo}</span>
                 </li>
             )}
             </ul>
@@ -478,14 +478,14 @@ export default function PlanDocument({ plan, patientData }) {
           <Divider />
 
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 12 }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 12 }}>
               Etapa 17 a 24: Dores secundárias
             </div>
             <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
               {safeArray(etapas[2]?.ciclos).slice(0, 4).map((ciclo, i) =>
             <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                  <span><strong className="font-extrabold">{ciclo.objetivo}</strong></span>
+                  <span style={{ fontWeight: 600 }}>{ciclo.objetivo}</span>
                 </li>
             )}
             </ul>
@@ -495,10 +495,10 @@ export default function PlanDocument({ plan, patientData }) {
         <>
             <Divider />
             <div style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>
+              <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 10 }}>
                 Resumo do Plano Terapêutico
               </div>
-              <p style={{ fontSize: 13, lineHeight: 1.8, color: "#222", textAlign: "justify", margin: 0 }} className="font-extrabold">
+              <p style={{ fontSize: 13, lineHeight: 1.8, color: "#222", textAlign: "justify", margin: 0, fontWeight: 600 }}>
                 {plan.patient_nome} receberá um plano terapêutico completo, focado no alívio das dores do(a) {(patientData?.areas_afetadas || []).slice(0, 2).join(" e ")}, relaxamento da musculatura e prevenção de novas crises. O tratamento é progressivo, dividido em três etapas bem estruturadas, garantindo resultados duradouros, mais conforto no dia a dia e melhora significativa da qualidade de vida. Fechar o plano terapêutico completo de 24 sessões é o caminho ideal para que {plan.patient_nome} viva sem dor e desfrute de uma vida plena e equilibrada.
               </p>
             </div>
