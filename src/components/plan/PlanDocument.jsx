@@ -357,29 +357,26 @@ export default function PlanDocument({ plan, patientData }) {
             Avaliação Postural
           </div>
           <Divider />
-          <div style={{ display: "flex", gap: 12, height: "calc(100% - 40px)" }}>
-            {/* Left: images */}
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
-              {planData?.foto_postural_1 && (
-                <div style={{ textAlign: "center" }}>
-                  <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Frontal</p>
-                  <img src={planData.foto_postural_1} alt="Postural 1" style={{ width: "100%", height: "95mm", objectFit: "contain", borderRadius: 4 }} />
-                </div>
-              )}
-              {planData?.foto_postural_2 && (
-                <div style={{ textAlign: "center" }}>
-                  <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Lateral</p>
-                  <img src={planData.foto_postural_2} alt="Postural 2" style={{ width: "100%", height: "95mm", objectFit: "contain", borderRadius: 4 }} />
-                </div>
-              )}
-            </div>
-            {/* Divider vertical */}
-            <div style={{ width: 1, background: "#D1C4B0", flexShrink: 0 }} />
-            {/* Right: text */}
-            <div style={{ flex: 1, overflow: "hidden" }}>
-              {planData?.avaliacao_postural && <PosturalBullets text={planData.avaliacao_postural} />}
-            </div>
+          {/* Top: images side by side */}
+          <div style={{ display: "flex", gap: 10, marginBottom: 10, justifyContent: "center" }}>
+            {planData?.foto_postural_1 && (
+              <div style={{ flex: 1, textAlign: "center" }}>
+                <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Frontal</p>
+                <img src={planData.foto_postural_1} alt="Postural 1" style={{ width: "100%", height: "100mm", objectFit: "contain", borderRadius: 4 }} />
+              </div>
+            )}
+            {planData?.foto_postural_2 && (
+              <div style={{ flex: 1, textAlign: "center" }}>
+                <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Lateral</p>
+                <img src={planData.foto_postural_2} alt="Postural 2" style={{ width: "100%", height: "100mm", objectFit: "contain", borderRadius: 4 }} />
+              </div>
+            )}
           </div>
+          <Divider />
+          {/* Bottom: text side by side */}
+          {planData?.avaliacao_postural && (
+            <PosturalColumns text={planData.avaliacao_postural} />
+          )}
         </PageWrapper>
       )}
 
