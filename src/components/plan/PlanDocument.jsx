@@ -245,15 +245,15 @@ export default function PlanDocument({ plan, patientData }) {
         <PageWrapper id="plan-page-etapas-12">
           {etapas.slice(0, 2).map((etapa, ei) => (
             <div key={ei} style={{ marginBottom: 18 }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 5 }}>
                 Etapa {etapa.numero}: {etapa.nome}
               </div>
               {etapa.objetivo_etapa && (
-                <div style={{ fontSize: 11.5, color: "#444", marginBottom: 6, paddingLeft: 8 }}>
+                <div style={{ fontSize: 13, color: "#444", marginBottom: 7, paddingLeft: 8 }}>
                   <strong>Objetivo:</strong> {etapa.objetivo_etapa.substring(0, 180)}
                 </div>
               )}
-              <div style={{ fontSize: 11.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Intervenções:</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 5 }}>Intervenções:</div>
               {safeArray(etapa.ciclos).map((ciclo, ci) => (
                 <CicloCompact key={ci} ciclo={ciclo} />
               ))}
