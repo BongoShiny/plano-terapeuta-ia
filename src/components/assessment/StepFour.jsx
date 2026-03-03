@@ -184,9 +184,9 @@ Nas imagens termográficas, as áreas em vermelho/laranja indicam regiões com m
 Escreva um laudo termográfico clínico em português, em parágrafos corridos. Use a marcação [ALERTA] antes de frases sobre riscos clínicos de não tratar e [/ALERTA] para fechar. Não use asteriscos, hashtags ou outros símbolos de formatação.
 
 Estruture o laudo assim:
-1. Análises termográficos gerais.
-2. Para cada região com alteração térmica: descrição do achado, correlação clínica, e [ALERTA]risco clínico caso não seja tratado com o plano terapêutico adequado — mencione impacto funcional, progressão da dor e qualidade de vida de ${data.nome || "o paciente"}[/ALERTA].
-3. Conclusão clínica recomendando o plano de 24 sessões da Vibe Terapias.
+- Análises termográficos gerais.
+- Para cada região com alteração térmica: descrição do achado, correlação clínica, e [ALERTA]risco clínico caso não seja tratado com o plano terapêutico adequado — mencione impacto funcional, progressão da dor e qualidade de vida de ${data.nome || "o paciente"}[/ALERTA].
+- Conclusão clínica recomendando o plano de 24 sessões da Vibe Terapias.
 
 Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
       file_urls: data.fotos_camera_termal,
