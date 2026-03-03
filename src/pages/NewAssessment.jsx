@@ -162,7 +162,7 @@ export default function NewAssessment() {
 
   const canProceed = () => {
     if (step === 0) return data.nome && data.telefone && data.terapia_especial && data.sexo && data.idade;
-    if (step === 1) return data.queixas_principais && data.tempo_dor && (data.areas_afetadas || []).length > 0;
+    if (step === 1) return data.tempo_dor && (data.areas_afetadas || []).length > 0;
     if (step === 2) return (data.causas_provaveis || []).length > 0;
     if (step === 3) return data.objetivos_paciente;
     return false;
