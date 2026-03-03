@@ -85,7 +85,7 @@ function ThermalAnalysisText({ text }) {
   let currentContent = [];
 
   for (const line of lines) {
-    const matchedSection = sections.find((s) => s.pattern.test(line));
+    const matchedSection = line.length < 80 ? sections.find((s) => s.pattern.test(line)) : null;
 
     if (matchedSection) {
       if (currentSection && currentContent.length > 0) {
