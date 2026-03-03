@@ -379,7 +379,7 @@ export default function PlanDocument({ plan, patientData }) {
               Etapa 1 a 8 sessões: Adaptação Muscular
             </div>
             <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-              {safeArray(etapas[0]?.ciclos).slice(0, 2).map((ciclo, i) => (
+              {safeArray(etapas[0]?.ciclos).slice(0, 4).map((ciclo, i) => (
                 <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
                   <span><strong>{ciclo.objetivo}</strong></span>
@@ -395,7 +395,7 @@ export default function PlanDocument({ plan, patientData }) {
               Etapa 9 a 16: Correção postural e melhora da mobilidade
             </div>
             <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-              {safeArray(etapas[1]?.ciclos).slice(0, 2).map((ciclo, i) => (
+              {safeArray(etapas[1]?.ciclos).slice(0, 4).map((ciclo, i) => (
                 <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
                   <span><strong>{ciclo.objetivo}</strong></span>
@@ -411,7 +411,7 @@ export default function PlanDocument({ plan, patientData }) {
               Etapa 17 a 24: Dores secundárias
             </div>
             <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-              {safeArray(etapas[2]?.ciclos).slice(0, 2).map((ciclo, i) => (
+              {safeArray(etapas[2]?.ciclos).slice(0, 4).map((ciclo, i) => (
                 <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
                   <span><strong>{ciclo.objetivo}</strong></span>
