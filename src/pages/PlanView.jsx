@@ -86,14 +86,19 @@ export default function PlanView() {
           windowWidth: A4_W_PX,
           windowHeight: A4_H_PX,
           scrollX: 0,
-          scrollY: -window.scrollY,
+          scrollY: 0,
           logging: false,
+          ignoreElements: (el) => {
+            if (el.tagName === "IFRAME") return true;
+            return false;
+          },
           onclone: (clonedDoc) => {
-            const clonedEl = clonedDoc.getElementById(page.id);
-            if (clonedEl) {
-              clonedEl.style.display = "block";
-              clonedEl.style.visibility = "visible";
-            }
+            const allPages = clonedDoc.querySelectorAll("[id^='plan-page-']");
+            allPages.forEach((el) => {
+              el.style.display = "block";
+              el.style.visibility = "visible";
+              el.style.position = "relative";
+            });
           }
         });
         const imgData = canvas.toDataURL("image/jpeg", 0.95);
