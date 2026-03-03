@@ -462,7 +462,7 @@ export default function PlanDocument({ plan, patientData }) {
 
           <Divider />
 
-          <div style={{ marginBottom: 12 }}>
+          <div style={{ marginBottom: 20 }}>
             <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 12 }}>
               Etapa 17 a 24: Dores secundárias
             </div>
@@ -475,6 +475,20 @@ export default function PlanDocument({ plan, patientData }) {
             )}
             </ul>
           </div>
+
+          {planData?.objetivo_geral &&
+          <>
+            <Divider />
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 10 }}>
+                Resumo do Plano Terapêutico
+              </div>
+              <p style={{ fontSize: 13, lineHeight: 1.8, color: "#222", textAlign: "justify", margin: 0 }}>
+                {plan.patient_nome} receberá um plano terapêutico completo, focado no alívio das dores do(a) {(patientData?.areas_afetadas || []).slice(0, 2).join(" e ")}, relaxamento da musculatura e prevenção de novas crises. O tratamento é progressivo, dividido em três etapas bem estruturadas, garantindo resultados duradouros, mais conforto no dia a dia e melhora significativa da qualidade de vida. Fechar o plano terapêutico completo de 24 sessões é o caminho ideal para que {plan.patient_nome} viva sem dor e desfrute de uma vida plena e equilibrada.
+              </p>
+            </div>
+          </>
+          }
         </PageWrapper>
       }
 
