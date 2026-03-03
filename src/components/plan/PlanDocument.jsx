@@ -422,9 +422,7 @@ export default function PlanDocument({ plan, patientData }) {
             <Divider />
             <div style={{ marginBottom: 12 }}>
               <SectionTitle>Resultado da Avaliação com a câmera termal:</SectionTitle>
-              <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-                {planData.resultado_camera_termal}
-              </p>
+              <ThermalSummaryBullets text={planData.resultado_camera_termal} />
             </div>
           </>
         }
