@@ -165,7 +165,12 @@ export default function StepFour({ data, onChange }) {
 
   Realize uma avaliação postural concisa e profissional em português. IMPORTANTE: Mantenha o texto COMPACTO e OBJETIVO — use sentenças curtas e diretas. Escreva em texto corrido, sem usar markdown, asteriscos, hashtags, travessões decorativos ou qualquer símbolo de formatação.
 
-  Estruture em: Vista Frontal (Plano Coronal) e Vista Lateral (Plano Sagital). Para cada vista, mencione apenas os achados mais relevantes: cabeça, cervical, ombros, coluna e pelve. Identifique os desvios principais, assimetrias críticas e relação com as queixas do paciente. Use linguagem profissional e concisa. O objetivo é um texto compact que sempre caiba em tamanho pequeno (S) na visualização.`,
+  ESTRUTURA OBRIGATÓRIA:
+  Comece com análise da vista frontal (plano coronal) mencionando cabeça, ombros, coluna e pelve. 
+
+  Depois, OBRIGATORIAMENTE, adicione um parágrafo começando com "na vista lateral (plano sagital)" analisando a mesma região vista de perfil, identificando lordose cervical, cifose torácica, lordose lombar, posição da pelve e alinhamento geral.
+
+  Para cada vista, mencione apenas os achados mais relevantes e sua relação com as queixas do paciente. O objetivo é um texto compacto que sempre caiba em tamanho pequeno (S) na visualização.`,
       file_urls: fileUrls,
     });
     onChange("avaliacao_postural", result);
