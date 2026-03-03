@@ -185,7 +185,13 @@ function ThermalAnalysisText({ text }) {
 
 function ThermalSummaryBullets({ text }) {
   if (!text) return null;
-  const lines = text.split(/\n+/).map(l => l.trim()).filter(l => l.length > 0).slice(0, 5);
+  let lines = text.split(/\n+/).map(l => l.trim()).filter(l => l.length > 0);
+  // If it's a single block of text, split by sentences
+  if (lines.length <= 1 && text.length > 80) {
+    lines = text.split(/(?<=[.!?])\s+/).map(l => l.trim()).filter(l => l.length > 10).slice(0, 5);
+  } else {
+    lines = lines.slice(0, 5);
+  }
   return (
     <ul style={{ margin: 0, paddingLeft: 6, listStyle: "none" }}>
       {lines.map((line, i) => (
