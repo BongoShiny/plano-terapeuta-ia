@@ -73,6 +73,7 @@ function ThermalAnalysisText({ text }) {
 
   const sections = [
   { title: "Análises termográficas gerais", pattern: /an[aá]lises? termogr[aá]ficos? gerais/i },
+  { title: null, pattern: /laudo termogr[aá]fico cl[ií]nico/i },
   { title: "Região cervical", pattern: /regi[aã]o cervical/i },
   { title: "Região lombar", pattern: /regi[aã]o lombar/i },
   { title: "Região craniana", pattern: /regi[aã]o craniana/i },
