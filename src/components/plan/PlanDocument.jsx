@@ -116,7 +116,7 @@ function ThermalAnalysisText({ text }) {
 
   if (structured.length === 0) {
     return (
-      <div style={{ fontSize: 13, lineHeight: 1.9, color: "#222", textAlign: "justify" }}>
+      <div style={{ fontSize: 15, lineHeight: 1.9, color: "#222", textAlign: "justify" }}>
         {lines.map((line, i) =>
         <p key={i} style={{ margin: "0 0 8px 0" }}>
             {renderInlineText(line)}
@@ -126,19 +126,19 @@ function ThermalAnalysisText({ text }) {
   }
 
   return (
-    <div style={{ fontSize: 13, lineHeight: 1.9, color: "#222" }}>
+    <div style={{ fontSize: 15, lineHeight: 1.9, color: "#222" }}>
       {structured.map((section, si) =>
       <div key={si} style={{ marginBottom: 14 }}>
           {section.title &&
             <div style={{ display: "flex", gap: 8, marginBottom: 8, alignItems: "flex-start" }}>
               <span style={{ width: 8, height: 8, borderRadius: "50%", background: section.isConclusion ? "#166534" : "#C17F6A", flexShrink: 0, marginTop: 6 }} />
-              <span style={{ fontSize: section.isConclusion ? 14 : 13, fontWeight: 800, color: section.isConclusion ? "#166534" : "#1B3A4B" }}>{section.title}</span>
+              <span style={{ fontSize: section.isConclusion ? 16 : 15, fontWeight: 800, color: section.isConclusion ? "#166534" : "#1B3A4B" }}>{section.title}</span>
             </div>
           }
           {section.isConclusion ? (
             <div style={{ background: "linear-gradient(135deg, #166534 0%, #22803A 100%)", borderRadius: 10, padding: "14px 18px", marginTop: 4 }}>
               {section.content.map((line, li) => (
-                <p key={li} style={{ fontSize: 14.5, color: "#fff", lineHeight: 1.9, margin: "0 0 6px 0", fontWeight: 500, textAlign: "justify" }}>
+                <p key={li} style={{ fontSize: 15, color: "#fff", lineHeight: 1.9, margin: "0 0 6px 0", fontWeight: 500, textAlign: "justify" }}>
                   {renderInlineText(line)}
                 </p>
               ))}
@@ -157,7 +157,7 @@ function ThermalAnalysisText({ text }) {
                       return (
                         <div key={pi} style={{ display: "flex", gap: 8, marginBottom: 6, marginTop: 6, alignItems: "flex-start" }}>
                           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
-                          <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, textAlign: "justify" }}>
+                          <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, textAlign: "justify" }}>
                             {renderInlineText(part)}
                           </p>
                         </div>
@@ -167,7 +167,7 @@ function ThermalAnalysisText({ text }) {
                       return (
                         <div key={pi} style={{ display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start" }}>
                           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
-                          <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, textAlign: "justify", fontWeight: 400 }}>
+                          <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, textAlign: "justify", fontWeight: 400 }}>
                             {part}
                           </p>
                         </div>
@@ -182,7 +182,7 @@ function ThermalAnalysisText({ text }) {
             return (
               <div key={li} style={{ display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start" }}>
                   <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
-                  <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, textAlign: "justify", fontWeight: 400 }}>
+                  <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, textAlign: "justify", fontWeight: 400 }}>
                     {renderInlineText(line)}
                   </p>
                 </div>);
