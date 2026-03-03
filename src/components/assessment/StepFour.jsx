@@ -97,21 +97,30 @@ function ThermalPreview({ text }) {
               <span style={{ fontSize: 12, fontWeight: 700, color: section.isConclusion ? "#166534" : "#1B3A4B", lineHeight: 1.6 }}>{section.title}</span>
             </div>
           )}
-          {section.content.map((line, j) => {
-            if (section.isConclusion) {
+          {section.isConclusion ? (
+            <div style={{ background: "linear-gradient(135deg, #166534 0%, #22803A 100%)", borderRadius: 10, padding: "12px 16px", marginTop: 4 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6 }}>
+                <span style={{ fontSize: 16 }}>✅</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#fff", letterSpacing: 0.3 }}>RECOMENDAÇÃO CLÍNICA</span>
+              </div>
+              {section.content.map((line, j) => (
+                <p key={j} style={{ fontSize: 12, color: "#E8F5E9", lineHeight: 1.8, margin: "0 0 4px 0", fontWeight: 400 }}>{line}</p>
+              ))}
+            </div>
+          ) : (
+            section.content.map((line, j) => {
+              const isFirstGeneral = !section.title && j === 0;
               return (
-                <div key={j} style={{ background: "#DCFCE7", borderLeft: "3px solid #22C55E", borderRadius: 8, padding: "8px 12px", marginBottom: 4 }}>
-                  <span style={{ fontSize: 12, color: "#166534", lineHeight: 1.7, fontWeight: 500 }}>{line}</span>
+                <div key={j} style={{
+                  display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start",
+                  ...(isFirstGeneral ? { background: "#FFF0E6", borderRadius: 8, padding: "8px 10px", border: "1px solid #F0D5C4" } : {})
+                }}>
+                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
+                  <span style={{ fontSize: 12, color: isFirstGeneral ? "#7B2D00" : "#374151", lineHeight: 1.7, fontWeight: isFirstGeneral ? 500 : 400 }}>{line}</span>
                 </div>
               );
-            }
-            return (
-              <div key={j} style={{ display: "flex", gap: 8, marginBottom: 4, alignItems: "flex-start" }}>
-                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                <span style={{ fontSize: 12, color: "#374151", lineHeight: 1.7, fontWeight: 400 }}>{line}</span>
-              </div>
-            );
-          })}
+            })
+          )}
         </div>
       ))}
     </div>
