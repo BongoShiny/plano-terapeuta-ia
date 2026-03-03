@@ -80,24 +80,8 @@ export default function StepTwo({ data, onChange }) {
       </div>
 
       <div>
-        <label className="block text-sm font-semibold mb-1.5" style={{ color: "#374151" }}>
-          Principais queixas do paciente *
-        </label>
-        <textarea
-          value={data.queixas_principais || ""}
-          onChange={(e) => onChange("queixas_principais", e.target.value)}
-          placeholder="Descreva detalhadamente as queixas: tipo de dor, frequência, o que melhora, o que piora..."
-          rows={4}
-          className="w-full px-4 py-3 border rounded-xl text-sm focus:outline-none resize-none"
-          style={{ borderColor: "#D1D5DB", background: "white" }}
-          onFocus={(e) => (e.target.style.borderColor = "#C17F6A")}
-          onBlur={(e) => (e.target.style.borderColor = "#D1D5DB")}
-        />
-      </div>
-
-      <div>
         <label className="block text-sm font-semibold mb-2" style={{ color: "#374151" }}>
-          Áreas afetadas <span className="font-normal text-gray-400">(selecione todas)</span>
+          Principais queixas do paciente <span className="font-normal text-gray-400">(selecione todas)</span>
         </label>
         <div className="flex flex-wrap gap-2">
           {AREAS.map((area) => {
@@ -120,8 +104,6 @@ export default function StepTwo({ data, onChange }) {
           })}
         </div>
       </div>
-
-      <DorSlider value={data.intensidade_dor} onChange={onChange} />
 
       <div>
         <label className="block text-sm font-semibold mb-1.5" style={{ color: "#374151" }}>
@@ -146,21 +128,7 @@ export default function StepTwo({ data, onChange }) {
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-semibold mb-1.5" style={{ color: "#374151" }}>
-          Histórico completo da dor
-        </label>
-        <textarea
-          value={data.historico_dor || ""}
-          onChange={(e) => onChange("historico_dor", e.target.value)}
-          placeholder="Como começou a dor? Houve algum evento que desencadeou? Tratamentos anteriores? Exames realizados?"
-          rows={4}
-          className="w-full px-4 py-3 border rounded-xl text-sm focus:outline-none resize-none"
-          style={{ borderColor: "#D1D5DB", background: "white" }}
-          onFocus={(e) => (e.target.style.borderColor = "#C17F6A")}
-          onBlur={(e) => (e.target.style.borderColor = "#D1D5DB")}
-        />
-      </div>
+
     </div>
   );
 }

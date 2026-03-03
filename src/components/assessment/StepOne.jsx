@@ -69,7 +69,7 @@ export default function StepOne({ data, onChange }) {
             Sexo *
           </label>
           <div className="flex gap-2">
-            {["Feminino", "Masculino", "Outro"].map((s) => (
+            {["Feminino", "Masculino"].map((s) => (
               <button
                 key={s}
                 type="button"
