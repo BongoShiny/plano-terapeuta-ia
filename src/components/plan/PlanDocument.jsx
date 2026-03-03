@@ -292,9 +292,26 @@ export default function PlanDocument({ plan, patientData }) {
             <Divider />
             <div style={{ marginBottom: 12 }}>
               <SectionTitle>Resultado da Câmera Termal</SectionTitle>
-              <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-                {(planData.resultado_camera_termal || planData.analise_camera_termal || "").substring(0, 350)}
-              </p>
+              {(() => {
+                const termalText = planData.resultado_camera_termal || planData.analise_camera_termal || "";
+                // Extract sentences and show up to 3 as bullets
+                const sentences = termalText
+                  .replace(/\n+/g, " ")
+                  .split(/(?<=[.!?])\s+/)
+                  .map(s => s.trim())
+                  .filter(s => s.length > 15)
+                  .slice(0, 3);
+                return (
+                  <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                    {sentences.map((s, i) => (
+                      <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 5, lineHeight: 1.6 }}>
+                        <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
+                        <span>{s}</span>
+                      </li>
+                    ))}
+                  </ul>
+                );
+              })()}
             </div>
           </>
         )}
