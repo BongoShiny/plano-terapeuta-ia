@@ -74,7 +74,8 @@ function ThermalAnalysisText({ text }) {
   return (
     <div style={{ fontSize: 13.5, lineHeight: 1.9, color: "#222", textAlign: "justify" }}>
       {paragraphs.map((para, pi) => {
-        const isBold = /^[\d\-\*]\s*\./.test(para.trim());
+        const trimmed = para.trim();
+        const isBold = /^(\d+\.|[\-\*]\s)/.test(trimmed);
         return (
           <p key={pi} style={{ margin: "0 0 10px 0", fontWeight: isBold ? 700 : 400 }} className="text-sm">
             {renderInlineText(para)}
