@@ -51,7 +51,7 @@ REGRAS OBRIGATÓRIAS — SIGA À RISCA:
 JSON a retornar (preencha todos os campos com conteúdo real e personalizado para ${data.nome}):
 
 {
-  "resumo_queixas": "Parágrafo acolhedor e detalhado sobre as queixas de ${data.nome}, mencionando as áreas afetadas (${(data.areas_afetadas || []).join(", ")}), o tempo de dor (${data.tempo_dor}) e causas prováveis. Use o nome várias vezes.",
+  "resumo_queixas": "Escreva UM parágrafo de no máximo 3 frases, acolhedor e completo, sobre as queixas de ${data.nome}. Mencione as áreas afetadas separadas por vírgula (${(data.areas_afetadas || []).join(", ")}), o tempo de dor (${data.tempo_dor}) e causas prováveis. NÃO use barra (/) para separar palavras. Termine sempre com ponto final.",
   "resultado_camera_termal": "${data.resultado_camera_termal ? data.resultado_camera_termal : "A câmera termal será utilizada na primeira sessão de " + data.nome + " para mapear os pontos de calor e inflamação, identificando com precisão as áreas de maior sobrecarga muscular e personalizando ainda mais o tratamento."}",
   "objetivos_tratamento": [
     "Objetivo específico 1 baseado nas queixas de ${data.nome} (ex: reduzir dor em área específica)",
@@ -60,8 +60,8 @@ JSON a retornar (preencha todos os campos com conteúdo real e personalizado par
     "Objetivo específico 4 (ex: eliminar inflamação identificada na câmera termal)",
     "Garantir que ${data.nome} mantenha qualidade de vida, postura e bem-estar a longo prazo"
   ],
-  "objetivo_geral": "Parágrafo geral e persuasivo sobre como o plano proporcionará alívio imediato, recuperação muscular e qualidade de vida para ${data.nome}. Mencione o nome várias vezes.",
-  "explicacao_terapia": "Parágrafo explicando como a terapia ${data.terapia_especial} vai tratar especificamente as queixas de ${data.nome}. Enfatize que a Liberação Miofascial é a base de todo o tratamento e como ela age nos tecidos de ${data.nome}.",
+  "objetivo_geral": "Escreva UM parágrafo de no máximo 3 frases, persuasivo sobre como o plano proporcionará alívio imediato, recuperação muscular e qualidade de vida para ${data.nome}. Mencione o nome. Termine sempre com ponto final.",
+  "explicacao_terapia": "Escreva UM parágrafo de no máximo 3 frases, explicando como a terapia ${data.terapia_especial} vai tratar especificamente as queixas de ${data.nome}. Enfatize que a Liberação Miofascial é a base do tratamento e como ela age nos tecidos de ${data.nome}. Termine sempre com ponto final.",
   "etapas": [
     {
       "numero": 1,
@@ -148,7 +148,7 @@ JSON a retornar (preencha todos os campos com conteúdo real e personalizado par
       ]
     }
   ],
-  "resumo_final": "Parágrafo final persuasivo e acolhedor sobre o plano de ${data.nome}. Mencione o nome várias vezes. Destaque as 3 etapas, o alívio progressivo e a qualidade de vida que ${data.nome} irá recuperar. Finalize convencendo ${data.nome} de que fechar o pacote completo de 24 sessões é o caminho para uma vida sem dor e com bem-estar duradouro."
+  "resumo_final": "Escreva UM parágrafo de no máximo 4 frases, persuasivo e acolhedor sobre o plano de ${data.nome}. Destaque as 3 etapas e o alívio progressivo. Convença ${data.nome} de que o pacote de 24 sessões é o caminho para uma vida sem dor. Termine sempre com ponto final."
 }`;
 }
 
