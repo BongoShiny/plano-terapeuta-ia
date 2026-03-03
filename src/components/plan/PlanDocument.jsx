@@ -267,15 +267,15 @@ export default function PlanDocument({ plan, patientData }) {
       {etapas.length > 2 && (
         <PageWrapper id="plan-page-etapa-3">
           <div style={{ marginBottom: 18 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: "#1B3A4B", marginBottom: 5 }}>
               Etapa {etapas[2].numero}: {etapas[2].nome}
             </div>
             {etapas[2].objetivo_etapa && (
-              <div style={{ fontSize: 11.5, color: "#444", marginBottom: 6, paddingLeft: 8 }}>
+              <div style={{ fontSize: 13, color: "#444", marginBottom: 7, paddingLeft: 8 }}>
                 <strong>Objetivo:</strong> {etapas[2].objetivo_etapa.substring(0, 180)}
               </div>
             )}
-            <div style={{ fontSize: 11.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>Intervenções:</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 5 }}>Intervenções:</div>
             {safeArray(etapas[2].ciclos).map((ciclo, ci) => (
               <CicloCompact key={ci} ciclo={ciclo} />
             ))}
@@ -286,7 +286,7 @@ export default function PlanDocument({ plan, patientData }) {
               <Divider />
               <div>
                 <SectionTitle>Resumo do Plano Terapêutico</SectionTitle>
-                <p style={{ fontSize: 11.5, lineHeight: 1.6, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
+                <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
                   {planData.resumo_final.substring(0, 500)}
                 </p>
               </div>
