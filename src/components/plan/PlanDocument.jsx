@@ -128,12 +128,12 @@ function ThermalAnalysisText({ text }) {
           </div>
           <div style={{ paddingLeft: 0 }}>
             {section.content.map((line, li) => {
-              const isPresent = line.toLowerCase().startsWith("o presente");
+              const isFirstContent = li === 0;
               return (
                 <div key={li} style={{ display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start" }}>
                   <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
                   <p style={{ margin: 0, fontSize: 13, lineHeight: 1.7, textAlign: "justify" }}>
-                    {isPresent ? (
+                    {isFirstContent ? (
                       <strong>{renderInlineText(line.replace(/\s+e\/ou\s+/g, " e "))}</strong>
                     ) : (
                       renderInlineText(line)
