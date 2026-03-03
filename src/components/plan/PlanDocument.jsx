@@ -324,6 +324,10 @@ export default function PlanDocument({ plan, patientData }) {
       {/* ============ PAGE 4: Fotos Posturais + Avaliação Postural ============ */}
       {hasPostural && (
         <PageWrapper id="plan-page-postural">
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 6, textAlign: "center" }}>
+            Avaliação Postural
+          </div>
+          <Divider />
           {(planData?.foto_postural_1 || planData?.foto_postural_2) && (
             <div style={{ display: "flex", gap: 10, marginBottom: 8, justifyContent: "center" }}>
               {planData?.foto_postural_1 && (
@@ -343,9 +347,6 @@ export default function PlanDocument({ plan, patientData }) {
           {planData?.avaliacao_postural && (
             <>
               <Divider />
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>
-                Na vista frontal (plano coronal) e lateral (plano sagital):
-              </div>
               <PosturalBullets text={planData.avaliacao_postural} />
             </>
           )}
