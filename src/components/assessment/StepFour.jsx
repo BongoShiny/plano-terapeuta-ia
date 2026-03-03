@@ -47,17 +47,61 @@ function PosturalPreview({ text }) {
 
 function ThermalPreview({ text }) {
   if (!text) return null;
-  const paragraphs = text.split(/\n+/).filter(p => p.trim().length > 15).slice(0, 5);
+
+  // Split text into lines/paragraphs
+  const lines = text.split(/\n+/).map(l => l.trim()).filter(l => l.length > 0);
+
+  // Parse into sections: each section has a title line and content lines
+  const sections = [];
+  let current = null;
+
+  // Known section title keywords
+  const titlePatterns = [
+    /laudo termogr[aá]fico cl[ií]nico/i,
+    /achados termogr[aá]ficos gerais/i,
+    /regi[aã]o cervical/i,
+    /regi[aã]o lombar/i,
+    /regi[aã]o tor[aá]cica/i,
+    /conclus[aã]o cl[ií]nica/i,
+    /an[aá]lise por regi[aã]o/i,
+    /regi[aã]o dos ombros/i,
+    /regi[aã]o do joelho/i,
+    /regi[aã]o dos quadris/i,
+    /\d+\.\s/,
+  ];
+
+  const isTitle = (line) =>
+    titlePatterns.some(p => p.test(line)) || /^\d+\./.test(line);
+
+  for (const line of lines) {
+    if (isTitle(line)) {
+      if (current) sections.push(current);
+      current = { title: line.replace(/^\d+\.\s*/, ''), content: [] };
+    } else {
+      if (!current) current = { title: null, content: [] };
+      current.content.push(line);
+    }
+  }
+  if (current) sections.push(current);
+
   return (
     <div className="mb-3 p-4 rounded-xl" style={{ background: "#FFF5F0" }}>
-      <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-        {paragraphs.map((p, i) => (
-          <li key={i} style={{ display: "flex", gap: 8, fontSize: 12, marginBottom: 8, lineHeight: 1.7, color: "#1B3A4B" }}>
-            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-            <span>{p.trim()}</span>
-          </li>
-        ))}
-      </ul>
+      {sections.map((section, i) => (
+        <div key={i} style={{ marginBottom: 10 }}>
+          {section.title && (
+            <div style={{ display: "flex", gap: 8, marginBottom: 4, alignItems: "flex-start" }}>
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#1B3A4B", lineHeight: 1.6 }}>{section.title}</span>
+            </div>
+          )}
+          {section.content.map((line, j) => (
+            <div key={j} style={{ display: "flex", gap: 8, marginBottom: 4, paddingLeft: section.title ? 15 : 0, alignItems: "flex-start" }}>
+              {!section.title && <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />}
+              <span style={{ fontSize: 12, color: "#374151", lineHeight: 1.7 }}>{line}</span>
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }
