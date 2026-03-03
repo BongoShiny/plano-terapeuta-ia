@@ -324,7 +324,7 @@ export default function PlanDocument({ plan, patientData }) {
               <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
                 {safeArray(planData.objetivos_tratamento).slice(0, 5).map((obj, i) => (
                   <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 4, lineHeight: 1.6 }}>
-                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#1B3A4B", flexShrink: 0, marginTop: 5 }} />
+                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
                     <span>{obj}</span>
                   </li>
                 ))}
