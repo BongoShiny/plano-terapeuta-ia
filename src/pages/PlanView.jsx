@@ -56,6 +56,40 @@ export default function PlanView() {
     }
   };
 
+  const [exportingPdf, setExportingPdf] = useState(false);
+
+  const exportPdf = async () => {
+    setExportingPdf(true);
+    try {
+      const container = document.getElementById("plan-print-area");
+      const pages = container.querySelectorAll("[id^='plan-page-']");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const pdfWidth = 210;
+      const pdfHeight = 297;
+
+      for (let i = 0; i < pages.length; i++) {
+        const page = pages[i];
+        const canvas = await html2canvas(page, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: "#ffffff",
+          width: page.offsetWidth,
+          height: page.offsetHeight,
+        });
+        const imgData = canvas.toDataURL("image/jpeg", 0.95);
+        if (i > 0) pdf.addPage();
+        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+      }
+
+      pdf.save(`Plano_Vibe_${plan.patient_nome || "Paciente"}.pdf`);
+    } catch (e) {
+      alert("Erro ao gerar o PDF. Tente novamente.");
+    } finally {
+      setExportingPdf(false);
+    }
+  };
+
   const markAsPresented = async () => {
     await base44.entities.TherapeuticPlan.update(plan.id, { status: "Apresentado" });
     setPlan((p) => ({ ...p, status: "Apresentado" }));
