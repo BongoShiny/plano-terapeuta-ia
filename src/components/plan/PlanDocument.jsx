@@ -486,7 +486,7 @@ export default function PlanDocument({ plan, patientData }) {
           </div>
           <Divider />
           <p style={{ fontSize: 13, lineHeight: 1.8, color: "#222", textAlign: "justify", margin: 0 }}>
-            {plan.patient_nome} receberá um plano terapêutico completo, focado no alívio das dores do(a) {(data.areas_afetadas || []).slice(0, 2).join(" e ")}, relaxamento da musculatura e prevenção de novas crises. O tratamento é progressivo, dividido em três etapas bem estruturadas, garantindo resultados duradouros, mais conforto no dia a dia e melhora significativa da qualidade de vida. Fechar o plano terapêutico completo de 24 sessões é o caminho ideal para que {plan.patient_nome} viva sem dor e desfrute de uma vida plena e equilibrada.
+            {plan.patient_nome} receberá um plano terapêutico completo, focado no alívio das dores do(a) {(patientData?.areas_afetadas || []).slice(0, 2).join(" e ")}, relaxamento da musculatura e prevenção de novas crises. O tratamento é progressivo, dividido em três etapas bem estruturadas, garantindo resultados duradouros, mais conforto no dia a dia e melhora significativa da qualidade de vida. Fechar o plano terapêutico completo de 24 sessões é o caminho ideal para que {plan.patient_nome} viva sem dor e desfrute de uma vida plena e equilibrada.
           </p>
         </PageWrapper>
       }
