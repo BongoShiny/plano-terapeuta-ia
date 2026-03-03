@@ -311,7 +311,7 @@ export default function PlanDocument({ plan, patientData }) {
               {planData?.foto_postural_1 && (
                 <div style={{ textAlign: "center" }}>
                   <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Frontal</p>
-                  <img src={planData.foto_postural_1} alt="Postural 1" style={{ height: "80mm", width: "auto", maxWidth: "90mm", borderRadius: 4, objectFit: "contain" }} />
+                  <img src={planData.foto_postural_1} alt="Postural 1" style={{ height: "110mm", width: "auto", maxWidth: "90mm", borderRadius: 4, objectFit: "contain" }} />
                 </div>
               )}
               {planData?.foto_postural_2 && (
