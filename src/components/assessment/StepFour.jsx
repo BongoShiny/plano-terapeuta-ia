@@ -45,6 +45,23 @@ function PosturalPreview({ text }) {
   );
 }
 
+function ThermalPreview({ text }) {
+  if (!text) return null;
+  const paragraphs = text.split(/\n+/).filter(p => p.trim().length > 15).slice(0, 5);
+  return (
+    <div className="mb-3 p-4 rounded-xl" style={{ background: "#FFF5F0" }}>
+      <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+        {paragraphs.map((p, i) => (
+          <li key={i} style={{ display: "flex", gap: 8, fontSize: 12, marginBottom: 8, lineHeight: 1.7, color: "#1B3A4B" }}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
+            <span>{p.trim()}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function PhotoUploader({ label, value, onChange }) {
   const [uploading, setUploading] = useState(false);
 
