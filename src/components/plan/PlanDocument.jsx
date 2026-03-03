@@ -313,7 +313,7 @@ export default function PlanDocument({ plan, patientData }) {
                   .split(/(?<=[.!?])\s+/)
                   .map(s => s.trim())
                   .filter(s => s.length > 15)
-                  .slice(0, 3);
+                  .slice(1, 4);
                 return (
                   <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
                     {sentences.map((s, i) => (
