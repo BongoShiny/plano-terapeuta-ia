@@ -302,22 +302,22 @@ export default function PlanDocument({ plan, patientData }) {
       {/* ============ PAGE 4: Fotos Posturais + Avaliação Postural ============ */}
       {hasPostural && (
         <PageWrapper id="plan-page-postural">
-          <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 8, textAlign: "center" }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 6, textAlign: "center" }}>
             Avaliação Postural
           </div>
           <Divider />
           {(planData?.foto_postural_1 || planData?.foto_postural_2) && (
-            <div style={{ display: "flex", gap: 12, marginBottom: 10 }}>
+            <div style={{ display: "flex", gap: 10, marginBottom: 8, justifyContent: "center" }}>
               {planData?.foto_postural_1 && (
-                <div style={{ flex: 1, textAlign: "center" }}>
-                  <p style={{ fontSize: 10, fontWeight: 700, color: "#1B3A4B", margin: "0 0 4px 0" }}>Vista Frontal</p>
-                  <img src={planData.foto_postural_1} alt="Postural 1" style={{ width: "100%", maxHeight: "90mm", borderRadius: 6, objectFit: "contain" }} />
+                <div style={{ textAlign: "center" }}>
+                  <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Frontal</p>
+                  <img src={planData.foto_postural_1} alt="Postural 1" style={{ height: "55mm", width: "auto", maxWidth: "80mm", borderRadius: 4, objectFit: "contain" }} />
                 </div>
               )}
               {planData?.foto_postural_2 && (
-                <div style={{ flex: 1, textAlign: "center" }}>
-                  <p style={{ fontSize: 10, fontWeight: 700, color: "#1B3A4B", margin: "0 0 4px 0" }}>Vista Lateral</p>
-                  <img src={planData.foto_postural_2} alt="Postural 2" style={{ width: "100%", maxHeight: "90mm", borderRadius: 6, objectFit: "contain" }} />
+                <div style={{ textAlign: "center" }}>
+                  <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Lateral</p>
+                  <img src={planData.foto_postural_2} alt="Postural 2" style={{ height: "55mm", width: "auto", maxWidth: "80mm", borderRadius: 4, objectFit: "contain" }} />
                 </div>
               )}
             </div>
@@ -325,8 +325,8 @@ export default function PlanDocument({ plan, patientData }) {
           {planData?.avaliacao_postural && (
             <>
               <Divider />
-              <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, textAlign: "justify", whiteSpace: "pre-wrap", color: "#222" }}>
-                {planData.avaliacao_postural.substring(0, 1200)}
+              <p style={{ fontSize: 12.5, lineHeight: 1.65, margin: 0, textAlign: "justify", whiteSpace: "pre-wrap", color: "#222" }}>
+                {planData.avaliacao_postural}
               </p>
             </>
           )}
