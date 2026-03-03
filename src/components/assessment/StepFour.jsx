@@ -198,7 +198,7 @@ Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
     });
     onChange("analise_camera_termal", result);
     if (!data.resultado_camera_termal) {
-      onChange("resultado_camera_termal", result.replace(/\*\*/g, '').split('\n').filter(l => l.trim()).slice(0, 4).join(' ').substring(0, 500));
+      onChange("resultado_camera_termal", result.replace(/\*\*/g, '').split('\n').filter(l => l.trim()).slice(0, 6).join(' ').substring(0, 1200));
     }
     if (!data.objetivos_paciente) {
       const areas = (data.areas_afetadas || []).join(", ");
