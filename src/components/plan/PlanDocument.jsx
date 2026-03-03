@@ -131,13 +131,21 @@ function ThermalAnalysisText({ text }) {
       <div key={si} style={{ marginBottom: 14 }}>
           {section.title &&
             <div style={{ display: "flex", gap: 8, marginBottom: 8, alignItems: "flex-start" }}>
-              <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
-              <span style={{ fontSize: 13, fontWeight: 800, color: "#1B3A4B" }}>{section.title}</span>
+              <span style={{ width: 8, height: 8, borderRadius: "50%", background: section.isConclusion ? "#166534" : "#C17F6A", flexShrink: 0, marginTop: 6 }} />
+              <span style={{ fontSize: section.isConclusion ? 14 : 13, fontWeight: 800, color: section.isConclusion ? "#166534" : "#1B3A4B" }}>{section.title}</span>
             </div>
           }
+          {section.isConclusion ? (
+            <div style={{ background: "linear-gradient(135deg, #166534 0%, #22803A 100%)", borderRadius: 10, padding: "14px 18px", marginTop: 4 }}>
+              {section.content.map((line, li) => (
+                <p key={li} style={{ fontSize: 14.5, color: "#fff", lineHeight: 1.9, margin: "0 0 6px 0", fontWeight: 500, textAlign: "justify" }}>
+                  {renderInlineText(line)}
+                </p>
+              ))}
+            </div>
+          ) : (
           <div style={{ paddingLeft: 0 }}>
             {section.content.map((line, li) => {
-            // Split line into normal text and alert parts
             const alertParts = line.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\])/g);
             const hasAlert = alertParts.some(p => p.startsWith("[ALERTA]"));
 
@@ -180,6 +188,7 @@ function ThermalAnalysisText({ text }) {
                 </div>);
           })}
           </div>
+          )}
         </div>
       )}
     </div>);
