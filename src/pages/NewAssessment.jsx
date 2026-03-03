@@ -28,7 +28,7 @@ DADOS DO PACIENTE:
 - Terapia Especial: ${data.terapia_especial || "Liberação Miofascial"}
 - Queixas Principais: ${data.queixas_principais || "Não informado"}
 - Áreas Afetadas: ${(data.areas_afetadas || []).join(", ") || "Não informado"}
-- Intensidade da Dor: ${data.intensidade_dor || 0}/10
+
 - Tempo de Dor: ${data.tempo_dor || "Não informado"}
 - Histórico: ${data.historico_dor || "Não informado"}
 - Causas Prováveis: ${(data.causas_provaveis || []).join(", ") || "Não informado"}
