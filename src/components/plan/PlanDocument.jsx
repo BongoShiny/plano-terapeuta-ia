@@ -388,41 +388,16 @@ export default function PlanDocument({ plan, patientData }) {
           </div>
         }
 
-        {(planData?.analise_camera_termal || planData?.resultado_camera_termal) &&
-        (() => {
-          const termalText = planData.analise_camera_termal || planData.resultado_camera_termal || "";
-          const sectionPatterns = [
-            { label: "Análises termográficas gerais", pattern: /an[aá]lises? termogr[aá]ficos? gerais/i },
-            { label: "Região cervical", pattern: /regi[aã]o cervical/i },
-            { label: "Região lombar", pattern: /regi[aã]o lombar/i },
-            { label: "Região craniana", pattern: /regi[aã]o craniana/i },
-            { label: "Região torácica", pattern: /regi[aã]o tor[aá]cica/i },
-            { label: "Região dos ombros", pattern: /regi[aã]o dos ombros/i },
-            { label: "Região do joelho", pattern: /regi[aã]o do joelho/i },
-            { label: "Região dos quadris", pattern: /regi[aã]o dos quadris/i },
-            { label: "Região abdominal", pattern: /regi[aã]o abdominal/i },
-            { label: "Região do quadril e glúteos", pattern: /regi[aã]o do quadril/i },
-            { label: "Conclusão clínica", pattern: /conclus[aã]o cl[ií]nica/i },
-          ];
-          const found = sectionPatterns.filter(s => s.pattern.test(termalText));
-          if (found.length === 0) return null;
-          return (
-            <>
-              <Divider />
-              <div style={{ marginBottom: 12 }}>
-                <SectionTitle>Resultado da Câmera Termal</SectionTitle>
-                <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                  {found.map((s, i) => (
-                    <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 4, lineHeight: 1.6 }}>
-                      <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                      <span style={{ fontWeight: 700 }}>{s.label}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </>
-          );
-        })()
+        {planData?.resultado_camera_termal &&
+        <>
+            <Divider />
+            <div style={{ marginBottom: 12 }}>
+              <SectionTitle>Resultado da Avaliação com a câmera termal:</SectionTitle>
+              <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
+                {planData.resultado_camera_termal}
+              </p>
+            </div>
+          </>
         }
 
         {safeArray(planData?.objetivos_tratamento).length > 0 &&
