@@ -594,16 +594,29 @@ export default function PlanDocument({ plan, patientData }) {
         </PageWrapper>
       }
 
-      {/* ============ PAGE 6: Análise Câmera Termal ============ */}
-      {(planData?.analise_camera_termal || planData?.resultado_camera_termal) &&
-      <PageWrapper id="plan-page-termal-analise">
-          <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", marginBottom: 10, textAlign: "center", letterSpacing: 0.5 }}>
-            Análise da Câmera Termal
-          </div>
-          <Divider />
-          <ThermalAnalysisText text={planData.analise_camera_termal || planData.resultado_camera_termal} />
-        </PageWrapper>
-      }
+      {/* ============ PAGE 6+: Análise Câmera Termal (split across pages) ============ */}
+      {(planData?.analise_camera_termal || planData?.resultado_camera_termal) && (() => {
+        const allSections = parseThermalSections(planData.analise_camera_termal || planData.resultado_camera_termal);
+        // Estimate ~4 sections per page (each section ~50mm height approx)
+        const MAX_SECTIONS_PER_PAGE = 4;
+        const pages = [];
+        for (let i = 0; i < allSections.length; i += MAX_SECTIONS_PER_PAGE) {
+          pages.push(allSections.slice(i, i + MAX_SECTIONS_PER_PAGE));
+        }
+        return pages.map((pageSections, pi) => (
+          <PageWrapper key={`termal-analise-${pi}`} id={`plan-page-termal-analise-${pi}`}>
+            <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", marginBottom: 10, textAlign: "center", letterSpacing: 0.5 }}>
+              Análise da Câmera Termal{pages.length > 1 ? ` (${pi + 1}/${pages.length})` : ""}
+            </div>
+            <Divider />
+            <div style={{ fontSize: 15, lineHeight: 1.9, color: "#222" }}>
+              {pageSections.map((section, si) => (
+                <ThermalSectionBlock key={si} section={section} />
+              ))}
+            </div>
+          </PageWrapper>
+        ));
+      })()}
 
       {/* Fallback */}
       {!planData && plan.plano_completo &&
