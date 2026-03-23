@@ -34,6 +34,13 @@ export function ClinicProvider({ children }) {
   const canManageUsers = isSuperAdmin || user?.role === "admin";
   const canManageClinics = user?.role === "super_admin" || user?.role === "admin";
 
+  // Auto-setup: if user has no role yet, set them as super_admin (first-time setup)
+  useEffect(() => {
+    if (user && !user.role) {
+      base44.auth.updateMe({ role: "super_admin", cargo: "Super Admin", aprovado: true });
+    }
+  }, [user]);
+
   useEffect(() => {
     if (user && !selectedClinicId && user.clinic_id) {
       setSelectedClinicId(user.clinic_id);
