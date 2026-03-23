@@ -198,23 +198,52 @@ export default function NewAssessment() {
       const result = await base44.integrations.Core.InvokeLLM({
         prompt,
         file_urls: postureUrls.length > 0 ? postureUrls : undefined,
+        response_json_schema: {
+          type: "object",
+          properties: {
+            resumo_queixas: { type: "string" },
+            resultado_camera_termal: { type: "string" },
+            objetivos_tratamento: { type: "array", items: { type: "string" } },
+            objetivo_geral: { type: "string" },
+            explicacao_terapia: { type: "string" },
+            etapas: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  numero: { type: "number" },
+                  nome: { type: "string" },
+                  sessoes: { type: "string" },
+                  objetivo_etapa: { type: "string" },
+                  ciclos: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        numero: { type: "number" },
+                        objetivo: { type: "string" },
+                        tecnicas: { type: "string" },
+                        musculos: { type: "string" }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            resumo_final: { type: "string" }
+          }
+        }
       });
 
-      // Inject photo URLs into plan JSON
-      let finalPlan = result;
-      try {
-        const jsonMatch = result.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          const obj = JSON.parse(jsonMatch[0]);
-          if (data.foto_postural_1) obj.foto_postural_1 = data.foto_postural_1;
-          if (data.foto_postural_2) obj.foto_postural_2 = data.foto_postural_2;
-          if (data.fotos_camera_termal?.length) obj.fotos_camera_termal = data.fotos_camera_termal;
-          if (data.avaliacao_postural) obj.avaliacao_postural = data.avaliacao_postural;
-          if (data.resultado_camera_termal) obj.resultado_camera_termal = data.resultado_camera_termal;
-          if (data.analise_camera_termal) obj.analise_camera_termal = data.analise_camera_termal;
-          finalPlan = JSON.stringify(obj);
-        }
-      } catch (e) {}
+      // result is already a parsed object when response_json_schema is used
+      const obj = typeof result === "string" ? JSON.parse(result.match(/\{[\s\S]*\}/)?.[0] || "{}") : result;
+      if (data.foto_postural_1) obj.foto_postural_1 = data.foto_postural_1;
+      if (data.foto_postural_2) obj.foto_postural_2 = data.foto_postural_2;
+      if (data.fotos_camera_termal?.length) obj.fotos_camera_termal = data.fotos_camera_termal;
+      if (data.avaliacao_postural) obj.avaliacao_postural = data.avaliacao_postural;
+      if (data.resultado_camera_termal) obj.resultado_camera_termal = data.resultado_camera_termal;
+      if (data.analise_camera_termal) obj.analise_camera_termal = data.analise_camera_termal;
+      const finalPlan = JSON.stringify(obj);
 
       await base44.entities.TherapeuticPlan.update(plan.id, {
         plano_completo: finalPlan,
