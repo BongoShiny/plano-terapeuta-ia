@@ -29,13 +29,14 @@ function PosturalPreview({ text }) {
   );
 
   return (
-    <div className="mt-4 p-4 rounded-xl" style={{ background: "#F0F7FF" }}>
-      <div style={{ display: "flex", gap: 12 }}>
+    <div className="mt-4 p-3 sm:p-4 rounded-xl" style={{ background: "#F0F7FF" }}>
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-3">
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>Na vista frontal (plano coronal)</div>
           <BulletList sentences={frontalSentences} />
         </div>
-        <div style={{ width: 1, background: "#D1C4B0", flexShrink: 0 }} />
+        <div className="hidden sm:block" style={{ width: 1, background: "#D1C4B0", flexShrink: 0 }} />
+        <div className="sm:hidden" style={{ height: 1, background: "#D1C4B0" }} />
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>Na vista lateral (plano sagital)</div>
           <BulletList sentences={lateralSentences} />
@@ -372,8 +373,8 @@ Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
         </div>
         <div className="space-y-2">
           {summaryItems.map((item) => (
-            <div key={item.label} className="flex gap-2 text-sm">
-              <span className="font-semibold w-36 flex-shrink-0" style={{ color: "#1B3A4B" }}>
+            <div key={item.label} className="flex flex-col sm:flex-row gap-0.5 sm:gap-2 text-sm">
+              <span className="font-semibold sm:w-36 flex-shrink-0" style={{ color: "#1B3A4B" }}>
                 {item.label}:
               </span>
               <span className="text-gray-700 flex-1">{item.value}</span>

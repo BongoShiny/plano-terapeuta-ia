@@ -22,7 +22,7 @@ export default function CameraThermalUploader({ value = [], onChange }) {
 
   return (
     <div>
-      <div className="grid grid-cols-3 gap-3 mb-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-3">
         {value.map((url, i) => (
           <div key={i} className="relative rounded-xl overflow-hidden border" style={{ borderColor: "#D1D5DB", aspectRatio: "1" }}>
             <img src={url} alt={`Termal ${i + 1}`} className="w-full h-full object-cover" />

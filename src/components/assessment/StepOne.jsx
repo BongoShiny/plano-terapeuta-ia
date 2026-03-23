@@ -131,7 +131,7 @@ export default function StepOne({ data, onChange }) {
             <Stethoscope className="inline w-4 h-4 mr-1.5" style={{ color: "#C17F6A" }} />
             Terapia Especial *
           </label>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {TERAPIAS.map((t) => (
               <button
                 key={t}

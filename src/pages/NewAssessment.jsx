@@ -279,12 +279,12 @@ export default function NewAssessment() {
         </div>
 
         {/* Step Indicator */}
-        <div className="flex items-center gap-0 mb-8">
+        <div className="flex items-center gap-0 mb-6 md:mb-8">
           {STEPS.map((s, i) => (
             <React.Fragment key={i}>
               <div className="flex flex-col items-center">
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all"
+                  className="w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-bold transition-all"
                   style={{
                     background: i === step ? "#C17F6A" : i < step ? "#1B3A4B" : "#E5E7EB",
                     color: i <= step ? "white" : "#9CA3AF",
@@ -298,7 +298,7 @@ export default function NewAssessment() {
                     i + 1
                   )}
                 </div>
-                <div className="mt-1 text-center hidden md:block">
+                <div className="mt-1 text-center hidden sm:block">
                   <p className="text-xs font-semibold" style={{ color: i === step ? "#C17F6A" : "#9CA3AF" }}>
                     {s.title}
                   </p>
@@ -306,7 +306,7 @@ export default function NewAssessment() {
               </div>
               {i < STEPS.length - 1 && (
                 <div
-                  className="flex-1 h-0.5 mb-4"
+                  className="flex-1 h-0.5 mb-0 sm:mb-4"
                   style={{ background: i < step ? "#1B3A4B" : "#E5E7EB" }}
                 />
               )}
@@ -315,7 +315,7 @@ export default function NewAssessment() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-3xl shadow-sm border p-6 md:p-8 mb-6" style={{ borderColor: "#E5E7EB" }}>
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-sm border p-4 sm:p-6 md:p-8 mb-4 md:mb-6" style={{ borderColor: "#E5E7EB" }}>
           {step === 0 && <StepOne data={data} onChange={handleChange} />}
           {step === 1 && <StepTwo data={data} onChange={handleChange} onSkipToStep={setStep} />}
           {step === 2 && <StepThree data={data} onChange={handleChange} />}
@@ -323,11 +323,11 @@ export default function NewAssessment() {
         </div>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center gap-3 pb-4">
           <button
             onClick={() => setStep((p) => p - 1)}
             disabled={step === 0}
-            className="flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-medium transition-all"
+            className="flex items-center gap-1.5 px-3 sm:px-5 py-3 rounded-xl text-sm font-medium transition-all flex-shrink-0"
             style={{
               background: step === 0 ? "#F3F4F6" : "white",
               color: step === 0 ? "#D1D5DB" : "#374151",
@@ -336,14 +336,14 @@ export default function NewAssessment() {
             }}
           >
             <ArrowLeft className="w-4 h-4" />
-            Anterior
+            <span className="hidden sm:inline">Anterior</span>
           </button>
 
           {step < STEPS.length - 1 ? (
             <button
               onClick={() => setStep((p) => p + 1)}
               disabled={!canProceed()}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all"
+              className="flex items-center gap-1.5 px-4 sm:px-6 py-3 rounded-xl text-sm font-bold text-white transition-all flex-shrink-0"
               style={{
                 background: canProceed() ? "#C17F6A" : "#E5E7EB",
                 color: canProceed() ? "white" : "#9CA3AF",
@@ -356,7 +356,7 @@ export default function NewAssessment() {
             <button
               onClick={handleGenerate}
               disabled={!canProceed() || generating}
-              className="flex items-center gap-2 px-8 py-3 rounded-xl text-sm font-bold text-white transition-all"
+              className="flex items-center gap-1.5 px-4 sm:px-8 py-3 rounded-xl text-xs sm:text-sm font-bold text-white transition-all flex-shrink-0"
               style={{
                 background: !canProceed() || generating ? "#E5E7EB" : "linear-gradient(135deg, #1B3A4B 0%, #2A4F63 100%)",
                 color: !canProceed() || generating ? "#9CA3AF" : "white",
@@ -366,12 +366,14 @@ export default function NewAssessment() {
               {generating ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Gerando Plano...
+                  <span className="hidden sm:inline">Gerando Plano...</span>
+                  <span className="sm:hidden">Gerando...</span>
                 </>
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
-                  Gerar Plano Terapêutico
+                  <span className="hidden sm:inline">Gerar Plano Terapêutico</span>
+                  <span className="sm:hidden">Gerar Plano</span>
                 </>
               )}
             </button>

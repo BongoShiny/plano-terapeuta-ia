@@ -159,35 +159,37 @@ export default function PlanView() {
     <div className="min-h-screen" style={{ background: "#FAF9F7" }}>
       {/* Top Bar */}
       <div
-        className="sticky top-0 z-10 bg-white px-4 md:px-8 py-4 flex items-center justify-between gap-4"
+        className="sticky top-0 z-10 bg-white px-3 md:px-8 py-3 md:py-4"
         style={{ borderBottom: "1px solid #E5E7EB", boxShadow: "0 1px 3px rgba(0,0,0,0.05)" }}
       >
-        <div className="flex items-center gap-4">
-          <button onClick={() => navigate(createPageUrl("Patients"))} className="flex items-center gap-2 text-sm" style={{ color: "#7A9DB0" }}>
-            <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">Pacientes</span>
-          </button>
-          <div className="h-4 w-px bg-gray-200" />
-          <div>
-            <h1 className="font-bold text-sm md:text-base" style={{ color: "#1B3A4B" }}>
-              {plan.patient_nome}
-            </h1>
-            <p className="text-xs text-gray-400">{plan.terapia_especial}</p>
+        <div className="flex items-center justify-between gap-2 mb-2 md:mb-0">
+          <div className="flex items-center gap-2 md:gap-4 min-w-0">
+            <button onClick={() => navigate(createPageUrl("Patients"))} className="flex items-center gap-1 text-sm flex-shrink-0" style={{ color: "#7A9DB0" }}>
+              <ArrowLeft className="w-4 h-4" />
+              <span className="hidden md:inline">Pacientes</span>
+            </button>
+            <div className="h-4 w-px bg-gray-200 hidden md:block" />
+            <div className="min-w-0">
+              <h1 className="font-bold text-sm md:text-base truncate" style={{ color: "#1B3A4B" }}>
+                {plan.patient_nome}
+              </h1>
+              <p className="text-xs text-gray-400 truncate">{plan.terapia_especial}</p>
+            </div>
           </div>
-        </div>
 
-        <div className="flex items-center gap-2">
           <span
-            className="px-3 py-1 rounded-full text-xs font-semibold hidden sm:block"
+            className="px-2.5 py-1 rounded-full text-xs font-semibold flex-shrink-0"
             style={{ background: statusInfo.bg, color: statusInfo.color }}
           >
             {statusInfo.label}
           </span>
+        </div>
 
+        <div className="flex items-center gap-1.5 md:gap-2 overflow-x-auto pb-1 md:pb-0 -mx-1 px-1">
           {plan.status === "Ativo" && (
             <button
               onClick={markAsPresented}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white transition-all"
+              className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl text-xs font-semibold text-white transition-all flex-shrink-0"
               style={{ background: "#C17F6A" }}
             >
               <Users className="w-3.5 h-3.5" />
@@ -199,7 +201,7 @@ export default function PlanView() {
           {plan.status === "Apresentado" && (
             <button
               onClick={markAsClosed}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white transition-all"
+              className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl text-xs font-semibold text-white transition-all flex-shrink-0"
               style={{ background: "#22C55E" }}
             >
               <CheckCircle className="w-3.5 h-3.5" />
@@ -211,26 +213,28 @@ export default function PlanView() {
           <button
             onClick={exportPdf}
             disabled={exportingPdf}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border"
+            className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl text-xs font-semibold transition-all border flex-shrink-0"
             style={{ color: "#C17F6A", borderColor: "#C17F6A", background: "white" }}
           >
             {exportingPdf ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileDown className="w-3.5 h-3.5" />}
             <span className="hidden sm:inline">{exportingPdf ? "Gerando PDF..." : "Baixar PDF"}</span>
+            <span className="sm:hidden">PDF</span>
           </button>
 
           <button
             onClick={downloadDocx}
             disabled={downloading}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border"
+            className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl text-xs font-semibold transition-all border flex-shrink-0"
             style={{ color: "#1B3A4B", borderColor: "#D1D5DB", background: "white" }}
           >
             {downloading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
             <span className="hidden sm:inline">{downloading ? "Gerando..." : "Baixar .docx"}</span>
+            <span className="sm:hidden">DOCX</span>
           </button>
 
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border"
+            className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl text-xs font-semibold transition-all border flex-shrink-0"
             style={{ color: "#1B3A4B", borderColor: "#D1D5DB", background: "white" }}
           >
             <Printer className="w-3.5 h-3.5" />
@@ -240,7 +244,7 @@ export default function PlanView() {
       </div>
 
       {/* Content */}
-      <div id="plan-print-area" className="mx-auto px-4 md:px-8 py-8" style={{ maxWidth: "900px" }}>
+      <div id="plan-print-area" className="mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 overflow-x-auto" style={{ maxWidth: "900px" }}>
         <PlanDocument plan={plan} patientData={patientData} />
       </div>
 

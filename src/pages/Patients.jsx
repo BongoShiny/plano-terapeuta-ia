@@ -183,11 +183,11 @@ export default function Patients() {
                     <div className="flex flex-col gap-2 flex-shrink-0">
                       <button
                         onClick={() => navigate(createPageUrl("NewAssessment"))}
-                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-white"
+                        className="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl text-xs font-semibold text-white"
                         style={{ background: "#C17F6A" }}
                       >
                         <Plus className="w-3.5 h-3.5" />
-                        <span className="hidden sm:inline">Novo Plano</span>
+                        <span className="hidden md:inline">Novo Plano</span>
                       </button>
                     </div>
                   </div>
