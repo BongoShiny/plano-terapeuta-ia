@@ -8,6 +8,8 @@ const TERAPIAS = [
   "Fibromialgia",
   "Lipedema",
   "Bruxismo",
+  "Coluna Sem Dor",
+  "Coluna Sem Dor",
   "Desinflama",
   "Hérnia de Disco",
   "Gestação Sem Dor",
