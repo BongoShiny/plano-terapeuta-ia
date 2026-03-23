@@ -7,6 +7,7 @@ import StepTwo from "../components/assessment/StepTwo";
 import StepThree from "../components/assessment/StepThree";
 import StepFour from "../components/assessment/StepFour";
 import { ArrowLeft, ArrowRight, Sparkles, Loader2 } from "lucide-react";
+import { useClinic } from "@/context/ClinicContext";
 
 const STEPS = [
   { title: "Dados Pessoais", subtitle: "Identificação" },
@@ -156,6 +157,7 @@ JSON a retornar (preencha todos os campos com conteúdo real e personalizado par
 
 export default function NewAssessment() {
   const navigate = useNavigate();
+  const { selectedClinicId } = useClinic();
   const [step, setStep] = useState(0);
   const [data, setData] = useState({});
   const [generating, setGenerating] = useState(false);
@@ -180,6 +182,7 @@ export default function NewAssessment() {
       const patient = await base44.entities.Patient.create({
         ...data,
         status: "Em Tratamento",
+        clinic_id: selectedClinicId,
       });
 
       // Create plan record
@@ -190,6 +193,7 @@ export default function NewAssessment() {
         terapia_especial: data.terapia_especial,
         status: "Gerando",
         total_sessoes: 24,
+        clinic_id: selectedClinicId,
       });
 
       // Generate with AI

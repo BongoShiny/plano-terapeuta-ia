@@ -7,6 +7,7 @@ import {
   Users, FileText, TrendingUp, Plus,
   ArrowRight, Sparkles, Clock, CheckCircle
 } from "lucide-react";
+import { useClinic } from "@/context/ClinicContext";
 
 function StatCard({ label, value, icon: Icon, color, bg }) {
   return (
@@ -27,21 +28,24 @@ function StatCard({ label, value, icon: Icon, color, bg }) {
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { user, selectedClinicId, selectedClinic } = useClinic();
 
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => base44.auth.me(),
-  });
-
-  const { data: patients = [] } = useQuery({
+  const { data: allPatients = [] } = useQuery({
     queryKey: ["patients"],
     queryFn: () => base44.entities.Patient.list("-created_date", 200),
   });
 
-  const { data: plans = [] } = useQuery({
+  const { data: allPlans = [] } = useQuery({
     queryKey: ["plans"],
     queryFn: () => base44.entities.TherapeuticPlan.list("-created_date", 200),
   });
+
+  const patients = selectedClinicId
+    ? allPatients.filter((p) => p.clinic_id === selectedClinicId)
+    : allPatients;
+  const plans = selectedClinicId
+    ? allPlans.filter((p) => p.clinic_id === selectedClinicId)
+    : allPlans;
 
   const recentPlans = plans.slice(0, 5);
   const activePlans = plans.filter((p) => p.status === "Ativo" || p.status === "Apresentado");

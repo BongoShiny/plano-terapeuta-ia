@@ -7,6 +7,7 @@ import {
   Search, Plus, FileText, Phone, User2,
   ChevronRight, Loader2, Activity
 } from "lucide-react";
+import { useClinic } from "@/context/ClinicContext";
 
 const STATUS_STYLE = {
   Ativo: { bg: "#EFF6FF", color: "#3B82F6" },
@@ -17,18 +18,26 @@ const STATUS_STYLE = {
 
 export default function Patients() {
   const navigate = useNavigate();
+  const { selectedClinicId } = useClinic();
   const [search, setSearch] = useState("");
   const [viewingPlanPatient, setViewingPlanPatient] = useState(null);
 
-  const { data: patients = [], isLoading: loadingPatients } = useQuery({
+  const { data: allPatients = [], isLoading: loadingPatients } = useQuery({
     queryKey: ["patients"],
     queryFn: () => base44.entities.Patient.list("-created_date", 100),
   });
 
-  const { data: plans = [] } = useQuery({
+  const { data: allPlans = [] } = useQuery({
     queryKey: ["plans"],
     queryFn: () => base44.entities.TherapeuticPlan.list("-created_date", 200),
   });
+
+  const patients = selectedClinicId
+    ? allPatients.filter((p) => p.clinic_id === selectedClinicId)
+    : allPatients;
+  const plans = selectedClinicId
+    ? allPlans.filter((p) => p.clinic_id === selectedClinicId)
+    : allPlans;
 
   const filtered = patients.filter((p) =>
     (p.nome || "").toLowerCase().includes(search.toLowerCase()) ||
