@@ -7,6 +7,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import { ClinicProvider } from '@/context/ClinicContext';
+import ManageUsers from './pages/ManageUsers';
+import ManageClinics from './pages/ManageClinics';
+import SelectClinic from './pages/SelectClinic';
+import PendingApproval from './pages/PendingApproval';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -42,6 +47,8 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
+      <Route path="/select-clinic" element={<SelectClinic />} />
+      <Route path="/pending-approval" element={<PendingApproval />} />
       <Route path="/" element={
         <LayoutWrapper currentPageName={mainPageKey}>
           <MainPage />
@@ -58,6 +65,16 @@ const AuthenticatedApp = () => {
           }
         />
       ))}
+      <Route path="/ManageUsers" element={
+        <LayoutWrapper currentPageName="Gestão de Usuários">
+          <ManageUsers />
+        </LayoutWrapper>
+      } />
+      <Route path="/ManageClinics" element={
+        <LayoutWrapper currentPageName="Gestão de Clínicas">
+          <ManageClinics />
+        </LayoutWrapper>
+      } />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
@@ -69,11 +86,13 @@ function App() {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <NavigationTracker />
-          <AuthenticatedApp />
-        </Router>
-        <Toaster />
+        <ClinicProvider>
+          <Router>
+            <NavigationTracker />
+            <AuthenticatedApp />
+          </Router>
+          <Toaster />
+        </ClinicProvider>
       </QueryClientProvider>
     </AuthProvider>
   )
