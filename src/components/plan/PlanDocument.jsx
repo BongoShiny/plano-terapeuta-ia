@@ -134,7 +134,7 @@ function ThermalSectionBlock({ section }) {
         </div>
       ) : (
         <div style={{ paddingLeft: 0 }}>
-          {section.content.map((line, li) => {
+          {section.content.filter((line) => line.replace(/[.\s•●◆\-–—]/g, "").length > 2).map((line, li) => {
             const alertParts = line.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\])/g);
             const hasAlert = alertParts.some((p) => p.startsWith("[ALERTA]"));
             if (hasAlert) {
