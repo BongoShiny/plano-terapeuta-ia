@@ -20,6 +20,7 @@ export function ClinicProvider({ children }) {
     enabled: !!user,
   });
 
+  // "admin" is the default Base44 admin role, treat it as super_admin too
   const isSuperAdmin = user?.role === "super_admin" || user?.role === "admin";
   const isApproved = user?.aprovado === true || isSuperAdmin;
   const userClinicId = selectedClinicId || user?.clinic_id;
