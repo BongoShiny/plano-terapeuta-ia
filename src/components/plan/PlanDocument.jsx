@@ -391,7 +391,7 @@ export default function PlanDocument({ plan, patientData }) {
 
   const contentStyle = {
     flex: 1,
-    padding: "50mm 14mm 58mm 14mm",
+    padding: "50mm 12mm 42mm 12mm",
     position: "relative",
     zIndex: 1,
     overflow: "hidden",
@@ -401,7 +401,7 @@ export default function PlanDocument({ plan, patientData }) {
 
   const contentStylePage1 = {
     ...contentStyle,
-    padding: "45mm 14mm 58mm 14mm"
+    padding: "45mm 12mm 42mm 12mm"
   };
 
   const PageWrapper = ({ children, id, isFirstPage }) =>
