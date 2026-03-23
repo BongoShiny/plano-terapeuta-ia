@@ -163,8 +163,11 @@ export default function NewAssessment() {
   const handleChange = (key, value) => setData((p) => ({ ...p, [key]: value }));
 
   const canProceed = () => {
-    if (step === 0) return data.nome && data.telefone && data.terapia_especial && data.sexo && data.idade;
-    if (step === 1) return data.tempo_dor && (data.areas_afetadas || []).length > 0;
+    if (step === 0) return data.nome && data.telefone && data.terapia_especial && data.sexo;
+    if (step === 1) {
+      if (data._ai_filled) return true;
+      return data.tempo_dor && (data.areas_afetadas || []).length > 0;
+    }
     if (step === 2) return (data.causas_provaveis || []).length > 0;
     if (step === 3) return data.objetivos_paciente;
     return false;
@@ -285,7 +288,7 @@ export default function NewAssessment() {
         {/* Card */}
         <div className="bg-white rounded-3xl shadow-sm border p-6 md:p-8 mb-6" style={{ borderColor: "#E5E7EB" }}>
           {step === 0 && <StepOne data={data} onChange={handleChange} />}
-          {step === 1 && <StepTwo data={data} onChange={handleChange} />}
+          {step === 1 && <StepTwo data={data} onChange={handleChange} onSkipToStep={setStep} />}
           {step === 2 && <StepThree data={data} onChange={handleChange} />}
           {step === 3 && <StepFour data={data} onChange={handleChange} />}
         </div>
