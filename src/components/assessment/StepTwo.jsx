@@ -192,8 +192,8 @@ Se alguma informação não foi mencionada no resumo, use o valor mais provável
       // Skip to step 4 (index 3)
       if (onSkipToStep) onSkipToStep(3);
     } catch (err) {
-      console.error(err);
-      alert("Erro ao analisar. Tente novamente.");
+      console.error("AI analysis error:", err);
+      alert("Erro ao analisar. Tente novamente. Detalhe: " + (err?.message || String(err)));
     } finally {
       setAnalyzing(false);
     }
