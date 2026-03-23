@@ -597,12 +597,33 @@ export default function PlanDocument({ plan, patientData }) {
       {/* ============ PAGE 6+: Análise Câmera Termal (split across pages) ============ */}
       {(planData?.analise_camera_termal || planData?.resultado_camera_termal) && (() => {
         const allSections = parseThermalSections(planData.analise_camera_termal || planData.resultado_camera_termal);
-        // Estimate ~4 sections per page (each section ~50mm height approx)
-        const MAX_SECTIONS_PER_PAGE = 4;
+        
+        // Estimate line cost per section: title = 2 lines, each content line ~3 lines (with wrapping), conclusion box = +2 extra
+        const MAX_LINES_PER_PAGE = 28;
         const pages = [];
-        for (let i = 0; i < allSections.length; i += MAX_SECTIONS_PER_PAGE) {
-          pages.push(allSections.slice(i, i + MAX_SECTIONS_PER_PAGE));
+        let currentPage = [];
+        let currentLines = 0;
+        
+        for (const section of allSections) {
+          const titleLines = section.title ? 2 : 0;
+          const contentLines = section.content.reduce((sum, line) => {
+            // Longer lines wrap more - estimate ~80 chars per visual line
+            return sum + Math.max(1, Math.ceil(line.length / 80)) + 0.5;
+          }, 0);
+          const extraLines = section.isConclusion ? 2 : 0;
+          const sectionCost = titleLines + contentLines + extraLines + 1; // +1 for margin
+          
+          if (currentPage.length > 0 && currentLines + sectionCost > MAX_LINES_PER_PAGE) {
+            pages.push(currentPage);
+            currentPage = [section];
+            currentLines = sectionCost;
+          } else {
+            currentPage.push(section);
+            currentLines += sectionCost;
+          }
         }
+        if (currentPage.length > 0) pages.push(currentPage);
+        
         return pages.map((pageSections, pi) => (
           <PageWrapper key={`termal-analise-${pi}`} id={`plan-page-termal-analise-${pi}`}>
             <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", marginBottom: 10, textAlign: "center", letterSpacing: 0.5 }}>
