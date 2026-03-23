@@ -599,7 +599,7 @@ export default function PlanDocument({ plan, patientData }) {
         const allSections = parseThermalSections(planData.analise_camera_termal || planData.resultado_camera_termal);
         
         // Estimate line cost per section: title = 2 lines, each content line ~3 lines (with wrapping), conclusion box = +2 extra
-        const MAX_LINES_PER_PAGE = 28;
+        const MAX_LINES_PER_PAGE = 24;
         const pages = [];
         let currentPage = [];
         let currentLines = 0;
