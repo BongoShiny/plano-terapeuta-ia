@@ -159,7 +159,7 @@ function ThermalSectionBlock({ section }) {
       )}
       {section.isConclusion ? (
         <div style={{ background: "linear-gradient(135deg, #166534 0%, #22803A 100%)", borderRadius: 10, padding: "12px 16px", marginTop: 4 }}>
-          {section.content.map((line, li) => (
+          {section.content.filter((line) => line.replace(/[.\s•●◆\-–—*#_]/g, "").length > 3).map((line, li) => (
             <p key={li} style={{ fontSize: 13.5, color: "#fff", lineHeight: 1.7, margin: "0 0 4px 0", fontWeight: 500, textAlign: "justify" }}>
               {renderInlineText(line)}
             </p>
@@ -182,7 +182,7 @@ function ThermalSectionBlock({ section }) {
                         </div>
                       );
                     }
-                    if (part.trim()) {
+                    if (part.trim() && part.replace(/[.\s•●◆\-–—*#_]/g, "").length > 3) {
                       return (
                         <div key={pi} style={{ display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start" }}>
                           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
