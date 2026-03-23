@@ -81,34 +81,67 @@ function parseThermalSections(text) {
     { title: "Região dos ombros", pattern: /regi[aã]o dos ombros/i },
     { title: "Região do quadril e glúteos", pattern: /regi[aã]o do quadril/i },
     { title: "Região abdominal", pattern: /regi[aã]o abdominal/i },
+    { title: "Região da mandíbula e ATM", pattern: /regi[aã]o da mand[ií]bula|mand[ií]bula e ATM|articula[cç][aã]o temporomandibular/i },
+    { title: "Região escapular", pattern: /regi[aã]o escapular/i },
+    { title: "Região dos membros inferiores", pattern: /membros inferiores/i },
+    { title: "Região dos membros superiores", pattern: /membros superiores/i },
+    { title: "Região pélvica", pattern: /regi[aã]o p[eé]lvica/i },
     { title: "Conclusão clínica", pattern: /conclus[aã]o cl[ií]nica/i },
     { title: "Conclusão clínica", pattern: /^conclus[aã]o[.:]*$/i },
     { title: "Conclusão clínica", pattern: /conclus[aã]o recomendada/i },
+    { title: "Conclusão clínica", pattern: /^em conclus[aã]o/i },
   ];
 
-  const lines = text.split(/\n+/).map((l) => l.trim()).filter((l) => l.length > 0);
+  // Clean up text: remove markdown artifacts, extra dots, etc.
+  const rawLines = text.split(/\n+/).map((l) => l.trim()).filter((l) => l.length > 0);
+  const lines = rawLines.filter((l) => l.replace(/[.\s•●◆\-–—*#_]/g, "").length > 3);
+
   const structured = [];
   let currentSection = null;
   let currentContent = [];
 
+  const flushSection = () => {
+    if (currentContent.length > 0) {
+      structured.push({
+        title: currentSection,
+        isConclusion: /conclus[aã]o/i.test(currentSection || ""),
+        content: currentContent
+      });
+    }
+  };
+
   for (const line of lines) {
-    const matchedSection = line.length < 80 ? sectionDefs.find((s) => s.pattern.test(line)) : null;
+    // Check if this line is a section header (short lines only)
+    const matchedSection = line.length < 100 ? sectionDefs.find((s) => s.pattern.test(line)) : null;
+
     if (matchedSection) {
-      if (matchedSection.title === null) continue;
-      if (currentSection && currentContent.length > 0) {
-        structured.push({ title: currentSection, isConclusion: /conclus[aã]o/i.test(currentSection), content: currentContent });
+      if (matchedSection.title === null) {
+        // Skip header titles like "Análises termográficos gerais" but flush previous content
+        flushSection();
+        currentSection = null;
+        currentContent = [];
+        continue;
       }
+      flushSection();
       currentSection = matchedSection.title;
       currentContent = [];
-    } else if (line.length > 0) {
-      if (!currentSection) currentSection = null;
-      currentContent.push(line);
+    } else {
+      // For inline section detection: "Na região da mandíbula..." at start of a paragraph
+      const inlineMatch = line.match(/^(?:na |no )?regi[aã]o\s+([\w\sáéíóúãõâêîôûç,]+)/i);
+      if (inlineMatch && !currentSection) {
+        flushSection();
+        // Extract region name from inline text
+        const regionName = inlineMatch[1].trim();
+        currentSection = "Região " + regionName.charAt(0).toLowerCase() + regionName.slice(1);
+        currentContent = [line];
+      } else {
+        currentContent.push(line);
+      }
     }
   }
-  if (currentContent.length > 0) {
-    structured.push({ title: currentSection, isConclusion: /conclus[aã]o/i.test(currentSection || ""), content: currentContent });
-  }
+  flushSection();
 
+  // If no sections were found, split text into logical paragraphs
   if (structured.length === 0) {
     return [{ title: null, isConclusion: false, content: lines }];
   }
