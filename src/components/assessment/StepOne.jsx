@@ -49,7 +49,7 @@ export default function StepOne({ data, onChange }) {
 
         <div>
           <label className="block text-sm font-semibold mb-1.5" style={{ color: "#374151" }}>
-            Idade *
+            Idade
           </label>
           <input
             type="number"
