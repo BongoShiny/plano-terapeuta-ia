@@ -68,22 +68,23 @@ function renderInlineText(text) {
   });
 }
 
-function ThermalAnalysisText({ text }) {
-  if (!text) return null;
+function parseThermalSections(text) {
+  if (!text) return [];
 
-  const sections = [
-  { title: null, pattern: /an[aá]lises? termogr[aá]ficos? gerais/i },
-  { title: null, pattern: /laudo termogr[aá]fico cl[ií]nico/i },
-  { title: "Região cervical", pattern: /regi[aã]o cervical/i },
-  { title: "Região lombar", pattern: /regi[aã]o lombar/i },
-  { title: "Região craniana", pattern: /regi[aã]o craniana/i },
-  { title: "Região torácica", pattern: /regi[aã]o tor[aá]cica/i },
-  { title: "Região dos ombros", pattern: /regi[aã]o dos ombros/i },
-  { title: "Região do quadril e glúteos", pattern: /regi[aã]o do quadril/i },
-  { title: "Região abdominal", pattern: /regi[aã]o abdominal/i },
-  { title: "Conclusão clínica", pattern: /conclus[aã]o cl[ií]nica/i },
-  { title: "Conclusão clínica", pattern: /^conclus[aã]o[.:]*$/i },
-  { title: "Conclusão clínica", pattern: /conclus[aã]o recomendada/i }];
+  const sectionDefs = [
+    { title: null, pattern: /an[aá]lises? termogr[aá]ficos? gerais/i },
+    { title: null, pattern: /laudo termogr[aá]fico cl[ií]nico/i },
+    { title: "Região cervical", pattern: /regi[aã]o cervical/i },
+    { title: "Região lombar", pattern: /regi[aã]o lombar/i },
+    { title: "Região craniana", pattern: /regi[aã]o craniana/i },
+    { title: "Região torácica", pattern: /regi[aã]o tor[aá]cica/i },
+    { title: "Região dos ombros", pattern: /regi[aã]o dos ombros/i },
+    { title: "Região do quadril e glúteos", pattern: /regi[aã]o do quadril/i },
+    { title: "Região abdominal", pattern: /regi[aã]o abdominal/i },
+    { title: "Conclusão clínica", pattern: /conclus[aã]o cl[ií]nica/i },
+    { title: "Conclusão clínica", pattern: /^conclus[aã]o[.:]*$/i },
+    { title: "Conclusão clínica", pattern: /conclus[aã]o recomendada/i },
+  ];
 
   const lines = text.split(/\n+/).map((l) => l.trim()).filter((l) => l.length > 0);
   const structured = [];
@@ -91,64 +92,51 @@ function ThermalAnalysisText({ text }) {
   let currentContent = [];
 
   for (const line of lines) {
-    const matchedSection = line.length < 80 ? sections.find((s) => s.pattern.test(line)) : null;
-
+    const matchedSection = line.length < 80 ? sectionDefs.find((s) => s.pattern.test(line)) : null;
     if (matchedSection) {
-    if (matchedSection.title === null) {
-      continue;
-    }
-    if (currentSection && currentContent.length > 0) {
-      structured.push({ title: currentSection, isConclusion: /conclus[aã]o/i.test(currentSection), content: currentContent });
-    }
-    currentSection = matchedSection.title;
-    currentContent = [];
-    } else if (line.length > 0) {
-      if (!currentSection) {
-        currentSection = null;
+      if (matchedSection.title === null) continue;
+      if (currentSection && currentContent.length > 0) {
+        structured.push({ title: currentSection, isConclusion: /conclus[aã]o/i.test(currentSection), content: currentContent });
       }
+      currentSection = matchedSection.title;
+      currentContent = [];
+    } else if (line.length > 0) {
+      if (!currentSection) currentSection = null;
       currentContent.push(line);
     }
   }
-
   if (currentContent.length > 0) {
     structured.push({ title: currentSection, isConclusion: /conclus[aã]o/i.test(currentSection || ""), content: currentContent });
   }
 
   if (structured.length === 0) {
-    return (
-      <div style={{ fontSize: 15, lineHeight: 1.9, color: "#222", textAlign: "justify" }}>
-        {lines.map((line, i) =>
-        <p key={i} style={{ margin: "0 0 8px 0" }}>
-            {renderInlineText(line)}
-          </p>
-        )}
-      </div>);
+    return [{ title: null, isConclusion: false, content: lines }];
   }
+  return structured;
+}
 
+function ThermalSectionBlock({ section }) {
   return (
-    <div style={{ fontSize: 15, lineHeight: 1.9, color: "#222" }}>
-      {structured.map((section, si) =>
-      <div key={si} style={{ marginBottom: 14 }}>
-          {section.title &&
-            <div style={{ display: "flex", gap: 8, marginBottom: 8, alignItems: "flex-start" }}>
-              <span style={{ width: 8, height: 8, borderRadius: "50%", background: section.isConclusion ? "#166534" : "#C17F6A", flexShrink: 0, marginTop: 6 }} />
-              <span style={{ fontSize: section.isConclusion ? 16 : 15, fontWeight: 800, color: section.isConclusion ? "#166534" : "#1B3A4B" }}>{section.title}</span>
-            </div>
-          }
-          {section.isConclusion ? (
-            <div style={{ background: "linear-gradient(135deg, #166534 0%, #22803A 100%)", borderRadius: 10, padding: "14px 18px", marginTop: 4 }}>
-              {section.content.map((line, li) => (
-                <p key={li} style={{ fontSize: 15, color: "#fff", lineHeight: 1.9, margin: "0 0 6px 0", fontWeight: 500, textAlign: "justify" }}>
-                  {renderInlineText(line)}
-                </p>
-              ))}
-            </div>
-          ) : (
-          <div style={{ paddingLeft: 0 }}>
-            {section.content.map((line, li) => {
+    <div style={{ marginBottom: 14 }}>
+      {section.title && (
+        <div style={{ display: "flex", gap: 8, marginBottom: 8, alignItems: "flex-start" }}>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: section.isConclusion ? "#166534" : "#C17F6A", flexShrink: 0, marginTop: 6 }} />
+          <span style={{ fontSize: section.isConclusion ? 16 : 15, fontWeight: 800, color: section.isConclusion ? "#166534" : "#1B3A4B" }}>{section.title}</span>
+        </div>
+      )}
+      {section.isConclusion ? (
+        <div style={{ background: "linear-gradient(135deg, #166534 0%, #22803A 100%)", borderRadius: 10, padding: "14px 18px", marginTop: 4 }}>
+          {section.content.map((line, li) => (
+            <p key={li} style={{ fontSize: 15, color: "#fff", lineHeight: 1.9, margin: "0 0 6px 0", fontWeight: 500, textAlign: "justify" }}>
+              {renderInlineText(line)}
+            </p>
+          ))}
+        </div>
+      ) : (
+        <div style={{ paddingLeft: 0 }}>
+          {section.content.map((line, li) => {
             const alertParts = line.split(/(\[ALERTA\][\s\S]*?\[\/ALERTA\])/g);
-            const hasAlert = alertParts.some(p => p.startsWith("[ALERTA]"));
-
+            const hasAlert = alertParts.some((p) => p.startsWith("[ALERTA]"));
             if (hasAlert) {
               return (
                 <div key={li}>
@@ -157,9 +145,7 @@ function ThermalAnalysisText({ text }) {
                       return (
                         <div key={pi} style={{ display: "flex", gap: 8, marginBottom: 6, marginTop: 6, alignItems: "flex-start" }}>
                           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
-                          <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, textAlign: "justify" }}>
-                            {renderInlineText(part)}
-                          </p>
+                          <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, textAlign: "justify" }}>{renderInlineText(part)}</p>
                         </div>
                       );
                     }
@@ -167,9 +153,7 @@ function ThermalAnalysisText({ text }) {
                       return (
                         <div key={pi} style={{ display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start" }}>
                           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
-                          <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, textAlign: "justify", fontWeight: 400 }}>
-                            {part}
-                          </p>
+                          <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, textAlign: "justify", fontWeight: 400 }}>{part}</p>
                         </div>
                       );
                     }
@@ -178,20 +162,17 @@ function ThermalAnalysisText({ text }) {
                 </div>
               );
             }
-
             return (
               <div key={li} style={{ display: "flex", gap: 8, marginBottom: 6, alignItems: "flex-start" }}>
-                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
-                  <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, textAlign: "justify", fontWeight: 400 }}>
-                    {renderInlineText(line)}
-                  </p>
-                </div>);
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 6 }} />
+                <p style={{ margin: 0, fontSize: 15, lineHeight: 1.7, textAlign: "justify", fontWeight: 400 }}>{renderInlineText(line)}</p>
+              </div>
+            );
           })}
-          </div>
-          )}
         </div>
       )}
-    </div>);
+    </div>
+  );
 }
 
 function ThermalSummaryBullets({ text }) {
