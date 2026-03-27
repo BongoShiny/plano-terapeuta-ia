@@ -13,6 +13,7 @@ import ManageClinics from './pages/ManageClinics';
 import SelectClinic from './pages/SelectClinic';
 import PendingApproval from './pages/PendingApproval';
 import InviteUsers from './pages/InviteUsers';
+import VibeLogin from './pages/VibeLogin';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -39,9 +40,7 @@ const AuthenticatedApp = () => {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
-      // Redirect to login automatically
-      navigateToLogin();
-      return null;
+      return <VibeLogin />;
     }
   }
 
