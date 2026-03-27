@@ -78,15 +78,18 @@ export default function PlanSummaryDocument({ plan, patientData }) {
     return { frontal: toSentences(parts[0] || "", 3), lateral: toSentences(parts[1] || "", 3) };
   };
 
+  // Same page style as PlanDocument
   const pageStyle = {
     position: "relative",
     overflow: "hidden",
     backgroundColor: "#ffffff",
-    width: "794px",
-    height: "1123px",
+    width: "210mm",
+    height: "297mm",
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
+    pageBreakAfter: "always",
+    pageBreakInside: "avoid",
   };
 
   const PageWrapper = ({ children, id }) => (
@@ -100,11 +103,12 @@ export default function PlanSummaryDocument({ plan, patientData }) {
       }} />
       <div style={{
         flex: 1,
-        padding: "150px 60px 180px 60px",
+        padding: "50mm 12mm 42mm 12mm",
         position: "relative",
         zIndex: 1,
         boxSizing: "border-box",
         overflow: "hidden",
+        maxHeight: "297mm",
       }}>
         {children}
       </div>
@@ -243,93 +247,74 @@ export default function PlanSummaryDocument({ plan, patientData }) {
         </div>
       </div>
 
-      {/* ============ PAGE 2: Avaliação Postural ============ */}
+      {/* ============ PAGE 2: Avaliação Postural (identical to PlanDocument) ============ */}
       {hasPostural && (
         <PageWrapper id="summary-page-2">
-          <div style={{ textAlign: "center", marginBottom: 12 }}>
-            <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", letterSpacing: 0.5 }}>
-              Avaliação Postural
-            </div>
-            <div style={{ fontSize: 13, color: "#555", marginTop: 3 }}>
-              Análise postural de <strong style={{ color: "#1B3A4B" }}>{plan.patient_nome}</strong>
-            </div>
+          <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", marginBottom: 10, textAlign: "center", letterSpacing: 0.5 }}>
+            Avaliação Postural
           </div>
-
           <Divider />
-
-          {/* Photos side by side */}
           <div style={{ display: "flex", gap: 10, marginBottom: 10, justifyContent: "center" }}>
             {planData?.foto_postural_1 && (
               <div style={{ flex: 1, textAlign: "center" }}>
                 <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Frontal</p>
-                <img src={planData.foto_postural_1} alt="Postural Frontal" style={{ width: "100%", height: "100mm", objectFit: "contain", borderRadius: 4 }} />
+                <img src={planData.foto_postural_1} alt="Postural 1" style={{ width: "100%", height: "100mm", objectFit: "contain", borderRadius: 4 }} />
               </div>
             )}
             {planData?.foto_postural_2 && (
               <div style={{ flex: 1, textAlign: "center" }}>
                 <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Lateral</p>
-                <img src={planData.foto_postural_2} alt="Postural Lateral" style={{ width: "100%", height: "100mm", objectFit: "contain", borderRadius: 4 }} />
+                <img src={planData.foto_postural_2} alt="Postural 2" style={{ width: "100%", height: "100mm", objectFit: "contain", borderRadius: 4 }} />
               </div>
             )}
           </div>
-
-          {/* Postural text analysis */}
+          <Divider />
           {planData?.avaliacao_postural && (() => {
             const { frontal, lateral } = parsePostural(planData.avaliacao_postural);
             return (
-              <>
-                <Divider />
-                <div style={{ display: "flex", gap: 14 }}>
-                  {frontal.length > 0 && (
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Vista Frontal (Plano Coronal)</div>
-                      <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                        {frontal.map((s, i) => (
-                          <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
-                            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
-                            <span style={{ fontWeight: 600 }}>{removeName(s)}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {frontal.length > 0 && lateral.length > 0 && (
-                    <div style={{ width: 1, background: "#D1C4B0", flexShrink: 0 }} />
-                  )}
-                  {lateral.length > 0 && (
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Vista Lateral (Plano Sagital)</div>
-                      <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                        {lateral.map((s, i) => (
-                          <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
-                            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
-                            <span style={{ fontWeight: 600 }}>{removeName(s)}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </>
+              <div style={{ display: "flex", gap: 12 }}>
+                {frontal.length > 0 && (
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Na vista frontal (plano coronal)</div>
+                    <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                      {frontal.map((s, i) => (
+                        <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
+                          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
+                          <span style={{ fontWeight: 600 }}>{removeName(s)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {frontal.length > 0 && lateral.length > 0 && (
+                  <div style={{ width: 1, background: "#D1C4B0", flexShrink: 0 }} />
+                )}
+                {lateral.length > 0 && (
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Na vista lateral (plano sagital)</div>
+                    <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                      {lateral.map((s, i) => (
+                        <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
+                          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
+                          <span style={{ fontWeight: 600 }}>{removeName(s)}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             );
           })()}
         </PageWrapper>
       )}
 
-      {/* ============ PAGE 3: Fotos da Câmera Termal ============ */}
+      {/* ============ PAGE 3: Fotos da Câmera Termal (identical to PlanDocument) ============ */}
       {hasThermalPhotos && (
         <PageWrapper id="summary-page-3">
-          <div style={{ textAlign: "center", marginBottom: 12 }}>
-            <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", letterSpacing: 0.5 }}>
-              Fotos da Câmera Termal
-            </div>
-            <div style={{ fontSize: 13, color: "#555", marginTop: 3 }}>
-              Imagens termográficas de <strong style={{ color: "#1B3A4B" }}>{plan.patient_nome}</strong>
-            </div>
+          <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", marginBottom: 10, textAlign: "center", letterSpacing: 0.5 }}>
+            Fotos da Câmera Termal
           </div>
-
           <Divider />
-
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, marginTop: 10 }}>
             {thermalPhotos.map((url, i) => (
               <div key={i} style={{
