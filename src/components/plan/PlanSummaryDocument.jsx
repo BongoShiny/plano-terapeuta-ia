@@ -55,7 +55,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
   };
 
   return (
-    <div style={{ fontFamily: "'Arial', 'Helvetica', sans-serif", color: "#222", lineHeight: 1.4, letterSpacing: "0.3px" }}>
+    <div style={{ fontFamily: "'Arial', 'Helvetica', sans-serif", color: "#1a1a1a", lineHeight: 1.45, letterSpacing: "0.3px" }}>
       <div id="summary-page-1" style={{
         position: "relative",
         overflow: "hidden",
@@ -88,7 +88,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
             <div style={{ fontSize: 19, fontWeight: 900, color: "#1B3A4B", marginBottom: 3, letterSpacing: "0.6px" }}>
               Resumo do Plano Terapêutico
             </div>
-            <div style={{ fontSize: 12.5, color: "#666" }}>
+            <div style={{ fontSize: 13, color: "#555" }}>
               Documento preparado para <strong style={{ color: "#1B3A4B" }}>{plan.patient_nome}</strong>
             </div>
           </div>
@@ -96,7 +96,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
           <Divider />
 
           {/* Patient info */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 22px", fontSize: 12.5, marginBottom: 2 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 22px", fontSize: 13, marginBottom: 2, fontWeight: 500 }}>
             <div><strong>Paciente:</strong> {plan.patient_nome}</div>
             {patientData?.idade && <div><strong>Idade:</strong> {patientData.idade} anos</div>}
             {patientData?.sexo && <div><strong>Sexo:</strong> {patientData.sexo}</div>}
@@ -110,7 +110,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
           {planData?.resumo_queixas && (
             <div style={{ marginBottom: 6 }}>
               <SectionTitle>Suas Queixas Principais</SectionTitle>
-              <p style={{ fontSize: 12.5, lineHeight: 1.6, margin: 0, textAlign: "justify" }}>
+              <p style={{ fontSize: 13, lineHeight: 1.6, margin: 0, textAlign: "justify", fontWeight: 450 }}>
                 {truncateAtPeriod(planData.resumo_queixas, 300)}
               </p>
             </div>
@@ -124,7 +124,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
                 <SectionTitle>Objetivos do Tratamento</SectionTitle>
                 <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
                   {safeArray(planData.objetivos_tratamento).slice(0, 5).map((obj, i) => (
-                    <li key={i} style={{ display: "flex", gap: 7, fontSize: 12.5, marginBottom: 4, lineHeight: 1.5 }}>
+                    <li key={i} style={{ display: "flex", gap: 7, fontSize: 13, marginBottom: 4, lineHeight: 1.5, fontWeight: 450 }}>
                       <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
                       <span>{removeName(obj)}</span>
                     </li>
@@ -155,7 +155,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
                     </div>
                     <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
                       {safeArray(item.etapa.ciclos).slice(0, 2).map((ciclo, i) => (
-                        <li key={i} style={{ display: "flex", gap: 5, fontSize: 12, marginBottom: 3, lineHeight: 1.4 }}>
+                        <li key={i} style={{ display: "flex", gap: 5, fontSize: 12.5, marginBottom: 3, lineHeight: 1.45, fontWeight: 450 }}>
                           <span style={{ color: item.color, fontWeight: 700 }}>●</span>
                           <span>{removeName(ciclo.objetivo)}</span>
                         </li>
@@ -174,7 +174,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
             padding: "10px 14px",
             marginTop: 4,
           }}>
-            <p style={{ fontSize: 12.5, color: "#fff", lineHeight: 1.6, margin: 0, fontWeight: 500, textAlign: "center" }}>
+            <p style={{ fontSize: 13, color: "#fff", lineHeight: 1.6, margin: 0, fontWeight: 600, textAlign: "center" }}>
               Seu plano de {plan.total_sessoes || 24} sessões foi desenvolvido especialmente para você.
               O tratamento é progressivo — cada etapa é essencial para resultados duradouros.
             </p>
