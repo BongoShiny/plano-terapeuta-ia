@@ -246,37 +246,27 @@ export default function PlanSummaryDocument({ plan, patientData }) {
           <Divider />
           {planData?.avaliacao_postural && (() => {
             const { frontal, lateral } = parsePostural(planData.avaliacao_postural);
+            const BulletList = ({ sentences }) => (
+              <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                {sentences.map((s, i) => (
+                  <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
+                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
+                    <span style={{ fontWeight: 600, textAlign: "justify" }}>{removeName(s)}</span>
+                  </li>
+                ))}
+              </ul>
+            );
             return (
               <div style={{ display: "flex", gap: 12 }}>
-                {frontal.length > 0 && (
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Na vista frontal (plano coronal)</div>
-                    <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                      {frontal.map((s, i) => (
-                        <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
-                          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
-                          <span style={{ fontWeight: 600 }}>{removeName(s)}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {frontal.length > 0 && lateral.length > 0 && (
-                  <div style={{ width: 1, background: "#D1C4B0", flexShrink: 0 }} />
-                )}
-                {lateral.length > 0 && (
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Na vista lateral (plano sagital)</div>
-                    <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                      {lateral.map((s, i) => (
-                        <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
-                          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
-                          <span style={{ fontWeight: 600 }}>{removeName(s)}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Na vista frontal (plano coronal)</div>
+                  <BulletList sentences={frontal} />
+                </div>
+                <div style={{ width: 1, background: "#D1C4B0", flexShrink: 0 }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Na vista lateral (plano sagital)</div>
+                  <BulletList sentences={lateral} />
+                </div>
               </div>
             );
           })()}
