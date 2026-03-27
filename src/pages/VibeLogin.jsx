@@ -1,29 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { base44 } from "@/api/base44Client";
-import { Loader2 } from "lucide-react";
+import { LogIn } from "lucide-react";
 
 export default function VibeLogin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!email || !password) {
-      setError("Preencha todos os campos");
-      return;
-    }
-    setLoading(true);
-    setError("");
-    try {
-      await base44.auth.loginViaEmailPassword(email, password);
-      window.location.reload();
-    } catch (err) {
-      setError("Usuário ou senha incorretos.");
-    } finally {
-      setLoading(false);
-    }
+  const handleLogin = () => {
+    base44.auth.redirectToLogin(window.location.origin);
   };
 
   return (
@@ -40,64 +21,26 @@ export default function VibeLogin() {
         }}
       >
         <h1
-          className="text-center text-xl font-bold italic mb-8"
+          className="text-center text-xl font-bold italic mb-2"
           style={{ color: "#D4A843" }}
         >
           Acesso Restrito
         </h1>
+        <p className="text-center text-xs mb-8" style={{ color: "#A89070" }}>
+          Vibe Terapias — Clínica Especializada em Dor
+        </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Usuário"
-            className="w-full px-4 py-3 rounded-lg text-sm outline-none"
-            style={{
-              background: "rgba(80, 65, 40, 0.7)",
-              border: "1px solid rgba(180, 150, 80, 0.25)",
-              color: "#E8DCC8",
-            }}
-          />
-
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Senha"
-            className="w-full px-4 py-3 rounded-lg text-sm outline-none"
-            style={{
-              background: "rgba(80, 65, 40, 0.7)",
-              border: "1px solid rgba(180, 150, 80, 0.25)",
-              color: "#E8DCC8",
-            }}
-          />
-
-          {error && (
-            <p className="text-center text-xs font-medium" style={{ color: "#E57373" }}>
-              {error}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 rounded-lg text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2"
-            style={{
-              background: "linear-gradient(90deg, #C6A84B, #7FB89E)",
-              color: "#2E2417",
-            }}
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Entrando...
-              </>
-            ) : (
-              "Entrar"
-            )}
-          </button>
-        </form>
+        <button
+          onClick={handleLogin}
+          className="w-full py-3 rounded-lg text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2"
+          style={{
+            background: "linear-gradient(90deg, #C6A84B, #7FB89E)",
+            color: "#2E2417",
+          }}
+        >
+          <LogIn className="w-4 h-4" />
+          Entrar
+        </button>
       </div>
     </div>
   );
