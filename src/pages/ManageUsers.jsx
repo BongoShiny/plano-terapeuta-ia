@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useClinic } from "@/context/ClinicContext";
 import {
   Users, CheckCircle, XCircle, Shield, UserCheck,
-  Loader2, Search, ArrowLeft
+  Loader2, Search, ArrowLeft, Ban, ShieldCheck
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -44,8 +44,9 @@ export default function ManageUsers() {
       (u.email || "").toLowerCase().includes(search.toLowerCase())
   );
 
-  const pendingUsers = filtered.filter((u) => !u.aprovado && u.id !== currentUser?.id);
-  const approvedUsers = filtered.filter((u) => u.aprovado || u.id === currentUser?.id);
+  const pendingUsers = filtered.filter((u) => !u.aprovado && u.id !== currentUser?.id && !u.bloqueado);
+  const approvedUsers = filtered.filter((u) => (u.aprovado || u.id === currentUser?.id) && !u.bloqueado);
+  const blockedUsers = filtered.filter((u) => u.bloqueado && u.id !== currentUser?.id);
 
   const updateUser = useMutation({
     mutationFn: ({ userId, data }) => base44.entities.User.update(userId, data),
@@ -61,6 +62,10 @@ export default function ManageUsers() {
   const changeRole = (userId, role) => {
     const cargo = ROLE_LABELS[role] || "Recepcionista";
     updateUser.mutate({ userId, data: { role, cargo } });
+  };
+
+  const toggleBlock = (userId, currentlyBlocked) => {
+    updateUser.mutate({ userId, data: { bloqueado: !currentlyBlocked } });
   };
 
   return (
@@ -183,17 +188,27 @@ export default function ManageUsers() {
                           {ROLE_LABELS[u.role] || u.role}
                         </span>
                         {!isMe && isSuperAdmin && (
-                          <select
-                            value={u.role || "recepcionista"}
-                            onChange={(e) => changeRole(u.id, e.target.value)}
-                            className="text-xs border rounded-lg px-2 py-1.5"
-                            style={{ borderColor: "#D1D5DB" }}
-                          >
-                            <option value="super_admin">Super Admin</option>
-                            <option value="admin">Admin Clínica</option>
-                            <option value="terapeuta">Terapeuta</option>
-                            <option value="recepcionista">Recepcionista</option>
-                          </select>
+                          <>
+                            <select
+                              value={u.role || "recepcionista"}
+                              onChange={(e) => changeRole(u.id, e.target.value)}
+                              className="text-xs border rounded-lg px-2 py-1.5"
+                              style={{ borderColor: "#D1D5DB" }}
+                            >
+                              <option value="super_admin">Super Admin</option>
+                              <option value="admin">Admin Clínica</option>
+                              <option value="terapeuta">Terapeuta</option>
+                              <option value="recepcionista">Recepcionista</option>
+                            </select>
+                            <button
+                              onClick={() => toggleBlock(u.id, false)}
+                              className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all hover:bg-red-50"
+                              style={{ color: "#EF4444", borderColor: "#FECACA" }}
+                              title="Bloquear usuário"
+                            >
+                              <Ban className="w-3.5 h-3.5" /> Bloquear
+                            </button>
+                          </>
                         )}
                       </div>
                     </div>
@@ -202,6 +217,50 @@ export default function ManageUsers() {
               </div>
             </div>
           </>
+        )}
+
+        {/* Blocked users */}
+        {blockedUsers.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-lg font-bold mb-4 flex items-center gap-2" style={{ color: "#EF4444" }}>
+              <Ban className="w-5 h-5" />
+              Usuários Bloqueados ({blockedUsers.length})
+            </h2>
+            <div className="space-y-3">
+              {blockedUsers.map((u) => (
+                <div
+                  key={u.id}
+                  className="bg-white rounded-2xl border p-4 flex flex-col sm:flex-row sm:items-center gap-3 opacity-70"
+                  style={{ borderColor: "#FECACA" }}
+                >
+                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
+                      style={{ background: "#FEE2E2", color: "#EF4444" }}>
+                      {(u.full_name || "?").charAt(0).toUpperCase()}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-sm truncate" style={{ color: "#1B3A4B" }}>{u.full_name || "Sem nome"}</p>
+                      <p className="text-xs text-gray-400 truncate">{u.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <span className="px-2.5 py-1 rounded-full text-xs font-semibold" style={{ background: "#FEE2E2", color: "#EF4444" }}>
+                      Bloqueado
+                    </span>
+                    {isSuperAdmin && (
+                      <button
+                        onClick={() => toggleBlock(u.id, true)}
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all hover:bg-green-50"
+                        style={{ color: "#22C55E", borderColor: "#BBF7D0" }}
+                      >
+                        <ShieldCheck className="w-3.5 h-3.5" /> Desbloquear
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </div>

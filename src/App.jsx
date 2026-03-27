@@ -7,13 +7,14 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-import { ClinicProvider } from '@/context/ClinicContext';
+import { ClinicProvider, useClinic } from '@/context/ClinicContext';
 import ManageUsers from './pages/ManageUsers';
 import ManageClinics from './pages/ManageClinics';
 import SelectClinic from './pages/SelectClinic';
 import PendingApproval from './pages/PendingApproval';
 import InviteUsers from './pages/InviteUsers';
 import VibeLogin from './pages/VibeLogin';
+import BlockedUser from './pages/BlockedUser';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -22,6 +23,24 @@ const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
 const LayoutWrapper = ({ children, currentPageName }) => Layout ?
   <Layout currentPageName={currentPageName}>{children}</Layout>
   : <>{children}</>;
+
+const ClinicGate = ({ children }) => {
+  const { isBlocked, isApproved, loading, user, selectedClinic, isSuperAdmin } = useClinic();
+  
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (user && isBlocked) {
+    return <BlockedUser />;
+  }
+
+  return children;
+};
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -46,6 +65,7 @@ const AuthenticatedApp = () => {
 
   // Render the main app
   return (
+    <ClinicGate>
     <Routes>
       <Route path="/select-clinic" element={<SelectClinic />} />
       <Route path="/pending-approval" element={<PendingApproval />} />
@@ -78,6 +98,7 @@ const AuthenticatedApp = () => {
       } />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
+    </ClinicGate>
   );
 };
 

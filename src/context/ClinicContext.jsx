@@ -23,6 +23,7 @@ export function ClinicProvider({ children }) {
   // "admin" is the default Base44 admin role, treat it as super_admin too
   const isSuperAdmin = user?.role === "super_admin" || user?.role === "admin";
   const isApproved = user?.aprovado === true || isSuperAdmin;
+  const isBlocked = user?.bloqueado === true;
   // Non-super-admins are locked to their assigned clinic
   const userClinicId = isSuperAdmin ? (selectedClinicId || user?.clinic_id) : user?.clinic_id;
 
@@ -81,6 +82,7 @@ export function ClinicProvider({ children }) {
         selectClinic,
         isSuperAdmin,
         isApproved,
+        isBlocked,
         canManageUsers,
         canManageClinics,
         loading: loadingUser || loadingClinics,
