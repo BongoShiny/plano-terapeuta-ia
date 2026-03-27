@@ -69,8 +69,8 @@ export default function Layout({ children, currentPageName }) {
           </button>
         </div>
 
-        {/* Clinic selector */}
-        {(isSuperAdmin || clinics.length > 1) && (
+        {/* Clinic selector - only for super admins */}
+        {isSuperAdmin && clinics.length > 1 && (
           <div className="px-4 pt-4">
             <label className="text-xs font-medium mb-1 block" style={{ color: "#7A9DB0" }}>Clínica</label>
             <select
