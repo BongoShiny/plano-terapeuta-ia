@@ -117,33 +117,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
 
   return (
     <div style={{ fontFamily: "'Arial', 'Helvetica', sans-serif", color: "#1a1a1a", lineHeight: 1.45, letterSpacing: "0.3px" }}>
-      <div id="summary-page-1" style={{
-        position: "relative",
-        overflow: "hidden",
-        backgroundColor: "#ffffff",
-        width: "794px",
-        height: "1123px",
-        boxSizing: "border-box",
-        display: "flex",
-        flexDirection: "column",
-      }}>
-        <img src={BG_IMAGE_URL} alt="" style={{
-          position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
-          objectFit: "fill", zIndex: 0, pointerEvents: "none",
-        }} />
-        <img src={FOOTER_IMAGE_URL} alt="" style={{
-          position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0,
-        }} />
-
-        {/* Content area - carefully sized to fit between header border and footer */}
-        <div style={{
-          flex: 1,
-          padding: "150px 60px 180px 60px",
-          position: "relative",
-          zIndex: 1,
-          boxSizing: "border-box",
-          overflow: "hidden",
-        }}>
+      <PageWrapper id="summary-page-1">
           {/* Title */}
           <div style={{ textAlign: "center", marginBottom: 12 }}>
             <div style={{ fontSize: 19, fontWeight: 900, color: "#1B3A4B", marginBottom: 3, letterSpacing: "0.6px" }}>
@@ -244,8 +218,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
           <div style={{ marginTop: 8, textAlign: "center", fontSize: 10.5, color: "#999" }}>
             Vibe Terapias — Clínica Especializada em Dor · Documento completo com seu terapeuta.
           </div>
-        </div>
-      </div>
+        </PageWrapper>
 
       {/* ============ PAGE 2: Avaliação Postural (identical to PlanDocument) ============ */}
       {hasPostural && (
