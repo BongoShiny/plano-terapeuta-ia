@@ -36,8 +36,8 @@ export default function PlanSummaryDocument({ plan, patientData }) {
     overflow: "hidden",
     backgroundColor: "#ffffff",
     borderRadius: 0,
-    width: "210mm",
-    minHeight: "297mm",
+    width: "794px",
+    height: "1123px",
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
@@ -58,10 +58,11 @@ export default function PlanSummaryDocument({ plan, patientData }) {
 
   const contentStyle = {
     flex: 1,
-    padding: "48mm 20mm 44mm 20mm",
+    padding: "182px 76px 166px 76px",
     position: "relative",
     zIndex: 1,
     boxSizing: "border-box",
+    overflow: "hidden",
   };
 
   // Remove patient name from text to avoid repetition

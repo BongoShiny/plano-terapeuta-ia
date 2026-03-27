@@ -74,28 +74,18 @@ export default function PlanView() {
 
       for (let i = 0; i < pages.length; i++) {
         const page = pages[i];
-        const tempContainer = document.createElement("div");
-        tempContainer.style.cssText = "position:fixed;left:-9999px;top:0;width:794px;height:1123px;overflow:hidden;z-index:-1;";
-        const clone = page.cloneNode(true);
-        clone.style.width = "794px";
-        clone.style.height = "1123px";
-        clone.style.display = "block";
-        clone.style.visibility = "visible";
-        clone.style.position = "relative";
-        tempContainer.appendChild(clone);
-        document.body.appendChild(tempContainer);
-        await new Promise((r) => setTimeout(r, 100));
 
-        const canvas = await html2canvas(clone, {
+        const canvas = await html2canvas(page, {
           scale: 2,
           useCORS: true,
           allowTaint: true,
           backgroundColor: "#ffffff",
           width: A4_W_PX,
           height: A4_H_PX,
+          windowWidth: A4_W_PX,
+          windowHeight: A4_H_PX,
           logging: false,
         });
-        document.body.removeChild(tempContainer);
 
         const imgData = canvas.toDataURL("image/jpeg", 0.95);
         if (i > 0) pdf.addPage();
