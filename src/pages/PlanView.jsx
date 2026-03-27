@@ -178,6 +178,22 @@ export default function PlanView() {
     );
   }
 
+  // Poll for plan updates while status is "Gerando"
+  useEffect(() => {
+    if (!plan || plan.status !== "Gerando" || !planId) return;
+    const interval = setInterval(async () => {
+      const plans = await base44.entities.TherapeuticPlan.filter({ id: planId });
+      if (plans.length && plans[0].status !== "Gerando") {
+        setPlan(plans[0]);
+        if (plans[0].patient_id && !patientData) {
+          const patients = await base44.entities.Patient.filter({ id: plans[0].patient_id });
+          if (patients.length) setPatientData(patients[0]);
+        }
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [plan?.status, planId]);
+
   if (!plan || plan.status === "Gerando") {
     return (
       <div className="flex items-center justify-center h-screen">
