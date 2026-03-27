@@ -74,7 +74,8 @@ export default function PlanSummaryDocument({ plan, patientData }) {
     const splitRegex = /(?=na vista lateral|no plano sagital)/i;
     const parts = allText.split(splitRegex);
     const toSentences = (str, limit = 3) =>
-      str.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(s => s.length > 10).slice(0, limit);
+      str.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(s => s.length > 10).slice(0, limit)
+        .map(s => s.length > 180 ? s.substring(0, 180) + "..." : s);
     return { frontal: toSentences(parts[0] || "", 3), lateral: toSentences(parts[1] || "", 3) };
   };
 
@@ -105,7 +106,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
       }} />
       <div style={{
         flex: 1,
-        padding: "50mm 12mm 42mm 12mm",
+        padding: "50mm 12mm 44mm 12mm",
         position: "relative",
         zIndex: 1,
         boxSizing: "border-box",
@@ -148,7 +149,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
             <div style={{ marginBottom: 6 }}>
               <SectionTitle>Suas Queixas Principais</SectionTitle>
               <p style={{ fontSize: 13, lineHeight: 1.6, margin: 0, textAlign: "justify", fontWeight: 450 }}>
-                {truncateAtPeriod(planData.resumo_queixas, 300)}
+                {truncateAtPeriod(planData.resumo_queixas, 250)}
               </p>
             </div>
           )}

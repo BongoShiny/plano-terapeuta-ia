@@ -7,8 +7,8 @@ function truncateAtSentence(text, maxChars) {
   if (!text || text.length <= maxChars) return text;
   const trimmed = text.substring(0, maxChars);
   const lastPeriod = Math.max(trimmed.lastIndexOf('. '), trimmed.lastIndexOf('! '), trimmed.lastIndexOf('? '));
-  if (lastPeriod > 0) return trimmed.substring(0, lastPeriod + 1);
-  return trimmed;
+  if (lastPeriod > 50) return trimmed.substring(0, lastPeriod + 1);
+  return trimmed + "...";
 }
 
 function Divider() {
@@ -213,10 +213,12 @@ function ThermalSummaryBullets({ text }) {
   let lines = text.split(/\n+/).map(l => l.trim()).filter(l => l.length > 0);
   // If it's a single block of text, split by sentences
   if (lines.length <= 1 && text.length > 80) {
-    lines = text.split(/(?<=[.!?])\s+/).map(l => l.trim()).filter(l => l.length > 10).slice(0, 5);
+    lines = text.split(/(?<=[.!?])\s+/).map(l => l.trim()).filter(l => l.length > 10).slice(0, 4);
   } else {
-    lines = lines.slice(0, 5);
+    lines = lines.slice(0, 4);
   }
+  // Truncate each line to prevent overflow
+  lines = lines.map(l => l.length > 150 ? l.substring(0, 150) + "..." : l);
   return (
     <ul style={{ margin: 0, paddingLeft: 6, listStyle: "none" }}>
       {lines.map((line, i) => (
@@ -295,7 +297,8 @@ function PosturalColumns({ text }) {
   split(/(?<=[.!?])\s+/).
   map((s) => s.trim()).
   filter((s) => s.length > 10).
-  slice(0, limit);
+  slice(0, limit).
+  map((s) => s.length > 180 ? s.substring(0, 180) + "..." : s);
 
   const frontalSentences = toSentences(frontalText, 2);
   const lateralSentences = toSentences(lateralText, 3);
@@ -405,7 +408,7 @@ export default function PlanDocument({ plan, patientData }) {
 
   const contentStyle = {
     flex: 1,
-    padding: "50mm 12mm 42mm 12mm",
+    padding: "50mm 12mm 44mm 12mm",
     position: "relative",
     zIndex: 1,
     overflow: "hidden",
@@ -415,7 +418,7 @@ export default function PlanDocument({ plan, patientData }) {
 
   const contentStylePage1 = {
     ...contentStyle,
-    padding: "45mm 12mm 42mm 12mm"
+    padding: "45mm 12mm 44mm 12mm"
   };
 
   const PageWrapper = ({ children, id, isFirstPage }) =>
@@ -458,7 +461,7 @@ export default function PlanDocument({ plan, patientData }) {
         <div style={{ marginBottom: 12 }}>
             <SectionTitle>Resumo das Queixas e Áreas Afetadas</SectionTitle>
             <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-              {truncateAtSentence(planData.resumo_queixas, 400)}
+              {truncateAtSentence(planData.resumo_queixas, 300)}
             </p>
           </div>
         }
@@ -496,7 +499,7 @@ export default function PlanDocument({ plan, patientData }) {
             <div style={{ marginBottom: 12 }}>
               <SectionTitle>Objetivo Geral</SectionTitle>
               <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-                {truncateAtSentence(planData.objetivo_geral, 400)}
+                {truncateAtSentence(planData.objetivo_geral, 280)}
               </p>
             </div>
           </>
@@ -508,7 +511,7 @@ export default function PlanDocument({ plan, patientData }) {
             <div style={{ marginBottom: 12 }}>
               <SectionTitle>Explicação da Terapia Especial</SectionTitle>
               <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-                {truncateAtSentence(planData.explicacao_terapia, 400)}
+                {truncateAtSentence(planData.explicacao_terapia, 280)}
               </p>
             </div>
           </>
