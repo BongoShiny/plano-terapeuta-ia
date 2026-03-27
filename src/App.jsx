@@ -103,24 +103,40 @@ const AuthenticatedApp = () => {
 };
 
 
-function App() {
+function LoginRoute() {
+  const location = useLocation();
+  if (location.pathname === "/login") {
+    return <VibeLogin />;
+  }
+  return null;
+}
+
+function AppRoutes() {
+  const location = useLocation();
+  
+  if (location.pathname === "/login") {
+    return <VibeLogin />;
+  }
 
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
         <ClinicProvider>
-          <Router>
-            <NavigationTracker />
-            <Routes>
-              <Route path="/login" element={<VibeLogin />} />
-              <Route path="*" element={<AuthenticatedApp />} />
-            </Routes>
-          </Router>
+          <NavigationTracker />
+          <AuthenticatedApp />
           <Toaster />
         </ClinicProvider>
       </QueryClientProvider>
     </AuthProvider>
-  )
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppRoutes />
+    </Router>
+  );
 }
 
 export default App
