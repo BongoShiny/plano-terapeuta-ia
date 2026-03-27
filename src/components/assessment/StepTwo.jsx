@@ -98,41 +98,41 @@ function AiResumoForm({ data, onChange, onAnalyze, analyzing }) {
         
       </div>
 
-      {data._ai_filled &&
-      <div className="rounded-xl p-4 border" style={{ background: "#F0FDF4", borderColor: "#BBF7D0" }}>
+      {data._ai_filled ? (
+        <div className="rounded-xl p-4 border" style={{ background: "#F0FDF4", borderColor: "#BBF7D0" }}>
           <p className="text-sm font-semibold" style={{ color: "#22C55E" }}>
             ✓ Análise completa! As etapas 2 e 3 foram preenchidas automaticamente.
           </p>
           <p className="text-xs text-gray-500 mt-1">Clique em "Próximo" para ir à etapa de fotos e finalização.</p>
         </div>
-      }
+      ) : null}
 
-      {!data._ai_filled &&
-      <button
-        type="button"
-        onClick={onAnalyze}
-        disabled={!data.resumo_cliente || data.resumo_cliente.trim().length < 20 || analyzing}
-        className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold text-white transition-all"
-        style={{
-          background: !data.resumo_cliente || data.resumo_cliente.trim().length < 20 || analyzing ?
-          "#E5E7EB" :
-          "linear-gradient(135deg, #1B3A4B 0%, #2A4F63 100%)",
-          color: !data.resumo_cliente || data.resumo_cliente.trim().length < 20 || analyzing ? "#9CA3AF" : "white"
-        }}>
-        
-          {analyzing ?
-        <>
+      {!data._ai_filled ? (
+        <button
+          type="button"
+          onClick={onAnalyze}
+          disabled={!data.resumo_cliente || data.resumo_cliente.trim().length < 20 || analyzing}
+          className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold text-white transition-all"
+          style={{
+            background: (!data.resumo_cliente || data.resumo_cliente.trim().length < 20 || analyzing)
+              ? "#E5E7EB"
+              : "linear-gradient(135deg, #1B3A4B 0%, #2A4F63 100%)",
+            color: (!data.resumo_cliente || data.resumo_cliente.trim().length < 20 || analyzing) ? "#9CA3AF" : "white",
+          }}
+        >
+          {analyzing ? (
+            <>
               <Loader2 className="w-4 h-4 animate-spin" />
               Analisando com IA...
-            </> :
-
-        <>
+            </>
+          ) : (
+            <>
               <Sparkles className="w-4 h-4" />
               Analisar com IA e preencher automaticamente
             </>
-        }
+          )}
         </button>
-      }
+      ) : null}
     </div>);
 
 }
@@ -208,14 +208,14 @@ Se alguma informação não foi mencionada no resumo, use o valor mais provável
   return (
     <div className="space-y-6">
       {/* Popup de instrução */}
-      {showPopup &&
-      <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ background: "rgba(0,0,0,0.5)" }}>
+      {showPopup ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ background: "rgba(0,0,0,0.5)" }}>
           <div className="bg-white rounded-2xl p-6 max-w-sm mx-4 shadow-xl relative">
             <button
-            type="button"
-            onClick={() => setShowPopup(false)}
-            className="absolute top-3 right-3 text-gray-400 hover:text-gray-600">
-            
+              type="button"
+              onClick={() => setShowPopup(false)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+            >
               <X className="w-5 h-5" />
             </button>
             <div className="flex items-center gap-3 mb-4">
@@ -236,16 +236,16 @@ Se alguma informação não foi mencionada no resumo, use o valor mais provável
               </div>
             </div>
             <button
-            type="button"
-            onClick={() => setShowPopup(false)}
-            className="w-full mt-5 px-4 py-2.5 rounded-xl text-sm font-bold text-white"
-            style={{ background: "linear-gradient(135deg, #1B3A4B 0%, #2A4F63 100%)" }}>
-            
+              type="button"
+              onClick={() => setShowPopup(false)}
+              className="w-full mt-5 px-4 py-2.5 rounded-xl text-sm font-bold text-white"
+              style={{ background: "linear-gradient(135deg, #1B3A4B 0%, #2A4F63 100%)" }}
+            >
               Entendi
             </button>
           </div>
         </div>
-      }
+      ) : null}
 
       <div>
         <h2 className="text-xl font-bold mb-1" style={{ color: "#1B3A4B" }}>
