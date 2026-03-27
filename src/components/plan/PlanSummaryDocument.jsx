@@ -77,7 +77,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
         {/* Content area - carefully sized to fit between header border and footer */}
         <div style={{
           flex: 1,
-          padding: "170px 60px 180px 60px",
+          padding: "150px 60px 180px 60px",
           position: "relative",
           zIndex: 1,
           boxSizing: "border-box",
