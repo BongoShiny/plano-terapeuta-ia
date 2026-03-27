@@ -1,47 +1,69 @@
 import React from "react";
 import { base44 } from "@/api/base44Client";
-import { LogIn } from "lucide-react";
 
 export default function VibeLogin() {
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault();
     base44.auth.redirectToLogin(window.location.origin);
   };
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4"
-      style={{ background: "#3B2F1E" }}
+      className="min-h-screen flex items-center justify-center"
+      style={{ background: "rgb(44, 36, 22)" }}
     >
-      <div
-        className="w-full max-w-sm rounded-xl p-8"
+      <form
+        onSubmit={handleLogin}
+        className="w-full max-w-sm p-8 rounded-2xl"
         style={{
-          background: "rgba(60, 48, 30, 0.85)",
-          border: "1px solid rgba(180, 150, 80, 0.3)",
-          boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+          background: "rgba(255, 255, 255, 0.06)",
+          border: "1px solid rgba(241, 212, 125, 0.15)",
         }}
       >
-        <h1
-          className="text-center text-xl font-bold italic mb-2"
-          style={{ color: "#D4A843" }}
+        <h2
+          className="text-2xl font-bold text-center mb-6"
+          style={{ color: "rgb(241, 212, 125)", fontFamily: "serif" }}
         >
           Acesso Restrito
-        </h1>
-        <p className="text-center text-xs mb-8" style={{ color: "#A89070" }}>
-          Vibe Terapias — Clínica Especializada em Dor
-        </p>
+        </h2>
+
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Usuário"
+            className="w-full px-4 py-3 rounded-lg text-sm outline-none"
+            style={{
+              background: "rgba(255, 255, 255, 0.08)",
+              border: "1px solid rgba(241, 212, 125, 0.2)",
+              color: "#fff",
+            }}
+          />
+        </div>
+
+        <div className="mb-6">
+          <input
+            type="password"
+            placeholder="Senha"
+            className="w-full px-4 py-3 rounded-lg text-sm outline-none"
+            style={{
+              background: "rgba(255, 255, 255, 0.08)",
+              border: "1px solid rgba(241, 212, 125, 0.2)",
+              color: "#fff",
+            }}
+          />
+        </div>
 
         <button
-          onClick={handleLogin}
-          className="w-full py-3 rounded-lg text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2"
+          type="submit"
+          className="w-full py-3 rounded-lg font-bold text-sm transition-all hover:opacity-90"
           style={{
-            background: "linear-gradient(90deg, #C6A84B, #7FB89E)",
-            color: "#2E2417",
+            background: "linear-gradient(135deg, rgb(197, 165, 74), rgb(139, 187, 161))",
+            color: "rgb(26, 10, 10)",
           }}
         >
-          <LogIn className="w-4 h-4" />
           Entrar
         </button>
-      </div>
+      </form>
     </div>
   );
 }
