@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Sparkles, Loader2, FileText, PenLine } from "lucide-react";
+import { Sparkles, Loader2, X, Info } from "lucide-react";
 
 const AREAS = [
   "Pescoço / Cervical", "Cabeça / Crânio", "Ombros", "Braços / Membros Superiores",
@@ -138,8 +138,14 @@ function AiResumoForm({ data, onChange, onAnalyze, analyzing }) {
 }
 
 export default function StepTwo({ data, onChange, onSkipToStep }) {
-  const [mode, setMode] = useState(data._ai_filled ? "ai" : null);
   const [analyzing, setAnalyzing] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    if (!data._ai_filled) {
+      setShowPopup(true);
+    }
+  }, []);
 
   const handleAnalyze = async () => {
     setAnalyzing(true);
@@ -199,80 +205,58 @@ Se alguma informação não foi mencionada no resumo, use o valor mais provável
     }
   };
 
-  // Mode selection screen
-  if (mode === null) {
-    return (
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-xl font-bold mb-1" style={{ color: "#1B3A4B" }}>
-            Queixas e Dores
-          </h2>
-          <p className="text-sm text-gray-500">
-            Escolha como deseja preencher as informações do paciente.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <button
-            type="button"
-            onClick={() => setMode("manual")}
-            className="flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-all hover:shadow-md text-center"
-            style={{ borderColor: "#D1D5DB", background: "white" }}
-          >
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: "#E8F0F4" }}>
-              <PenLine className="w-6 h-6" style={{ color: "#1B3A4B" }} />
-            </div>
-            <div>
-              <p className="font-bold text-sm" style={{ color: "#1B3A4B" }}>Preencher Manualmente</p>
-              <p className="text-xs text-gray-400 mt-1">Selecione as queixas, áreas e histórico passo a passo</p>
-            </div>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setMode("ai")}
-            className="flex flex-col items-center gap-3 p-6 rounded-2xl border-2 transition-all hover:shadow-md text-center"
-            style={{ borderColor: "#C17F6A", background: "#FDF8F5" }}
-          >
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: "#F5E6DD" }}>
-              <Sparkles className="w-6 h-6" style={{ color: "#C17F6A" }} />
-            </div>
-            <div>
-              <p className="font-bold text-sm" style={{ color: "#1B3A4B" }}>Resumo com IA</p>
-              <p className="text-xs text-gray-400 mt-1">Cole o resumo da conversa e a IA preenche tudo automaticamente</p>
-            </div>
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold mb-1" style={{ color: "#1B3A4B" }}>
-            Queixas e Dores
-          </h2>
-          <p className="text-sm text-gray-500">
-            {mode === "ai"
-              ? "Cole o resumo da conversa e a IA analisa automaticamente."
-              : "Descreva as principais queixas e localização das dores."}
-          </p>
+      {/* Popup de instrução */}
+      {showPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ background: "rgba(0,0,0,0.5)" }}>
+          <div className="bg-white rounded-2xl p-6 max-w-sm mx-4 shadow-xl relative">
+            <button
+              type="button"
+              onClick={() => setShowPopup(false)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "#F5E6DD" }}>
+                <Info className="w-5 h-5" style={{ color: "#C17F6A" }} />
+              </div>
+              <h3 className="font-bold text-base" style={{ color: "#1B3A4B" }}>Como preencher?</h3>
+            </div>
+            <div className="space-y-3 text-sm" style={{ color: "#374151" }}>
+              <p>Para obter o resumo do paciente:</p>
+              <div className="flex gap-2 items-start">
+                <span className="font-bold" style={{ color: "#C17F6A" }}>1.</span>
+                <span>Entre na <strong>agenda do paciente novo</strong> e copie as informações.</span>
+              </div>
+              <div className="flex gap-2 items-start">
+                <span className="font-bold" style={{ color: "#C17F6A" }}>2.</span>
+                <span>Ou pergunte no <strong>grupo de resumo</strong> e cole aqui no campo abaixo.</span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowPopup(false)}
+              className="w-full mt-5 px-4 py-2.5 rounded-xl text-sm font-bold text-white"
+              style={{ background: "linear-gradient(135deg, #1B3A4B 0%, #2A4F63 100%)" }}
+            >
+              Entendi
+            </button>
+          </div>
         </div>
-        <button
-          type="button"
-          onClick={() => setMode(mode === "ai" ? "manual" : "ai")}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all"
-          style={{ color: "#C17F6A", borderColor: "#C17F6A" }}
-        >
-          {mode === "ai" ? <PenLine className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />}
-          {mode === "ai" ? "Manual" : "Usar IA"}
-        </button>
+      )}
+
+      <div>
+        <h2 className="text-xl font-bold mb-1" style={{ color: "#1B3A4B" }}>
+          Queixas e Dores
+        </h2>
+        <p className="text-sm text-gray-500">
+          Cole o resumo da conversa e a IA analisa automaticamente.
+        </p>
       </div>
 
-      {mode === "manual" && <ManualForm data={data} onChange={onChange} />}
-      {mode === "ai" && <AiResumoForm data={data} onChange={onChange} onAnalyze={handleAnalyze} analyzing={analyzing} />}
+      <AiResumoForm data={data} onChange={onChange} onAnalyze={handleAnalyze} analyzing={analyzing} />
     </div>
   );
 }
