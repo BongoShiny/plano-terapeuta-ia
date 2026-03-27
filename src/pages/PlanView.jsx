@@ -167,17 +167,6 @@ export default function PlanView() {
     setPlan((p) => ({ ...p, status: "Fechado" }));
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin mx-auto mb-3" style={{ color: "#C17F6A" }} />
-          <p className="text-gray-500">Carregando plano...</p>
-        </div>
-      </div>
-    );
-  }
-
   // Poll for plan updates while status is "Gerando"
   useEffect(() => {
     if (!plan || plan.status !== "Gerando" || !planId) return;
@@ -193,6 +182,17 @@ export default function PlanView() {
     }, 5000);
     return () => clearInterval(interval);
   }, [plan?.status, planId]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <Loader2 className="w-10 h-10 animate-spin mx-auto mb-3" style={{ color: "#C17F6A" }} />
+          <p className="text-gray-500">Carregando plano...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!plan || plan.status === "Gerando") {
     return (
