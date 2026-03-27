@@ -31,11 +31,11 @@ export default function PlanSummaryDocument({ plan, patientData }) {
   const safeArray = (val) => (Array.isArray(val) ? val : []);
   const etapas = safeArray(planData?.etapas);
 
-  // Remove patient name from text to avoid repetition
+  // Remove patient name and clean trailing prepositions / incomplete endings
   const removeName = (text) => {
     if (!text || !plan.patient_nome) return text;
     const name = plan.patient_nome;
-    return text
+    let cleaned = text
       .replace(new RegExp(`\\bde\\s+${name}\\b`, "gi"), "")
       .replace(new RegExp(`\\bdo\\s+${name}\\b`, "gi"), "")
       .replace(new RegExp(`\\bda\\s+${name}\\b`, "gi"), "")
@@ -43,6 +43,15 @@ export default function PlanSummaryDocument({ plan, patientData }) {
       .replace(new RegExp(`\\b${name}\\b`, "gi"), "")
       .replace(/\s{2,}/g, " ")
       .trim();
+    // Remove trailing dangling prepositions/articles
+    cleaned = cleaned.replace(/\s+(em|na|no|nas|nos|de|do|da|dos|das|para|pelo|pela|ao|à|com|e)\s*\.?\s*$/gi, "");
+    // Remove trailing period preceded by space
+    cleaned = cleaned.replace(/\s+\.\s*$/, ".");
+    // Ensure ends with period
+    if (cleaned && !cleaned.endsWith(".") && !cleaned.endsWith("!") && !cleaned.endsWith("?")) {
+      cleaned += ".";
+    }
+    return cleaned;
   };
 
   // Truncate queixas to max 250 chars ending at a period
