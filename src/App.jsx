@@ -12,7 +12,6 @@ import ManageUsers from './pages/ManageUsers';
 import ManageClinics from './pages/ManageClinics';
 import SelectClinic from './pages/SelectClinic';
 import PendingApproval from './pages/PendingApproval';
-import InviteUsers from './pages/InviteUsers';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -50,7 +49,6 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route path="/select-clinic" element={<SelectClinic />} />
       <Route path="/pending-approval" element={<PendingApproval />} />
-      <Route path="/invite-users" element={<InviteUsers />} />
       <Route path="/" element={
         <LayoutWrapper currentPageName={mainPageKey}>
           <MainPage />
