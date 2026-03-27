@@ -360,7 +360,10 @@ export default function PlanView() {
           #plan-print-area, #plan-print-area * { 
             visibility: visible; 
           }
-          #plan-print-area {
+          #summary-print-area, #summary-print-area * {
+            visibility: visible;
+          }
+          #plan-print-area, #summary-print-area {
             position: absolute;
             left: 0;
             top: 0;
@@ -368,7 +371,8 @@ export default function PlanView() {
             padding: 0;
             width: 210mm;
           }
-          #plan-print-area > div > div {
+          #plan-print-area > div > div,
+          #summary-print-area > div > div {
             page-break-after: always;
             page-break-inside: avoid;
             margin: 0;
@@ -378,7 +382,8 @@ export default function PlanView() {
             border-radius: 0;
             box-sizing: border-box;
           }
-          #plan-print-area > div > div:last-child {
+          #plan-print-area > div > div:last-child,
+          #summary-print-area > div > div:last-child {
             page-break-after: auto;
           }
         }
