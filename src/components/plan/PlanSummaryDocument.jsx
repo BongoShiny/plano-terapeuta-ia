@@ -247,7 +247,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
       {hasPostural && (
         <PageWrapper id="summary-page-2">
           <div style={{ textAlign: "center", marginBottom: 12 }}>
-            <div style={{ fontSize: 19, fontWeight: 900, color: "#1B3A4B", letterSpacing: "0.6px" }}>
+            <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", letterSpacing: 0.5 }}>
               Avaliação Postural
             </div>
             <div style={{ fontSize: 13, color: "#555", marginTop: 3 }}>
@@ -258,17 +258,17 @@ export default function PlanSummaryDocument({ plan, patientData }) {
           <Divider />
 
           {/* Photos side by side */}
-          <div style={{ display: "flex", gap: 12, marginBottom: 10, justifyContent: "center" }}>
+          <div style={{ display: "flex", gap: 10, marginBottom: 10, justifyContent: "center" }}>
             {planData?.foto_postural_1 && (
               <div style={{ flex: 1, textAlign: "center" }}>
-                <p style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", margin: "0 0 4px 0" }}>Vista Frontal</p>
-                <img src={planData.foto_postural_1} alt="Postural Frontal" style={{ width: "100%", maxHeight: "280px", objectFit: "contain", borderRadius: 6 }} />
+                <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Frontal</p>
+                <img src={planData.foto_postural_1} alt="Postural Frontal" style={{ width: "100%", height: "100mm", objectFit: "contain", borderRadius: 4 }} />
               </div>
             )}
             {planData?.foto_postural_2 && (
               <div style={{ flex: 1, textAlign: "center" }}>
-                <p style={{ fontSize: 11, fontWeight: 700, color: "#1B3A4B", margin: "0 0 4px 0" }}>Vista Lateral</p>
-                <img src={planData.foto_postural_2} alt="Postural Lateral" style={{ width: "100%", maxHeight: "280px", objectFit: "contain", borderRadius: 6 }} />
+                <p style={{ fontSize: 9, fontWeight: 700, color: "#1B3A4B", margin: "0 0 3px 0" }}>Vista Lateral</p>
+                <img src={planData.foto_postural_2} alt="Postural Lateral" style={{ width: "100%", height: "100mm", objectFit: "contain", borderRadius: 4 }} />
               </div>
             )}
           </div>
@@ -282,12 +282,12 @@ export default function PlanSummaryDocument({ plan, patientData }) {
                 <div style={{ display: "flex", gap: 14 }}>
                   {frontal.length > 0 && (
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 13, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Vista Frontal (Plano Coronal)</div>
+                      <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Vista Frontal (Plano Coronal)</div>
                       <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
                         {frontal.map((s, i) => (
-                          <li key={i} style={{ display: "flex", gap: 6, fontSize: 12.5, marginBottom: 5, lineHeight: 1.5, fontWeight: 450 }}>
-                            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                            <span>{removeName(s)}</span>
+                          <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
+                            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
+                            <span style={{ fontWeight: 600 }}>{removeName(s)}</span>
                           </li>
                         ))}
                       </ul>
@@ -298,12 +298,12 @@ export default function PlanSummaryDocument({ plan, patientData }) {
                   )}
                   {lateral.length > 0 && (
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 13, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Vista Lateral (Plano Sagital)</div>
+                      <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Vista Lateral (Plano Sagital)</div>
                       <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
                         {lateral.map((s, i) => (
-                          <li key={i} style={{ display: "flex", gap: 6, fontSize: 12.5, marginBottom: 5, lineHeight: 1.5, fontWeight: 450 }}>
-                            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                            <span>{removeName(s)}</span>
+                          <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
+                            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
+                            <span style={{ fontWeight: 600 }}>{removeName(s)}</span>
                           </li>
                         ))}
                       </ul>
@@ -320,7 +320,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
       {hasThermalPhotos && (
         <PageWrapper id="summary-page-3">
           <div style={{ textAlign: "center", marginBottom: 12 }}>
-            <div style={{ fontSize: 19, fontWeight: 900, color: "#1B3A4B", letterSpacing: "0.6px" }}>
+            <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", letterSpacing: 0.5 }}>
               Fotos da Câmera Termal
             </div>
             <div style={{ fontSize: 13, color: "#555", marginTop: 3 }}>
@@ -330,17 +330,17 @@ export default function PlanSummaryDocument({ plan, patientData }) {
 
           <Divider />
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14, marginTop: 10 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, marginTop: 10 }}>
             {thermalPhotos.map((url, i) => (
               <div key={i} style={{
-                borderRadius: 8,
+                borderRadius: 6,
                 overflow: "hidden",
                 border: "1px solid #E5E7EB",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 background: "#000",
-                height: 280,
+                height: 340,
               }}>
                 <img src={url} alt={`Termal ${i + 1}`} style={{ maxWidth: "100%", maxHeight: "100%", display: "block", objectFit: "contain" }} />
               </div>
