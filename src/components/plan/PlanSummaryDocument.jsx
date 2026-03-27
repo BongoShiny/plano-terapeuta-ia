@@ -251,7 +251,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
                 {sentences.map((s, i) => (
                   <li key={i} style={{ display: "flex", gap: 6, fontSize: 14, marginBottom: 6, lineHeight: 1.7, color: "#222" }}>
                     <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
-                    <span style={{ fontWeight: 600, textAlign: "justify" }}>{removeName(s)}</span>
+                    <span style={{ fontWeight: 600 }} className="text-sm text-justify normal-case">{removeName(s)}</span>
                   </li>
                 ))}
               </ul>
@@ -259,12 +259,12 @@ export default function PlanSummaryDocument({ plan, patientData }) {
             return (
               <div style={{ display: "flex", gap: 12 }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Na vista frontal (plano coronal)</div>
+                  <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }} className="mx-3 rounded">Na vista frontal (plano coronal)</div>
                   <BulletList sentences={frontal} />
                 </div>
                 <div style={{ width: 1, background: "#D1C4B0", flexShrink: 0 }} />
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>Na vista lateral (plano sagital)</div>
+                  <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }} className="mx-3">Na vista lateral (plano sagital)</div>
                   <BulletList sentences={lateral} />
                 </div>
               </div>
@@ -282,16 +282,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
           <Divider />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, marginTop: 10 }}>
             {thermalPhotos.map((url, i) => (
-              <div key={i} style={{
-                borderRadius: 6,
-                overflow: "hidden",
-                border: "1px solid #E5E7EB",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "#000",
-                height: 340,
-              }}>
+              <div key={i} style={{ borderRadius: 6, overflow: "hidden", border: "1px solid #E5E7EB", display: "flex", alignItems: "center", justifyContent: "center", background: "#000", height: 340 }}>
                 <img src={url} alt={`Termal ${i + 1}`} style={{ maxWidth: "100%", maxHeight: "100%", display: "block", objectFit: "contain" }} />
               </div>
             ))}
