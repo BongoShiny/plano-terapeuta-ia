@@ -58,10 +58,24 @@ export default function PlanSummaryDocument({ plan, patientData }) {
 
   const contentStyle = {
     flex: 1,
-    padding: "48mm 14mm 44mm 14mm",
+    padding: "48mm 20mm 44mm 20mm",
     position: "relative",
     zIndex: 1,
     boxSizing: "border-box",
+  };
+
+  // Remove patient name from text to avoid repetition
+  const removeName = (text) => {
+    if (!text || !plan.patient_nome) return text;
+    const name = plan.patient_nome;
+    return text
+      .replace(new RegExp(`\\bde\\s+${name}\\b`, "gi"), "")
+      .replace(new RegExp(`\\bdo\\s+${name}\\b`, "gi"), "")
+      .replace(new RegExp(`\\bda\\s+${name}\\b`, "gi"), "")
+      .replace(new RegExp(`\\bpara\\s+${name}\\b`, "gi"), "")
+      .replace(new RegExp(`\\b${name}\\b`, "gi"), "")
+      .replace(/\s{2,}/g, " ")
+      .trim();
   };
 
   return (
@@ -121,7 +135,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
                   {safeArray(planData.objetivos_tratamento).slice(0, 6).map((obj, i) => (
                     <li key={i} style={{ display: "flex", gap: 8, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                       <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                      <span>{obj}</span>
+                      <span>{removeName(obj)}</span>
                     </li>
                   ))}
                 </ul>
@@ -148,7 +162,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
                     {safeArray(etapas[0]?.ciclos).slice(0, 3).map((ciclo, i) => (
                       <li key={i} style={{ display: "flex", gap: 6, fontSize: 12.5, marginBottom: 4, lineHeight: 1.5 }}>
                         <span style={{ color: "#C17F6A", fontWeight: 700 }}>●</span>
-                        <span>{ciclo.objetivo}</span>
+                        <span>{removeName(ciclo.objetivo)}</span>
                       </li>
                     ))}
                   </ul>
@@ -164,7 +178,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
                       {safeArray(etapas[1]?.ciclos).slice(0, 3).map((ciclo, i) => (
                         <li key={i} style={{ display: "flex", gap: 6, fontSize: 12.5, marginBottom: 4, lineHeight: 1.5 }}>
                           <span style={{ color: "#7A9DB0", fontWeight: 700 }}>●</span>
-                          <span>{ciclo.objetivo}</span>
+                          <span>{removeName(ciclo.objetivo)}</span>
                         </li>
                       ))}
                     </ul>
@@ -181,7 +195,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
                       {safeArray(etapas[2]?.ciclos).slice(0, 3).map((ciclo, i) => (
                         <li key={i} style={{ display: "flex", gap: 6, fontSize: 12.5, marginBottom: 4, lineHeight: 1.5 }}>
                           <span style={{ color: "#1B3A4B", fontWeight: 700 }}>●</span>
-                          <span>{ciclo.objetivo}</span>
+                          <span>{removeName(ciclo.objetivo)}</span>
                         </li>
                       ))}
                     </ul>
