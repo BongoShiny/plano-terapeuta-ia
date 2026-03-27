@@ -4,12 +4,12 @@ const BG_IMAGE_URL = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object
 const FOOTER_IMAGE_URL = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/ac819d2fc_image.png";
 
 function Divider() {
-  return <div style={{ height: 1, background: "#D1C4B0", margin: "14px 0" }} />;
+  return <div style={{ height: 1, background: "#D1C4B0", margin: "8px 0" }} />;
 }
 
 function SectionTitle({ children }) {
   return (
-    <div style={{ fontSize: 15, fontWeight: 700, color: "#1B3A4B", marginBottom: 8 }}>
+    <div style={{ fontSize: 13, fontWeight: 700, color: "#1B3A4B", marginBottom: 4 }}>
       {children}
     </div>
   );
@@ -31,40 +31,6 @@ export default function PlanSummaryDocument({ plan, patientData }) {
   const safeArray = (val) => (Array.isArray(val) ? val : []);
   const etapas = safeArray(planData?.etapas);
 
-  const pageStyle = {
-    position: "relative",
-    overflow: "hidden",
-    backgroundColor: "#ffffff",
-    borderRadius: 0,
-    width: "794px",
-    height: "1123px",
-    boxSizing: "border-box",
-    display: "flex",
-    flexDirection: "column",
-    pageBreakAfter: "always",
-    pageBreakInside: "avoid",
-  };
-
-  const bgStyle = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    objectFit: "fill",
-    zIndex: 0,
-    pointerEvents: "none",
-  };
-
-  const contentStyle = {
-    flex: 1,
-    padding: "182px 76px 166px 76px",
-    position: "relative",
-    zIndex: 1,
-    boxSizing: "border-box",
-    overflow: "hidden",
-  };
-
   // Remove patient name from text to avoid repetition
   const removeName = (text) => {
     if (!text || !plan.patient_nome) return text;
@@ -79,63 +45,87 @@ export default function PlanSummaryDocument({ plan, patientData }) {
       .trim();
   };
 
+  // Truncate queixas to max 250 chars ending at a period
+  const truncateAtPeriod = (text, max) => {
+    if (!text) return "";
+    if (text.length <= max) return text;
+    const cut = text.substring(0, max);
+    const lastPeriod = cut.lastIndexOf(".");
+    return lastPeriod > 50 ? cut.substring(0, lastPeriod + 1) : cut + "...";
+  };
+
   return (
-    <div style={{ fontFamily: "'Arial', 'Helvetica', sans-serif", color: "#222", lineHeight: 1.5 }}>
-      <div id="summary-page-1" style={pageStyle}>
-        <img src={BG_IMAGE_URL} alt="" style={bgStyle} />
-        <img
-          src={FOOTER_IMAGE_URL}
-          alt=""
-          style={{ position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0 }}
-        />
-        <div style={contentStyle}>
-          {/* Header - Patient info */}
-          <div style={{ textAlign: "center", marginBottom: 16 }}>
-            <div style={{ fontSize: 20, fontWeight: 900, color: "#1B3A4B", marginBottom: 4 }}>
+    <div style={{ fontFamily: "'Arial', 'Helvetica', sans-serif", color: "#222", lineHeight: 1.4 }}>
+      <div id="summary-page-1" style={{
+        position: "relative",
+        overflow: "hidden",
+        backgroundColor: "#ffffff",
+        width: "794px",
+        height: "1123px",
+        boxSizing: "border-box",
+        display: "flex",
+        flexDirection: "column",
+      }}>
+        <img src={BG_IMAGE_URL} alt="" style={{
+          position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
+          objectFit: "fill", zIndex: 0, pointerEvents: "none",
+        }} />
+        <img src={FOOTER_IMAGE_URL} alt="" style={{
+          position: "absolute", bottom: 0, left: 0, width: "100%", display: "block", zIndex: 0,
+        }} />
+
+        {/* Content area - carefully sized to fit between header border and footer */}
+        <div style={{
+          flex: 1,
+          padding: "170px 86px 180px 86px",
+          position: "relative",
+          zIndex: 1,
+          boxSizing: "border-box",
+          overflow: "hidden",
+        }}>
+          {/* Title */}
+          <div style={{ textAlign: "center", marginBottom: 10 }}>
+            <div style={{ fontSize: 17, fontWeight: 900, color: "#1B3A4B", marginBottom: 2 }}>
               Resumo do Plano Terapêutico
             </div>
-            <div style={{ fontSize: 13, color: "#666" }}>
+            <div style={{ fontSize: 11, color: "#666" }}>
               Documento preparado para <strong style={{ color: "#1B3A4B" }}>{plan.patient_nome}</strong>
             </div>
           </div>
 
           <Divider />
 
-          {/* Patient basic info */}
-          <div style={{ display: "flex", gap: 24, fontSize: 13, marginBottom: 4 }}>
+          {/* Patient info - single line */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 20px", fontSize: 11, marginBottom: 2 }}>
             <div><strong>Paciente:</strong> {plan.patient_nome}</div>
             {patientData?.idade && <div><strong>Idade:</strong> {patientData.idade} anos</div>}
             {patientData?.sexo && <div><strong>Sexo:</strong> {patientData.sexo}</div>}
-          </div>
-          <div style={{ display: "flex", gap: 24, fontSize: 13, marginBottom: 4 }}>
             <div><strong>Terapia:</strong> {plan.terapia_especial}</div>
-            <div><strong>Total de Sessões:</strong> {plan.total_sessoes || 24}</div>
+            <div><strong>Sessões:</strong> {plan.total_sessoes || 24}</div>
           </div>
 
           <Divider />
 
-          {/* Queixas */}
+          {/* Queixas - condensed */}
           {planData?.resumo_queixas && (
-            <div style={{ marginBottom: 14 }}>
+            <div style={{ marginBottom: 6 }}>
               <SectionTitle>Suas Queixas Principais</SectionTitle>
-              <p style={{ fontSize: 13, lineHeight: 1.8, margin: 0, textAlign: "justify" }}>
-                {planData.resumo_queixas.length > 500
-                  ? planData.resumo_queixas.substring(0, 500).replace(/[^.]*$/, "")
-                  : planData.resumo_queixas}
+              <p style={{ fontSize: 11, lineHeight: 1.5, margin: 0, textAlign: "justify" }}>
+                {truncateAtPeriod(planData.resumo_queixas, 280)}
               </p>
             </div>
           )}
 
-          {/* Objetivos */}
+          {/* Objetivos - max 5 items */}
           {safeArray(planData?.objetivos_tratamento).length > 0 && (
             <>
               <Divider />
-              <div style={{ marginBottom: 14 }}>
-                <SectionTitle>Objetivos do Seu Tratamento</SectionTitle>
+              <div style={{ marginBottom: 6 }}>
+                <SectionTitle>Objetivos do Tratamento</SectionTitle>
                 <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                  {safeArray(planData.objetivos_tratamento).slice(0, 6).map((obj, i) => (
-                    <li key={i} style={{ display: "flex", gap: 8, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
-                      <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
+                  {safeArray(planData.objetivos_tratamento).slice(0, 5).map((obj, i) => (
+                    <li key={i} style={{ display: "flex", gap: 6, fontSize: 11, marginBottom: 3, lineHeight: 1.4 }}>
+                      <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 4 }} />
                       <span>{removeName(obj)}</span>
                     </li>
                   ))}
@@ -144,102 +134,54 @@ export default function PlanSummaryDocument({ plan, patientData }) {
             </>
           )}
 
-          {/* Etapas do tratamento */}
+          {/* Etapas - compact */}
           {etapas.length > 0 && (
             <>
               <Divider />
-              <div style={{ marginBottom: 14 }}>
+              <div style={{ marginBottom: 6 }}>
                 <SectionTitle>Como será o Seu Tratamento</SectionTitle>
-                <p style={{ fontSize: 12.5, color: "#555", margin: "0 0 12px 0", lineHeight: 1.6 }}>
-                  Seu plano é dividido em 3 etapas progressivas de {plan.total_sessoes || 24} sessões:
+                <p style={{ fontSize: 10.5, color: "#555", margin: "0 0 6px 0" }}>
+                  Plano dividido em 3 etapas de {plan.total_sessoes || 24} sessões:
                 </p>
 
-                {/* Etapa 1 */}
-                <div style={{ marginBottom: 14, padding: "10px 12px", background: "#F8F6F3", borderRadius: 8, borderLeft: "4px solid #C17F6A" }}>
-                  <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>
-                    Etapa 1 — Sessões 1 a 8: Adaptação Muscular
-                  </div>
-                  <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                    {safeArray(etapas[0]?.ciclos).slice(0, 3).map((ciclo, i) => (
-                      <li key={i} style={{ display: "flex", gap: 6, fontSize: 12.5, marginBottom: 4, lineHeight: 1.5 }}>
-                        <span style={{ color: "#C17F6A", fontWeight: 700 }}>●</span>
-                        <span>{removeName(ciclo.objetivo)}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Etapa 2 */}
-                {etapas[1] && (
-                  <div style={{ marginBottom: 14, padding: "10px 12px", background: "#F8F6F3", borderRadius: 8, borderLeft: "4px solid #7A9DB0" }}>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>
-                      Etapa 2 — Sessões 9 a 16: Correção Postural e Mobilidade
+                {[
+                  { etapa: etapas[0], label: "Etapa 1 — Sessões 1 a 8: Adaptação Muscular", color: "#C17F6A" },
+                  { etapa: etapas[1], label: "Etapa 2 — Sessões 9 a 16: Correção Postural e Mobilidade", color: "#7A9DB0" },
+                  { etapa: etapas[2], label: "Etapa 3 — Sessões 17 a 24: Manutenção", color: "#1B3A4B" },
+                ].map((item, idx) => item.etapa ? (
+                  <div key={idx} style={{ marginBottom: 8, padding: "6px 10px", background: "#F8F6F3", borderRadius: 6, borderLeft: `3px solid ${item.color}` }}>
+                    <div style={{ fontSize: 11.5, fontWeight: 800, color: "#1B3A4B", marginBottom: 3 }}>
+                      {item.label}
                     </div>
                     <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                      {safeArray(etapas[1]?.ciclos).slice(0, 3).map((ciclo, i) => (
-                        <li key={i} style={{ display: "flex", gap: 6, fontSize: 12.5, marginBottom: 4, lineHeight: 1.5 }}>
-                          <span style={{ color: "#7A9DB0", fontWeight: 700 }}>●</span>
+                      {safeArray(item.etapa.ciclos).slice(0, 2).map((ciclo, i) => (
+                        <li key={i} style={{ display: "flex", gap: 5, fontSize: 10.5, marginBottom: 2, lineHeight: 1.4 }}>
+                          <span style={{ color: item.color, fontWeight: 700 }}>●</span>
                           <span>{removeName(ciclo.objetivo)}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
-                )}
-
-                {/* Etapa 3 */}
-                {etapas[2] && (
-                  <div style={{ marginBottom: 14, padding: "10px 12px", background: "#F8F6F3", borderRadius: 8, borderLeft: "4px solid #1B3A4B" }}>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: "#1B3A4B", marginBottom: 6 }}>
-                      Etapa 3 — Sessões 17 a 24: Dores Secundárias e Manutenção
-                    </div>
-                    <ul style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                      {safeArray(etapas[2]?.ciclos).slice(0, 3).map((ciclo, i) => (
-                        <li key={i} style={{ display: "flex", gap: 6, fontSize: 12.5, marginBottom: 4, lineHeight: 1.5 }}>
-                          <span style={{ color: "#1B3A4B", fontWeight: 700 }}>●</span>
-                          <span>{removeName(ciclo.objetivo)}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-
-          {/* Explicação da Terapia */}
-          {planData?.explicacao_terapia && (
-            <>
-              <Divider />
-              <div style={{ marginBottom: 14 }}>
-                <SectionTitle>Sobre a {plan.terapia_especial}</SectionTitle>
-                <p style={{ fontSize: 13, lineHeight: 1.8, margin: 0, textAlign: "justify" }}>
-                  {planData.explicacao_terapia.length > 400
-                    ? planData.explicacao_terapia.substring(0, 400).replace(/[^.]*$/, "")
-                    : planData.explicacao_terapia}
-                </p>
+                ) : null)}
               </div>
             </>
           )}
 
           {/* Mensagem final */}
-          <Divider />
           <div style={{
             background: "linear-gradient(135deg, #1B3A4B 0%, #2A4F63 100%)",
-            borderRadius: 10,
-            padding: "14px 18px",
-            marginTop: 8,
+            borderRadius: 8,
+            padding: "10px 14px",
+            marginTop: 4,
           }}>
-            <p style={{ fontSize: 13.5, color: "#fff", lineHeight: 1.7, margin: 0, fontWeight: 500, textAlign: "center" }}>
-              {plan.patient_nome}, seu plano terapêutico de {plan.total_sessoes || 24} sessões foi desenvolvido
-              especialmente para você. O tratamento é progressivo e cada etapa é essencial para alcançar
-              resultados duradouros, mais conforto e qualidade de vida.
+            <p style={{ fontSize: 11, color: "#fff", lineHeight: 1.5, margin: 0, fontWeight: 500, textAlign: "center" }}>
+              Seu plano de {plan.total_sessoes || 24} sessões foi desenvolvido especialmente para você.
+              O tratamento é progressivo — cada etapa é essencial para resultados duradouros.
             </p>
           </div>
 
-          {/* Footer info */}
-          <div style={{ marginTop: 16, textAlign: "center", fontSize: 11, color: "#999" }}>
-            <p style={{ margin: 0 }}>Vibe Terapias — Clínica Especializada em Dor</p>
-            <p style={{ margin: 0 }}>Este é um resumo do seu plano. O documento completo está com seu terapeuta.</p>
+          <div style={{ marginTop: 6, textAlign: "center", fontSize: 9.5, color: "#999" }}>
+            Vibe Terapias — Clínica Especializada em Dor · Documento completo com seu terapeuta.
           </div>
         </div>
       </div>
