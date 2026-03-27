@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { createPageUrl } from "@/utils";
 import PlanDocument from "../components/plan/PlanDocument";
-import { ArrowLeft, Printer, CheckCircle, Loader2, Users, FileText, Download, FileDown } from "lucide-react";
+import PlanSummaryDocument from "../components/plan/PlanSummaryDocument";
+import { ArrowLeft, Printer, CheckCircle, Loader2, Users, FileText, Download, FileDown, ClipboardList } from "lucide-react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
@@ -57,6 +58,58 @@ export default function PlanView() {
   };
 
   const [exportingPdf, setExportingPdf] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
+  const [exportingSummaryPdf, setExportingSummaryPdf] = useState(false);
+
+  const exportSummaryPdf = async () => {
+    setExportingSummaryPdf(true);
+    try {
+      const container = document.getElementById("summary-print-area");
+      const pages = container.querySelectorAll("[id^='summary-page-']");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      const pdfWidth = 210;
+      const pdfHeight = 297;
+      const A4_W_PX = 794;
+      const A4_H_PX = 1123;
+
+      for (let i = 0; i < pages.length; i++) {
+        const page = pages[i];
+        const tempContainer = document.createElement("div");
+        tempContainer.style.cssText = "position:fixed;left:-9999px;top:0;width:794px;height:1123px;overflow:hidden;z-index:-1;";
+        const clone = page.cloneNode(true);
+        clone.style.width = "794px";
+        clone.style.height = "1123px";
+        clone.style.display = "block";
+        clone.style.visibility = "visible";
+        clone.style.position = "relative";
+        tempContainer.appendChild(clone);
+        document.body.appendChild(tempContainer);
+        await new Promise((r) => setTimeout(r, 100));
+
+        const canvas = await html2canvas(clone, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: "#ffffff",
+          width: A4_W_PX,
+          height: A4_H_PX,
+          logging: false,
+        });
+        document.body.removeChild(tempContainer);
+
+        const imgData = canvas.toDataURL("image/jpeg", 0.95);
+        if (i > 0) pdf.addPage();
+        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight, undefined, "FAST");
+      }
+
+      pdf.save(`Resumo_${plan.patient_nome || "Paciente"}.pdf`);
+    } catch (e) {
+      console.error("Summary PDF export error:", e);
+      alert("Erro ao gerar o PDF resumo: " + e.message);
+    } finally {
+      setExportingSummaryPdf(false);
+    }
+  };
 
   const exportPdf = async () => {
     setExportingPdf(true);
@@ -240,13 +293,42 @@ export default function PlanView() {
             <Printer className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Imprimir</span>
           </button>
+
+          <button
+            onClick={() => setShowSummary(!showSummary)}
+            className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl text-xs font-semibold transition-all border flex-shrink-0"
+            style={{ color: showSummary ? "#fff" : "#1B3A4B", borderColor: "#1B3A4B", background: showSummary ? "#1B3A4B" : "white" }}
+          >
+            <ClipboardList className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">{showSummary ? "Ver Plano Completo" : "Resumo p/ Paciente"}</span>
+            <span className="sm:hidden">Resumo</span>
+          </button>
         </div>
       </div>
 
       {/* Content */}
-      <div id="plan-print-area" className="mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 overflow-x-auto" style={{ maxWidth: "900px" }}>
-        <PlanDocument plan={plan} patientData={patientData} />
-      </div>
+      {showSummary ? (
+        <>
+          <div className="sticky top-[88px] z-[5] bg-white/90 backdrop-blur px-4 py-2 flex justify-center" style={{ borderBottom: "1px solid #E5E7EB" }}>
+            <button
+              onClick={exportSummaryPdf}
+              disabled={exportingSummaryPdf}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all"
+              style={{ background: "#C17F6A" }}
+            >
+              {exportingSummaryPdf ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileDown className="w-4 h-4" />}
+              {exportingSummaryPdf ? "Gerando PDF do Resumo..." : "Baixar Resumo em PDF"}
+            </button>
+          </div>
+          <div id="summary-print-area" className="mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 overflow-x-auto" style={{ maxWidth: "900px" }}>
+            <PlanSummaryDocument plan={plan} patientData={patientData} />
+          </div>
+        </>
+      ) : (
+        <div id="plan-print-area" className="mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 overflow-x-auto" style={{ maxWidth: "900px" }}>
+          <PlanDocument plan={plan} patientData={patientData} />
+        </div>
+      )}
 
       <style>{`
         @media print {
