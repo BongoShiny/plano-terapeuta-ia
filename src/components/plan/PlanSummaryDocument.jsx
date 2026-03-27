@@ -9,7 +9,7 @@ function Divider() {
 
 function SectionTitle({ children }) {
   return (
-    <div style={{ fontSize: 14.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 6 }}>
+    <div style={{ fontSize: 14.5, fontWeight: 700, color: "#1B3A4B", marginBottom: 6, letterSpacing: "0.4px" }}>
       {children}
     </div>
   );
@@ -55,7 +55,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
   };
 
   return (
-    <div style={{ fontFamily: "'Arial', 'Helvetica', sans-serif", color: "#222", lineHeight: 1.4 }}>
+    <div style={{ fontFamily: "'Arial', 'Helvetica', sans-serif", color: "#222", lineHeight: 1.4, letterSpacing: "0.3px" }}>
       <div id="summary-page-1" style={{
         position: "relative",
         overflow: "hidden",
@@ -77,7 +77,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
         {/* Content area - carefully sized to fit between header border and footer */}
         <div style={{
           flex: 1,
-          padding: "170px 86px 180px 86px",
+          padding: "170px 60px 180px 60px",
           position: "relative",
           zIndex: 1,
           boxSizing: "border-box",
@@ -85,7 +85,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
         }}>
           {/* Title */}
           <div style={{ textAlign: "center", marginBottom: 12 }}>
-            <div style={{ fontSize: 19, fontWeight: 900, color: "#1B3A4B", marginBottom: 3 }}>
+            <div style={{ fontSize: 19, fontWeight: 900, color: "#1B3A4B", marginBottom: 3, letterSpacing: "0.6px" }}>
               Resumo do Plano Terapêutico
             </div>
             <div style={{ fontSize: 12.5, color: "#666" }}>
