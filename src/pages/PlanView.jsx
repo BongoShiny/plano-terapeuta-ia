@@ -61,38 +61,76 @@ export default function PlanView() {
   const [showSummary, setShowSummary] = useState(false);
   const [exportingSummaryPdf, setExportingSummaryPdf] = useState(false);
 
+  const capturePagesToPdf = async (containerId, pagePrefix, fileName) => {
+    const container = document.getElementById(containerId);
+    if (!container) {
+      alert("Erro: container não encontrado.");
+      return;
+    }
+
+    // Temporarily show the container if hidden
+    const wasHidden = container.style.display === "none";
+    if (wasHidden) container.style.display = "block";
+
+    await new Promise((r) => setTimeout(r, 300));
+
+    const pages = container.querySelectorAll(`[id^='${pagePrefix}']`);
+    if (!pages.length) {
+      if (wasHidden) container.style.display = "none";
+      alert("Erro: nenhuma página encontrada para exportar.");
+      return;
+    }
+
+    const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const pdfWidth = 210;
+    const pdfHeight = 297;
+    const A4_W_PX = 794;
+    const A4_H_PX = 1123;
+
+    for (let i = 0; i < pages.length; i++) {
+      const page = pages[i];
+
+      // Clone into off-screen container to avoid iframe issues
+      const tempContainer = document.createElement("div");
+      tempContainer.style.cssText = "position:fixed;left:-9999px;top:0;width:794px;height:1123px;overflow:hidden;z-index:-1;";
+      const clone = page.cloneNode(true);
+      clone.style.width = "794px";
+      clone.style.height = "1123px";
+      clone.style.display = "block";
+      clone.style.visibility = "visible";
+      clone.style.position = "relative";
+      tempContainer.appendChild(clone);
+      document.body.appendChild(tempContainer);
+
+      await new Promise((r) => setTimeout(r, 150));
+
+      const canvas = await html2canvas(clone, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#ffffff",
+        width: A4_W_PX,
+        height: A4_H_PX,
+        logging: false,
+      });
+
+      document.body.removeChild(tempContainer);
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+      if (i > 0) pdf.addPage();
+      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight, undefined, "FAST");
+    }
+
+    // Restore hidden state
+    if (wasHidden) container.style.display = "none";
+
+    pdf.save(fileName);
+  };
+
   const exportSummaryPdf = async () => {
     setExportingSummaryPdf(true);
     try {
-      const container = document.getElementById("summary-print-area");
-      const pages = container.querySelectorAll("[id^='summary-page-']");
-      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-      const pdfWidth = 210;
-      const pdfHeight = 297;
-      const A4_W_PX = 794;
-      const A4_H_PX = 1123;
-
-      for (let i = 0; i < pages.length; i++) {
-        const page = pages[i];
-
-        const canvas = await html2canvas(page, {
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: "#ffffff",
-          width: A4_W_PX,
-          height: A4_H_PX,
-          windowWidth: A4_W_PX,
-          windowHeight: A4_H_PX,
-          logging: false,
-        });
-
-        const imgData = canvas.toDataURL("image/jpeg", 0.95);
-        if (i > 0) pdf.addPage();
-        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight, undefined, "FAST");
-      }
-
-      pdf.save(`Resumo_${plan.patient_nome || "Paciente"}.pdf`);
+      await capturePagesToPdf("summary-print-area", "summary-page-", `Resumo_${plan.patient_nome || "Paciente"}.pdf`);
     } catch (e) {
       console.error("Summary PDF export error:", e);
       alert("Erro ao gerar o PDF resumo: " + e.message);
@@ -104,51 +142,7 @@ export default function PlanView() {
   const exportPdf = async () => {
     setExportingPdf(true);
     try {
-      const container = document.getElementById("plan-print-area");
-      const pages = container.querySelectorAll("[id^='plan-page-']");
-      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-      const pdfWidth = 210;
-      const pdfHeight = 297;
-      const A4_W_PX = 794;
-      const A4_H_PX = 1123;
-
-      for (let i = 0; i < pages.length; i++) {
-        const page = pages[i];
-        page.scrollIntoView({ behavior: "instant", block: "start" });
-        await new Promise((r) => setTimeout(r, 200));
-
-        // Clone the page element into a temporary off-screen container to avoid iframe issues
-        const tempContainer = document.createElement("div");
-        tempContainer.style.cssText = "position:fixed;left:-9999px;top:0;width:794px;height:1123px;overflow:hidden;z-index:-1;";
-        const clone = page.cloneNode(true);
-        clone.style.width = "794px";
-        clone.style.height = "1123px";
-        clone.style.display = "block";
-        clone.style.visibility = "visible";
-        clone.style.position = "relative";
-        tempContainer.appendChild(clone);
-        document.body.appendChild(tempContainer);
-
-        await new Promise((r) => setTimeout(r, 100));
-
-        const canvas = await html2canvas(clone, {
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: "#ffffff",
-          width: A4_W_PX,
-          height: A4_H_PX,
-          logging: false,
-        });
-
-        document.body.removeChild(tempContainer);
-
-        const imgData = canvas.toDataURL("image/jpeg", 0.95);
-        if (i > 0) pdf.addPage();
-        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight, undefined, "FAST");
-      }
-
-      pdf.save(`Plano_Vibe_${plan.patient_nome || "Paciente"}.pdf`);
+      await capturePagesToPdf("plan-print-area", "plan-page-", `Plano_Vibe_${plan.patient_nome || "Paciente"}.pdf`);
     } catch (e) {
       console.error("PDF export error:", e);
       alert("Erro ao gerar o PDF: " + e.message);
@@ -313,28 +307,35 @@ export default function PlanView() {
       </div>
 
       {/* Content */}
-      {showSummary ? (
-        <>
-          <div className="sticky top-[88px] z-[5] bg-white/90 backdrop-blur px-4 py-2 flex justify-center" style={{ borderBottom: "1px solid #E5E7EB" }}>
-            <button
-              onClick={exportSummaryPdf}
-              disabled={exportingSummaryPdf}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all"
-              style={{ background: "#C17F6A" }}
-            >
-              {exportingSummaryPdf ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileDown className="w-4 h-4" />}
-              {exportingSummaryPdf ? "Gerando PDF do Resumo..." : "Baixar Resumo em PDF"}
-            </button>
-          </div>
-          <div id="summary-print-area" className="mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 overflow-x-auto" style={{ maxWidth: "900px" }}>
-            <PlanSummaryDocument plan={plan} patientData={patientData} />
-          </div>
-        </>
-      ) : (
-        <div id="plan-print-area" className="mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 overflow-x-auto" style={{ maxWidth: "900px" }}>
-          <PlanDocument plan={plan} patientData={patientData} />
+      {showSummary && (
+        <div className="sticky top-[88px] z-[5] bg-white/90 backdrop-blur px-4 py-2 flex justify-center" style={{ borderBottom: "1px solid #E5E7EB" }}>
+          <button
+            onClick={exportSummaryPdf}
+            disabled={exportingSummaryPdf}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all"
+            style={{ background: "#C17F6A" }}
+          >
+            {exportingSummaryPdf ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileDown className="w-4 h-4" />}
+            {exportingSummaryPdf ? "Gerando PDF do Resumo..." : "Baixar Resumo em PDF"}
+          </button>
         </div>
       )}
+
+      {/* Always render both containers; hide the inactive one off-screen so html2canvas can find elements */}
+      <div
+        id="summary-print-area"
+        className="mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 overflow-x-auto"
+        style={{ maxWidth: "900px", display: showSummary ? "block" : "none" }}
+      >
+        <PlanSummaryDocument plan={plan} patientData={patientData} />
+      </div>
+      <div
+        id="plan-print-area"
+        className="mx-auto px-2 sm:px-4 md:px-8 py-4 md:py-8 overflow-x-auto"
+        style={{ maxWidth: "900px", display: showSummary ? "none" : "block" }}
+      >
+        <PlanDocument plan={plan} patientData={patientData} />
+      </div>
 
       <style>{`
         @media print {
