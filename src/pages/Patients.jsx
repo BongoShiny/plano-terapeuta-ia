@@ -124,8 +124,13 @@ export default function Patients() {
               return (
                 <div
                   key={patient.id}
-                  className="bg-white rounded-2xl border p-4 md:p-5 transition-all hover:shadow-md"
+                  className="bg-white rounded-2xl border p-4 md:p-5 transition-all hover:shadow-md cursor-pointer"
                   style={{ borderColor: "#E5E7EB" }}
+                  onClick={() => {
+                    if (patientPlans.length > 0) {
+                      navigate(createPageUrl(`PlanView?id=${patientPlans[0].id}`));
+                    }
+                  }}
                 >
                   <div className="flex items-start gap-4">
                     {/* Avatar */}
@@ -175,7 +180,7 @@ export default function Patients() {
                             return (
                               <button
                                 key={pl.id}
-                                onClick={() => navigate(createPageUrl(`PlanView?id=${pl.id}`))}
+                                onClick={(e) => { e.stopPropagation(); navigate(createPageUrl(`PlanView?id=${pl.id}`)); }}
                                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all hover:shadow-sm"
                                 style={{ background: ps.bg, color: ps.color }}
                               >
@@ -191,7 +196,7 @@ export default function Patients() {
                     {/* Actions */}
                     <div className="flex flex-col gap-2 flex-shrink-0">
                       <button
-                        onClick={() => navigate(createPageUrl("NewAssessment"))}
+                        onClick={(e) => { e.stopPropagation(); navigate(createPageUrl("NewAssessment")); }}
                         className="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl text-xs font-semibold text-white"
                         style={{ background: "#C17F6A" }}
                       >
