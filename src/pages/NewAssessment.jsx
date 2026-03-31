@@ -178,6 +178,46 @@ export default function NewAssessment() {
   const handleGenerate = async () => {
     setGenerating(true);
     try {
+      // Auto-analyze postural photos if attached but not yet analyzed
+      if ((data.foto_postural_1 || data.foto_postural_2) && !data.avaliacao_postural) {
+        const fileUrls = [data.foto_postural_1, data.foto_postural_2].filter(Boolean);
+        const posturalResult = await base44.integrations.Core.InvokeLLM({
+          prompt: `Você é um fisioterapeuta especialista em avaliação postural da clínica Vibe Terapias. Analise as fotos posturais clínicas do paciente ${data.nome} (${data.sexo}, ${data.idade} anos) com queixas em: ${(data.areas_afetadas || []).join(", ")}.
+Realize uma avaliação postural concisa e profissional em português. IMPORTANTE: Mantenha o texto COMPACTO e OBJETIVO — use sentenças curtas e diretas. Escreva em texto corrido, sem usar markdown, asteriscos, hashtags, travessões decorativos ou qualquer símbolo de formatação.
+ESTRUTURA OBRIGATÓRIA:
+Comece com análise da vista frontal (plano coronal) mencionando cabeça, ombros, coluna e pelve.
+Depois, OBRIGATORIAMENTE, adicione um parágrafo começando com "na vista lateral (plano sagital)" analisando a mesma região vista de perfil, identificando lordose cervical, cifose torácica, lordose lombar, posição da pelve e alinhamento geral.
+Para cada vista, mencione apenas os achados mais relevantes e sua relação com as queixas do paciente.`,
+          file_urls: fileUrls,
+        });
+        data.avaliacao_postural = posturalResult;
+        handleChange("avaliacao_postural", posturalResult);
+      }
+
+      // Auto-analyze thermal photos if attached but not yet analyzed
+      if ((data.fotos_camera_termal || []).length > 0 && !data.analise_camera_termal) {
+        const thermalResult = await base44.integrations.Core.InvokeLLM({
+          prompt: `Você é um fisioterapeuta clínico especializado em termografia da clínica Vibe Terapias. As imagens anexadas são imagens termográficas clínicas (termogramas) utilizadas para avaliação muscular e fascial do paciente ${data.nome || "o paciente"} (${data.sexo || ""}, ${data.idade || ""} anos), com queixas relatadas em: ${(data.areas_afetadas || []).join(", ") || "diversas regiões"}.
+Nas imagens termográficas, as áreas em vermelho/laranja indicam regiões com maior temperatura superficial, associadas a tensão muscular, pontos-gatilho, inflamação fascial ou sobrecarga postural. Realize uma análise termográfica clínica completa.
+Escreva um laudo termográfico clínico em português, em parágrafos corridos. Use a marcação [ALERTA] antes de frases sobre riscos clínicos de não tratar e [/ALERTA] para fechar. Não use asteriscos, hashtags ou outros símbolos de formatação.
+Estruture o laudo assim:
+- Análises termográficos gerais.
+- Para cada região com alteração térmica: descrição do achado, correlação clínica, e [ALERTA]risco clínico caso não seja tratado[/ALERTA].
+- Conclusão clínica recomendando o plano de 24 sessões da Vibe Terapias.`,
+          file_urls: data.fotos_camera_termal,
+        });
+        data.analise_camera_termal = thermalResult;
+        handleChange("analise_camera_termal", thermalResult);
+
+        if (!data.resultado_camera_termal) {
+          const summaryResult = await base44.integrations.Core.InvokeLLM({
+            prompt: `A partir da análise termográfica abaixo, gere um resumo ULTRA CURTO com no mínimo 2 e no máximo 5 tópicos. Cada tópico deve ter no máximo 1 frase curta. Formato: cada tópico em uma linha, sem numeração, sem marcadores, sem formatação. Apenas texto simples e direto.\n\nAnálise:\n${thermalResult}`,
+          });
+          data.resultado_camera_termal = summaryResult.trim();
+          handleChange("resultado_camera_termal", summaryResult.trim());
+        }
+      }
+
       // Save patient first
       const patient = await base44.entities.Patient.create({
         ...data,

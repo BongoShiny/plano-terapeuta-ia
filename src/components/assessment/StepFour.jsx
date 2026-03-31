@@ -286,7 +286,23 @@ Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
         )}
 
         {data.avaliacao_postural && (
-          <PosturalPreview text={data.avaliacao_postural} />
+          <>
+            <PosturalPreview text={data.avaliacao_postural} />
+            <div className="mt-3">
+              <label className="block text-xs font-semibold mb-1" style={{ color: "#374151" }}>
+                Editar avaliação postural
+              </label>
+              <textarea
+                value={data.avaliacao_postural || ""}
+                onChange={(e) => onChange("avaliacao_postural", e.target.value)}
+                rows={4}
+                className="w-full px-4 py-3 border rounded-xl text-sm focus:outline-none resize-none"
+                style={{ borderColor: "#D1D5DB", background: "white" }}
+                onFocus={(e) => (e.target.style.borderColor = "#C17F6A")}
+                onBlur={(e) => (e.target.style.borderColor = "#D1D5DB")}
+              />
+            </div>
+          </>
         )}
       </div>
 
@@ -327,7 +343,23 @@ Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
         )}
 
         {data.analise_camera_termal && (
-          <ThermalPreview text={data.analise_camera_termal} />
+          <>
+            <ThermalPreview text={data.analise_camera_termal} />
+            <div className="mt-3 mb-3">
+              <label className="block text-xs font-semibold mb-1" style={{ color: "#374151" }}>
+                Editar análise da câmera termal
+              </label>
+              <textarea
+                value={data.analise_camera_termal || ""}
+                onChange={(e) => onChange("analise_camera_termal", e.target.value)}
+                rows={5}
+                className="w-full px-4 py-3 border rounded-xl text-sm focus:outline-none resize-none"
+                style={{ borderColor: "#D1D5DB", background: "white" }}
+                onFocus={(e) => (e.target.style.borderColor = "#C17F6A")}
+                onBlur={(e) => (e.target.style.borderColor = "#D1D5DB")}
+              />
+            </div>
+          </>
         )}
 
         <label className="block text-xs font-semibold mb-1" style={{ color: "#374151" }}>
