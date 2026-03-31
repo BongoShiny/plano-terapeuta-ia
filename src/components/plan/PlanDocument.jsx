@@ -388,7 +388,7 @@ export default function PlanDocument({ plan, patientData }) {
       .replace(new RegExp(`\\bdo\\s+${name}\\b`, "gi"), "")
       .replace(new RegExp(`\\bda\\s+${name}\\b`, "gi"), "")
       .replace(new RegExp(`\\bpara\\s+${name}\\b`, "gi"), "")
-      .replace(new RegExp(`\\b${name}\\b`, "gi"), "o(a) paciente")
+      .replace(new RegExp(`\\b${name}\\b`, "gi"), "o paciente")
       .replace(/\s{2,}/g, " ")
       .trim();
     // Remove trailing dangling prepositions
