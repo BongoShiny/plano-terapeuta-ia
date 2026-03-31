@@ -234,18 +234,6 @@ export default function PlanView() {
         </div>
 
         <div className="flex items-center gap-1.5 md:gap-2 overflow-x-auto pb-1 md:pb-0 -mx-1 px-1">
-          {(plan.status === "Ativo" || plan.status === "Apresentado") && (
-            <button
-              onClick={markAsClosed}
-              className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl text-xs font-semibold text-white transition-all flex-shrink-0"
-              style={{ background: "#22C55E" }}
-            >
-              <CheckCircle className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Pacote Fechado!</span>
-              <span className="sm:hidden">Fechado</span>
-            </button>
-          )}
-
           <button
             onClick={exportPdf}
             disabled={exportingPdf}
