@@ -378,6 +378,23 @@ export default function PlanDocument({ plan, patientData }) {
   }
 
   const safeArray = (val) => Array.isArray(val) ? val : [];
+
+  // Remove patient name from AI-generated text to avoid excessive repetition
+  const removeName = (text) => {
+    if (!text || !plan.patient_nome) return text;
+    const name = plan.patient_nome;
+    let cleaned = text
+      .replace(new RegExp(`\\bde\\s+${name}\\b`, "gi"), "")
+      .replace(new RegExp(`\\bdo\\s+${name}\\b`, "gi"), "")
+      .replace(new RegExp(`\\bda\\s+${name}\\b`, "gi"), "")
+      .replace(new RegExp(`\\bpara\\s+${name}\\b`, "gi"), "")
+      .replace(new RegExp(`\\b${name}\\b`, "gi"), "o(a) paciente")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+    // Remove trailing dangling prepositions
+    cleaned = cleaned.replace(/\s+(em|na|no|nas|nos|de|do|da|dos|das|para|pelo|pela|ao|à|com|e)\s*\.?\s*$/gi, "");
+    return cleaned;
+  };
   const etapas = safeArray(planData?.etapas);
 
   const pageStyle = {
@@ -461,7 +478,7 @@ export default function PlanDocument({ plan, patientData }) {
         <div style={{ marginBottom: 12 }}>
             <SectionTitle>Resumo das Queixas e Áreas Afetadas</SectionTitle>
             <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-              {truncateAtSentence(planData.resumo_queixas, 300)}
+              {truncateAtSentence(removeName(planData.resumo_queixas), 300)}
             </p>
           </div>
         }
@@ -485,7 +502,7 @@ export default function PlanDocument({ plan, patientData }) {
                 {safeArray(planData.objetivos_tratamento).slice(0, 5).map((obj, i) =>
               <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 4, lineHeight: 1.6 }}>
                     <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                    <span>{obj}</span>
+                    <span>{removeName(obj)}</span>
                   </li>
               )}
               </ul>
@@ -499,7 +516,7 @@ export default function PlanDocument({ plan, patientData }) {
             <div style={{ marginBottom: 12 }}>
               <SectionTitle>Objetivo Geral</SectionTitle>
               <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-                {truncateAtSentence(planData.objetivo_geral, 280)}
+                {truncateAtSentence(removeName(planData.objetivo_geral), 280)}
               </p>
             </div>
           </>
@@ -511,7 +528,7 @@ export default function PlanDocument({ plan, patientData }) {
             <div style={{ marginBottom: 12 }}>
               <SectionTitle>Explicação da Terapia Especial</SectionTitle>
               <p style={{ fontSize: 13, lineHeight: 1.7, margin: 0, paddingLeft: 6, textAlign: "justify" }}>
-                {truncateAtSentence(planData.explicacao_terapia, 280)}
+                {truncateAtSentence(removeName(planData.explicacao_terapia), 280)}
               </p>
             </div>
           </>
@@ -529,7 +546,7 @@ export default function PlanDocument({ plan, patientData }) {
               {safeArray(etapas[0]?.ciclos).slice(0, 4).map((ciclo, i) =>
             <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                  <span style={{ fontWeight: 600 }}>{ciclo.objetivo}</span>
+                  <span style={{ fontWeight: 600 }}>{removeName(ciclo.objetivo)}</span>
                 </li>
             )}
             </ul>
@@ -545,7 +562,7 @@ export default function PlanDocument({ plan, patientData }) {
               {safeArray(etapas[1]?.ciclos).slice(0, 4).map((ciclo, i) =>
             <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                  <span style={{ fontWeight: 600 }}>{ciclo.objetivo}</span>
+                  <span style={{ fontWeight: 600 }}>{removeName(ciclo.objetivo)}</span>
                 </li>
             )}
             </ul>
@@ -561,7 +578,7 @@ export default function PlanDocument({ plan, patientData }) {
               {safeArray(etapas[2]?.ciclos).slice(0, 4).map((ciclo, i) =>
             <li key={i} style={{ display: "flex", gap: 6, fontSize: 13, marginBottom: 6, lineHeight: 1.6 }}>
                   <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C17F6A", flexShrink: 0, marginTop: 5 }} />
-                  <span style={{ fontWeight: 600 }}>{ciclo.objetivo}</span>
+                  <span style={{ fontWeight: 600 }}>{removeName(ciclo.objetivo)}</span>
                 </li>
             )}
             </ul>
@@ -575,7 +592,7 @@ export default function PlanDocument({ plan, patientData }) {
                 Resumo do Plano Terapêutico
               </div>
               <p style={{ fontSize: 13, lineHeight: 1.8, color: "#222", textAlign: "justify", margin: 0, fontWeight: 600 }}>
-                {plan.patient_nome} receberá um plano terapêutico completo, focado no alívio das dores do(a) {(patientData?.areas_afetadas || []).slice(0, 2).join(" e ")}, relaxamento da musculatura e prevenção de novas crises. O tratamento é progressivo, dividido em três etapas bem estruturadas, garantindo resultados duradouros, mais conforto no dia a dia e melhora significativa da qualidade de vida. Fechar o plano terapêutico completo de 24 sessões é o caminho ideal para que {plan.patient_nome} viva sem dor e desfrute de uma vida plena e equilibrada.
+                O(A) paciente receberá um plano terapêutico completo, focado no alívio das dores do(a) {(patientData?.areas_afetadas || []).slice(0, 2).join(" e ")}, relaxamento da musculatura e prevenção de novas crises. O tratamento é progressivo, dividido em três etapas bem estruturadas, garantindo resultados duradouros, mais conforto no dia a dia e melhora significativa da qualidade de vida. Fechar o plano terapêutico completo de 24 sessões é o caminho ideal para viver sem dor e desfrutar de uma vida plena e equilibrada.
               </p>
             </div>
           </>
