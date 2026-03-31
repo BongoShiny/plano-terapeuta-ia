@@ -4,7 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { createPageUrl } from "@/utils";
 import PlanDocument from "../components/plan/PlanDocument";
 import PlanSummaryDocument from "../components/plan/PlanSummaryDocument";
-import { ArrowLeft, Printer, CheckCircle, Loader2, Users, FileText, Download, FileDown, ClipboardList } from "lucide-react";
+import { ArrowLeft, Printer, CheckCircle, Loader2, FileText, Download, FileDown, ClipboardList } from "lucide-react";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
@@ -151,11 +151,6 @@ export default function PlanView() {
     }
   };
 
-  const markAsPresented = async () => {
-    await base44.entities.TherapeuticPlan.update(plan.id, { status: "Apresentado" });
-    setPlan((p) => ({ ...p, status: "Apresentado" }));
-  };
-
   const markAsClosed = async () => {
     await base44.entities.TherapeuticPlan.update(plan.id, { status: "Fechado" });
     setPlan((p) => ({ ...p, status: "Fechado" }));
@@ -239,19 +234,7 @@ export default function PlanView() {
         </div>
 
         <div className="flex items-center gap-1.5 md:gap-2 overflow-x-auto pb-1 md:pb-0 -mx-1 px-1">
-          {plan.status === "Ativo" && (
-            <button
-              onClick={markAsPresented}
-              className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl text-xs font-semibold text-white transition-all flex-shrink-0"
-              style={{ background: "#C17F6A" }}
-            >
-              <Users className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Apresentado ao Paciente</span>
-              <span className="sm:hidden">Apresentado</span>
-            </button>
-          )}
-
-          {plan.status === "Apresentado" && (
+          {(plan.status === "Ativo" || plan.status === "Apresentado") && (
             <button
               onClick={markAsClosed}
               className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl text-xs font-semibold text-white transition-all flex-shrink-0"
