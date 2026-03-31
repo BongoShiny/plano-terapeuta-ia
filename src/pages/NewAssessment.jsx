@@ -171,7 +171,7 @@ export default function NewAssessment() {
       return data.tempo_dor && (data.areas_afetadas || []).length > 0;
     }
     if (step === 2) return (data.causas_provaveis || []).length > 0;
-    if (step === 3) return data.objetivos_paciente;
+    if (step === 3) return true;
     return false;
   };
 

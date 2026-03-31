@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Camera, Target, CheckCircle, Upload, Loader2, ImageIcon, Sparkles } from "lucide-react";
+import { Camera, CheckCircle, Upload, Loader2, ImageIcon, Sparkles } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import CameraThermalUploader from "./CameraThermalUploader";
 
@@ -377,23 +377,7 @@ Mencione o nome ${data.nome || "do paciente"} ao longo do texto.`,
         />
       </div>
 
-      {/* Objetivos */}
-      <div>
-        <label className="block text-sm font-semibold mb-1.5" style={{ color: "#374151" }}>
-          <Target className="inline w-4 h-4 mr-1.5" style={{ color: "#C17F6A" }} />
-          Objetivos do paciente com o tratamento *
-        </label>
-        <textarea
-          value={data.objetivos_paciente || ""}
-          onChange={(e) => onChange("objetivos_paciente", e.target.value)}
-          placeholder="Ex: Reduzir as dores no pescoço, dormir melhor, conseguir trabalhar sem dor, voltar a praticar atividades físicas..."
-          rows={4}
-          className="w-full px-4 py-3 border rounded-xl text-sm focus:outline-none resize-none"
-          style={{ borderColor: "#D1D5DB", background: "white" }}
-          onFocus={(e) => (e.target.style.borderColor = "#C17F6A")}
-          onBlur={(e) => (e.target.style.borderColor = "#D1D5DB")}
-        />
-      </div>
+
 
       {/* Summary */}
       <div className="rounded-2xl p-5" style={{ background: "#F5E6DD" }}>
