@@ -30,7 +30,6 @@ DADOS DO PACIENTE:
 - Queixas Principais: ${data.queixas_principais || "Não informado"}
 - Áreas Afetadas: ${(data.areas_afetadas || []).join(", ") || "Não informado"}
 
-- Tempo de Dor: ${data.tempo_dor || "Não informado"}
 - Histórico: ${data.historico_dor || "Não informado"}
 - Causas Prováveis: ${(data.causas_provaveis || []).join(", ") || "Não informado"}
 - Atividade Física: ${data.atividade_fisica || "Não informado"}
@@ -50,6 +49,7 @@ REGRAS OBRIGATÓRIAS — SIGA À RISCA:
 7. FORMATAÇÃO: NUNCA use markdown nos textos. Proibido usar ###, ##, **, __, --, "---", aspas decorativas (" "), asteriscos ou qualquer símbolo de formatação. Todos os campos de texto devem ser texto simples, sem marcações.
 8. ANÁLISE TÉRMICA: Se gerar títulos de análises térmicas, SEMPRE use "Análises termográficos gerais:" em vez de "Achados". Mantenha coerência estrutural e profissionalismo.
 9. PROIBIDO: NUNCA use a palavra "fisioterapia" ou qualquer variação dela (fisioterapeuta, fisioterápico, etc). Use sempre "Liberação Miofascial", "tratamento terapêutico", "técnicas de relaxamento" ou "terapia especializada" em seu lugar.
+10. TEMPO DE DOR: NUNCA mencione o tempo de dor do paciente em NENHUM campo do JSON. Não escreva "há X meses", "há X anos", "cerca de X meses" ou qualquer referência temporal sobre a duração da dor.
 
 JSON a retornar (preencha todos os campos com conteúdo real e personalizado para ${data.nome}):
 
