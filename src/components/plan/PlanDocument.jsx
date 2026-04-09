@@ -651,22 +651,36 @@ export default function PlanDocument({ plan, patientData }) {
       {(planData?.analise_camera_termal || planData?.resultado_camera_termal) && (() => {
         const allSections = parseThermalSections(planData.analise_camera_termal || planData.resultado_camera_termal);
         
-        // Estimate line cost per section: title = 2 lines, each content line ~3 lines (with wrapping), conclusion box = +2 extra
-        const MAX_LINES_PER_PAGE = 50;
+        // Estimate line cost per section using conservative character-per-line estimate
+        // Page content area is ~203mm height (297 - 50top - 44bottom), at ~13.5px font with 1.7 line-height ≈ ~38 visual lines
+        const MAX_LINES_PER_PAGE = 34; // conservative to avoid footer overlap
+        const CHARS_PER_LINE = 65; // conservative estimate for 186mm wide content area at 13.5px
         const pages = [];
         let currentPage = [];
         let currentLines = 0;
         
+        // Title + divider at top of each page costs ~3 lines
+        const PAGE_HEADER_COST = 3;
+        
         for (const section of allSections) {
-          const titleLines = section.title ? 2 : 0;
+          const titleLines = section.title ? 2.5 : 0;
           const contentLines = section.content.reduce((sum, line) => {
-            // Longer lines wrap more - estimate ~80 chars per visual line
-            return sum + Math.max(1, Math.ceil(line.length / 80)) + 0.5;
+            // Each content line: bullet + text wrapped at ~65 chars, plus margin
+            const hasAlert = /\[ALERTA\]/.test(line);
+            const textLen = line.replace(/\[ALERTA\]|\[\/ALERTA\]|\[PODE_IMPACTO\]|\[\/PODE_IMPACTO\]/g, "").length;
+            const wrappedLines = Math.max(1, Math.ceil(textLen / CHARS_PER_LINE));
+            // Alerts have extra padding/border styling that takes more vertical space
+            const alertExtra = hasAlert ? 1.5 : 0;
+            return sum + wrappedLines + alertExtra + 0.8; // 0.8 for margin between items
           }, 0);
-          const extraLines = section.isConclusion ? 2 : 0;
-          const sectionCost = titleLines + contentLines + extraLines + 1; // +1 for margin
+          const extraLines = section.isConclusion ? 3 : 0; // conclusion box has padding
+          const sectionCost = titleLines + contentLines + extraLines + 1; // +1 for section margin
           
-          if (currentPage.length > 0 && currentLines + sectionCost > MAX_LINES_PER_PAGE) {
+          const pageCapacity = currentPage.length === 0 
+            ? MAX_LINES_PER_PAGE - PAGE_HEADER_COST 
+            : MAX_LINES_PER_PAGE - PAGE_HEADER_COST;
+          
+          if (currentPage.length > 0 && currentLines + sectionCost > pageCapacity) {
             pages.push(currentPage);
             currentPage = [section];
             currentLines = sectionCost;
