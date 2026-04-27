@@ -653,28 +653,26 @@ export default function PlanDocument({ plan, patientData }) {
         
         // Estimate line cost per section using conservative character-per-line estimate
         // Page content area is ~203mm height (297 - 50top - 44bottom), at ~13.5px font with 1.7 line-height ≈ ~38 visual lines
-        const MAX_LINES_PER_PAGE = 34; // conservative to avoid footer overlap
-        const CHARS_PER_LINE = 65; // conservative estimate for 186mm wide content area at 13.5px
+        const MAX_LINES_PER_PAGE = 52; // ~203mm content height at 13.5px font + 1.7 line-height ≈ ~52 lines
+        const CHARS_PER_LINE = 80; // 186mm wide content area at 13.5px fits ~80 chars
         const pages = [];
         let currentPage = [];
         let currentLines = 0;
         
         // Title + divider at top of each page costs ~3 lines
-        const PAGE_HEADER_COST = 3;
+        const PAGE_HEADER_COST = 4;
         
         for (const section of allSections) {
-          const titleLines = section.title ? 2.5 : 0;
+          const titleLines = section.title ? 1.5 : 0;
           const contentLines = section.content.reduce((sum, line) => {
-            // Each content line: bullet + text wrapped at ~65 chars, plus margin
             const hasAlert = /\[ALERTA\]/.test(line);
             const textLen = line.replace(/\[ALERTA\]|\[\/ALERTA\]|\[PODE_IMPACTO\]|\[\/PODE_IMPACTO\]/g, "").length;
             const wrappedLines = Math.max(1, Math.ceil(textLen / CHARS_PER_LINE));
-            // Alerts have extra padding/border styling that takes more vertical space
-            const alertExtra = hasAlert ? 1.5 : 0;
-            return sum + wrappedLines + alertExtra + 0.8; // 0.8 for margin between items
+            const alertExtra = hasAlert ? 1 : 0;
+            return sum + wrappedLines + alertExtra + 0.4;
           }, 0);
-          const extraLines = section.isConclusion ? 3 : 0; // conclusion box has padding
-          const sectionCost = titleLines + contentLines + extraLines + 1; // +1 for section margin
+          const extraLines = section.isConclusion ? 2 : 0;
+          const sectionCost = titleLines + contentLines + extraLines + 0.5;
           
           const pageCapacity = currentPage.length === 0 
             ? MAX_LINES_PER_PAGE - PAGE_HEADER_COST 
