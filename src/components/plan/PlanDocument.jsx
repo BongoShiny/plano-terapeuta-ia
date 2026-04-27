@@ -647,63 +647,34 @@ export default function PlanDocument({ plan, patientData }) {
         </PageWrapper>
       }
 
-      {/* ============ PAGE 6+: Análise Câmera Termal (split across pages) ============ */}
+      {/* ============ PAGE 6: Análise Câmera Termal (single page, condensed) ============ */}
       {(planData?.analise_camera_termal || planData?.resultado_camera_termal) && (() => {
         const allSections = parseThermalSections(planData.analise_camera_termal || planData.resultado_camera_termal);
         
-        // Estimate line cost per section using conservative character-per-line estimate
-        // Page content area is ~203mm height (297 - 50top - 44bottom), at ~13.5px font with 1.7 line-height ≈ ~38 visual lines
-        const MAX_LINES_PER_PAGE = 34; // conservative to avoid footer overlap
-        const CHARS_PER_LINE = 65; // conservative estimate for 186mm wide content area at 13.5px
-        const pages = [];
-        let currentPage = [];
-        let currentLines = 0;
+        // Condense: limit content lines per section to fit everything on one page
+        const condensedSections = allSections.map(section => ({
+          ...section,
+          content: section.content.map(line => {
+            // Truncate long lines
+            const cleaned = line.replace(/\[ALERTA\]|\[\/ALERTA\]|\[PODE_IMPACTO\]|\[\/PODE_IMPACTO\]/g, "").trim();
+            if (cleaned.length > 200) return line.substring(0, 200) + "...";
+            return line;
+          }).slice(0, section.isConclusion ? 3 : 2) // max 2 lines per section, 3 for conclusion
+        }));
         
-        // Title + divider at top of each page costs ~3 lines
-        const PAGE_HEADER_COST = 3;
-        
-        for (const section of allSections) {
-          const titleLines = section.title ? 2.5 : 0;
-          const contentLines = section.content.reduce((sum, line) => {
-            // Each content line: bullet + text wrapped at ~65 chars, plus margin
-            const hasAlert = /\[ALERTA\]/.test(line);
-            const textLen = line.replace(/\[ALERTA\]|\[\/ALERTA\]|\[PODE_IMPACTO\]|\[\/PODE_IMPACTO\]/g, "").length;
-            const wrappedLines = Math.max(1, Math.ceil(textLen / CHARS_PER_LINE));
-            // Alerts have extra padding/border styling that takes more vertical space
-            const alertExtra = hasAlert ? 1.5 : 0;
-            return sum + wrappedLines + alertExtra + 0.8; // 0.8 for margin between items
-          }, 0);
-          const extraLines = section.isConclusion ? 3 : 0; // conclusion box has padding
-          const sectionCost = titleLines + contentLines + extraLines + 1; // +1 for section margin
-          
-          const pageCapacity = currentPage.length === 0 
-            ? MAX_LINES_PER_PAGE - PAGE_HEADER_COST 
-            : MAX_LINES_PER_PAGE - PAGE_HEADER_COST;
-          
-          if (currentPage.length > 0 && currentLines + sectionCost > pageCapacity) {
-            pages.push(currentPage);
-            currentPage = [section];
-            currentLines = sectionCost;
-          } else {
-            currentPage.push(section);
-            currentLines += sectionCost;
-          }
-        }
-        if (currentPage.length > 0) pages.push(currentPage);
-        
-        return pages.map((pageSections, pi) => (
-          <PageWrapper key={`termal-analise-${pi}`} id={`plan-page-termal-analise-${pi}`}>
+        return (
+          <PageWrapper id="plan-page-termal-analise-0">
             <div style={{ fontSize: 18, fontWeight: 900, color: "#1B3A4B", marginBottom: 10, textAlign: "center", letterSpacing: 0.5 }}>
-              Análise da Câmera Termal{pages.length > 1 ? ` (${pi + 1}/${pages.length})` : ""}
+              Análise da Câmera Termal
             </div>
             <Divider />
-            <div style={{ fontSize: 13.5, lineHeight: 1.7, color: "#222" }}>
-              {pageSections.map((section, si) => (
+            <div style={{ fontSize: 12.5, lineHeight: 1.6, color: "#222" }}>
+              {condensedSections.map((section, si) => (
                 <ThermalSectionBlock key={si} section={section} />
               ))}
             </div>
           </PageWrapper>
-        ));
+        );
       })()}
 
       {/* Fallback */}
