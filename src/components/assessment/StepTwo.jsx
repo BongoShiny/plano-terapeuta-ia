@@ -162,13 +162,13 @@ Extraia as informações e retorne um JSON com os seguintes campos:
 - areas_afetadas: array de strings, escolha APENAS entre estas opções: "Pescoço / Cervical", "Cabeça / Crânio", "Ombros", "Braços / Membros Superiores", "Coluna Torácica", "Lombar / Coluna Lombar", "Quadril / Glúteos", "Pernas / Membros Inferiores", "Joelhos", "Pés / Tornozelos", "Abdômen", "Mandíbula / ATM", "Costas (geral)", "Corpo todo"
 - tempo_dor: string, escolha APENAS entre: "Menos de 1 mês", "1 a 3 meses", "3 a 6 meses", "6 meses a 1 ano", "1 a 2 anos", "Mais de 2 anos"
 - queixas_principais: string com resumo das queixas
-- causas_provaveis: array de strings, escolha APENAS entre: "Postura no trabalho / computador", "Sedentarismo", "Estresse / Ansiedade", "Atividade física intensa", "Acidente / Queda", "Gravidez / Pós-parto", "Trabalho físico pesado", "Sono inadequado", "Herança genética", "Não sei ao certo"
+- causas_provaveis: array de strings, escolha APENAS entre: "Postura no trabalho / computador", "Sedentarismo", "Estresse / Ansiedade", "Atividade física intensa", "Acidente / Queda", "Gravidez / Pós-parto", "Trabalho físico pesado", "Sono inadequado", "Herança genética", "Não sei ao certo". REGRA CRÍTICA: Selecione SOMENTE causas que estejam EXPLICITAMENTE mencionadas no resumo do cliente. Se o resumo NÃO menciona nenhuma causa, retorne ["Não sei ao certo"]. NUNCA invente ou suponha causas que não foram informadas pelo paciente
 - atividade_fisica: string, escolha APENAS entre: "Não pratico atividade física", "Caminhada", "Musculação", "Yoga / Pilates", "Corrida", "Beach Tênis / Esportes", "Natação", "Ciclismo", "Dança", "Outros"
 - condicoes_preexistentes: array de strings, escolha APENAS entre: "Fibromialgia", "Artrose / Artrite", "Hérnia de Disco", "Diabetes", "Hipertensão", "Obesidade / Sobrepeso", "Lipedema", "Bruxismo", "Ansiedade / Depressão", "Enxaqueca / Cefaleia crônica", "Osteoporose", "Doenças autoimunes", "Nenhuma"
 - medicamentos: string com medicamentos mencionados ou "Nenhum"
 - historico_dor: string com breve histórico
 
-Se alguma informação não foi mencionada no resumo, use o valor mais provável baseado no contexto ou deixe vazio.`,
+REGRA FUNDAMENTAL: Use EXCLUSIVAMENTE as informações que estão escritas no resumo. Se alguma informação NÃO foi mencionada no resumo, deixe o campo vazio ou use o valor padrão. NUNCA invente, suponha ou deduza informações que não foram explicitamente escritas pelo paciente. Para causas_provaveis, selecione SOMENTE causas mencionadas no texto — se nenhuma causa foi citada, retorne ["Não sei ao certo"].`,
         response_json_schema: {
           type: "object",
           properties: {
