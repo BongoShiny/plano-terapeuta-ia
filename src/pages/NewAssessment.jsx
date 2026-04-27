@@ -168,7 +168,7 @@ export default function NewAssessment() {
   const handleChange = (key, value) => setData((p) => ({ ...p, [key]: value }));
 
   const canProceed = () => {
-    if (step === 0) return data.nome && data.telefone && data.terapia_especial && data.sexo;
+    if (step === 0) return data.nome && data.telefone && (data.terapias_selecionadas || []).length > 0 && data.sexo;
     if (step === 1) {
       if (data._ai_filled) return true;
       return data.tempo_dor && (data.areas_afetadas || []).length > 0;

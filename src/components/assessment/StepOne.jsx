@@ -129,24 +129,50 @@ export default function StepOne({ data, onChange }) {
         <div className="md:col-span-2">
           <label className="block text-sm font-semibold mb-2" style={{ color: "#374151" }}>
             <Stethoscope className="inline w-4 h-4 mr-1.5" style={{ color: "#C17F6A" }} />
-            Terapia Especial *
+            Terapia Especial * <span className="font-normal text-gray-400">(selecione uma ou mais)</span>
           </label>
           <div className="grid grid-cols-2 gap-2">
-            {TERAPIAS.map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => onChange("terapia_especial", t)}
-                className="px-3 py-2.5 rounded-xl text-xs font-medium text-left transition-all border"
-                style={{
-                  background: data.terapia_especial === t ? "#1B3A4B" : "white",
-                  color: data.terapia_especial === t ? "white" : "#374151",
-                  borderColor: data.terapia_especial === t ? "#1B3A4B" : "#D1D5DB",
-                }}
-              >
-                {t}
-              </button>
-            ))}
+            {TERAPIAS.map((t) => {
+              const selected = (data.terapias_selecionadas || []).includes(t);
+              return (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => {
+                    const current = data.terapias_selecionadas || [];
+                    let updated;
+                    if (selected) {
+                      updated = current.filter((x) => x !== t);
+                    } else {
+                      updated = [...current, t];
+                    }
+                    onChange("terapias_selecionadas", updated);
+                    onChange("terapia_especial", updated.join(", "));
+                  }}
+                  className="px-3 py-2.5 rounded-xl text-xs font-medium text-left transition-all border flex items-center gap-2"
+                  style={{
+                    background: selected ? "#1B3A4B" : "white",
+                    color: selected ? "white" : "#374151",
+                    borderColor: selected ? "#1B3A4B" : "#D1D5DB",
+                  }}
+                >
+                  <span
+                    className="w-4 h-4 rounded flex-shrink-0 flex items-center justify-center border"
+                    style={{
+                      background: selected ? "#C17F6A" : "white",
+                      borderColor: selected ? "#C17F6A" : "#D1D5DB",
+                    }}
+                  >
+                    {selected && (
+                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                        <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </span>
+                  {t}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
