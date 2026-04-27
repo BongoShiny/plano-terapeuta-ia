@@ -83,13 +83,13 @@ function AiResumoForm({ data, onChange, onAnalyze, analyzing }) {
     <div className="space-y-4">
       <div>
         <label className="block text-sm font-semibold mb-1.5" style={{ color: "#374151" }}>
-          Resumo do Cliente
-          <span className="ml-2 font-normal text-gray-400">(conversa do WhatsApp, anamnese, etc.)</span>
+          Resumo da Agenda do Paciente
+          <span className="ml-2 font-normal text-gray-400">(campo "Observações Gerais")</span>
         </label>
         <textarea
           value={data.resumo_cliente || ""}
           onChange={(e) => onChange("resumo_cliente", e.target.value)}
-          placeholder="Cole aqui tudo o que conversou com o cliente no WhatsApp, dados da anamnese, queixas relatadas, histórico de dores, medicamentos, condições de saúde... Quanto mais detalhado, melhor será a análise da IA."
+          placeholder="Cole aqui o resumo completo da agenda do paciente (Observações Gerais). NÃO digite informações soltas. Exemplo: nome, idade, queixas, histórico, medicamentos, condições de saúde..."
           rows={8}
           className="w-full px-4 py-3 border rounded-xl text-sm focus:outline-none resize-none"
           style={{ borderColor: "#D1D5DB", background: "white" }}
@@ -111,13 +111,13 @@ function AiResumoForm({ data, onChange, onAnalyze, analyzing }) {
         <button
           type="button"
           onClick={onAnalyze}
-          disabled={!data.resumo_cliente || data.resumo_cliente.trim().length < 20 || analyzing}
+          disabled={!data.resumo_cliente || data.resumo_cliente.trim().length < 80 || analyzing}
           className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-sm font-bold text-white transition-all"
           style={{
-            background: (!data.resumo_cliente || data.resumo_cliente.trim().length < 20 || analyzing)
+            background: (!data.resumo_cliente || data.resumo_cliente.trim().length < 80 || analyzing)
               ? "#E5E7EB"
               : "linear-gradient(135deg, #1B3A4B 0%, #2A4F63 100%)",
-            color: (!data.resumo_cliente || data.resumo_cliente.trim().length < 20 || analyzing) ? "#9CA3AF" : "white",
+            color: (!data.resumo_cliente || data.resumo_cliente.trim().length < 80 || analyzing) ? "#9CA3AF" : "white",
           }}
         >
           {analyzing ? (
@@ -252,7 +252,13 @@ Se alguma informação não foi mencionada no resumo, use o valor mais provável
           Queixas e Dores
         </h2>
         <p className="text-sm text-gray-500">
-          Cole o resumo da conversa e a IA analisa automaticamente.
+          Cole o resumo da agenda do paciente e a IA analisa automaticamente.
+        </p>
+      </div>
+
+      <div className="rounded-xl p-3 border" style={{ background: "#FFF7ED", borderColor: "#FDBA74" }}>
+        <p className="text-xs font-semibold" style={{ color: "#9A3412" }}>
+          ⚠️ Atenção: Cole SOMENTE o resumo completo da agenda do paciente (campo "Observações Gerais"). Não digite informações soltas como "dor nas costas". A IA precisa do resumo completo para preencher corretamente.
         </p>
       </div>
 
