@@ -3,7 +3,6 @@ import React from "react";
 const CAUSAS = [
   "Postura no trabalho / computador",
   "Sedentarismo",
-  "Estresse / Ansiedade",
   "Atividade física intensa",
   "Acidente / Queda",
   "Gravidez / Pós-parto",
@@ -22,7 +21,6 @@ const CONDICOES = [
   "Obesidade / Sobrepeso",
   "Lipedema",
   "Bruxismo",
-  "Ansiedade / Depressão",
   "Enxaqueca / Cefaleia crônica",
   "Osteoporose",
   "Doenças autoimunes",
