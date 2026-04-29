@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle, PageBreak, Tab } from 'npm:docx@9.0.2';
+import { Document, Packer, Paragraph, TextRun, AlignmentType, BorderStyle, PageBreak } from 'npm:docx@9.0.2';
 
 function trunc(text, max) {
   if (!text) return "";
@@ -86,9 +86,7 @@ Deno.serve(async (req) => {
       } catch (_e) {}
     }
 
-    const sections = [];
-
-    // ── PAGE 1: Info + Resumos ──
+    // ── Build document ──
     const page1Children = [];
 
     // Title
@@ -152,10 +150,8 @@ Deno.serve(async (req) => {
       const etapas = safeArr(planData.etapas);
 
       if (etapas.length > 0) {
-        // Page break before etapas
         page1Children.push(new Paragraph({ children: [new PageBreak()] }));
 
-        // Etapas 1 and 2
         const etapas12 = etapas.slice(0, 2);
         for (const etapa of etapas12) {
           page1Children.push(new Paragraph({
@@ -189,7 +185,6 @@ Deno.serve(async (req) => {
           page1Children.push(new Paragraph({ children: [], spacing: { after: 60 } }));
         }
 
-        // Etapa 3
         if (etapas.length > 2) {
           page1Children.push(new Paragraph({ children: [new PageBreak()] }));
 
@@ -247,24 +242,20 @@ Deno.serve(async (req) => {
       }],
     });
 
-    const base64Str = await Packer.toBase64String(doc);
-    // Decode base64 to binary
-    const binaryStr = atob(base64Str);
-    const uint8 = new Uint8Array(binaryStr.length);
-    for (let i = 0; i < binaryStr.length; i++) {
-      uint8[i] = binaryStr.charCodeAt(i);
+    // Convert to base64 and then to binary blob for upload
+    const base64String = await Packer.toBase64String(doc);
+    const raw = atob(base64String);
+    const bytes = new Uint8Array(raw.length);
+    for (let i = 0; i < raw.length; i++) {
+      bytes[i] = raw.charCodeAt(i);
     }
 
     const filename = `Plano_Vibe_${(plan.patient_nome || "Paciente").replace(/\s+/g, "_")}.docx`;
+    const file = new File([bytes], filename, { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+    
+    const { file_url } = await base44.asServiceRole.integrations.Core.UploadFile({ file });
 
-    return new Response(uint8, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "Content-Disposition": `attachment; filename="${filename}"`,
-        "Content-Length": String(uint8.length),
-      },
-    });
+    return Response.json({ file_url, filename });
   } catch (error) {
     console.error("generateDocx error:", error);
     return Response.json({ error: error.message }, { status: 500 });

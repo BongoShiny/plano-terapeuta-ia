@@ -38,17 +38,13 @@ export default function PlanView() {
   const downloadDocx = async () => {
     setDownloading(true);
     try {
-      const response = await base44.functions.invoke("generateDocx", { planId: plan.id }, { responseType: "arraybuffer" });
-      const blob = new Blob([response.data], {
-        type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      });
-      const url = window.URL.createObjectURL(blob);
+      const response = await base44.functions.invoke("generateDocx", { planId: plan.id });
+      const { file_url, filename } = response.data;
       const a = document.createElement("a");
-      a.href = url;
-      a.download = `Plano_Vibe_${plan.patient_nome || "Paciente"}.docx`;
+      a.href = file_url;
+      a.download = filename || `Plano_Vibe_${plan.patient_nome || "Paciente"}.docx`;
       document.body.appendChild(a);
       a.click();
-      window.URL.revokeObjectURL(url);
       a.remove();
     } catch (e) {
       alert("Erro ao gerar o .docx. Tente novamente.");
