@@ -247,8 +247,13 @@ Deno.serve(async (req) => {
       }],
     });
 
-    const buffer = await Packer.toBuffer(doc);
-    const uint8 = new Uint8Array(buffer);
+    const base64Str = await Packer.toBase64String(doc);
+    // Decode base64 to binary
+    const binaryStr = atob(base64Str);
+    const uint8 = new Uint8Array(binaryStr.length);
+    for (let i = 0; i < binaryStr.length; i++) {
+      uint8[i] = binaryStr.charCodeAt(i);
+    }
 
     const filename = `Plano_Vibe_${(plan.patient_nome || "Paciente").replace(/\s+/g, "_")}.docx`;
 
