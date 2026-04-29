@@ -210,8 +210,8 @@ function buildZip(files) {
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await base44.auth.me();
-    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    const isAuth = await base44.auth.isAuthenticated();
+    if (!isAuth) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
     const { planId } = await req.json();
     const plans = await base44.asServiceRole.entities.TherapeuticPlan.filter({ id: planId });
