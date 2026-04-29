@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 function esc(str) {
   if (!str) return "";
@@ -214,13 +214,13 @@ Deno.serve(async (req) => {
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
     const { planId } = await req.json();
-    const plans = await base44.entities.TherapeuticPlan.filter({ id: planId });
+    const plans = await base44.asServiceRole.entities.TherapeuticPlan.filter({ id: planId });
     if (!plans.length) return Response.json({ error: 'Plan not found' }, { status: 404 });
     const plan = plans[0];
 
     let patientData = null;
     if (plan.patient_id) {
-      const patients = await base44.entities.Patient.filter({ id: plan.patient_id });
+      const patients = await base44.asServiceRole.entities.Patient.filter({ id: plan.patient_id });
       if (patients.length) patientData = patients[0];
     }
 
