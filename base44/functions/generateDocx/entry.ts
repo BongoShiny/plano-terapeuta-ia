@@ -101,10 +101,60 @@ Deno.serve(async (req) => {
       fetchImageBuffer(FOOTER_IMAGE_URL),
     ]);
 
-    // A4 = 210mm x 297mm. docx transformation uses points (1pt ≈ 0.353mm)
-    // A4 in points: ~595 x 842. But ImageRun transformation uses pixels at 72dpi = points
-    // For full page coverage, use exact A4 dimensions
-    // EMU: 1 inch = 914400 EMU, 1mm = 36000 EMU, 1pt = 12700 EMU
+    // A4 = 210mm x 297mm
+    // docx transformation uses PIXELS, and internally converts at 72 DPI to EMU
+    // 1 inch = 72px at 72 DPI. A4 = 8.27" x 11.69" = 595px x 842px at 72 DPI
+    // But the image may have a different aspect ratio than A4.
+    // We need to determine the actual image dimensions to avoid distortion.
+    
+    // Get actual image dimensions from PNG header (first 24 bytes contain width/height)
+    function getPngDimensions(data) {
+      // PNG header: bytes 16-19 = width, bytes 20-23 = height (big-endian)
+      if (data[0] === 0x89 && data[1] === 0x50) { // PNG signature
+        const width = (data[16] << 24) | (data[17] << 16) | (data[18] << 8) | data[19];
+        const height = (data[20] << 24) | (data[21] << 16) | (data[22] << 8) | data[23];
+        return { width, height };
+      }
+      return null;
+    }
+
+    const bgDims = getPngDimensions(bgImageData);
+    const footerDims = getPngDimensions(footerImageData);
+    console.log("BG image dimensions:", bgDims);
+    console.log("Footer image dimensions:", footerDims);
+
+    // A4 page dimensions at 72 DPI (points)
+    const A4_W = 595;
+    const A4_H = 842;
+
+    // For BG: scale to cover the full page (cover strategy - may crop but no distortion)
+    let bgW = A4_W;
+    let bgH = A4_H;
+    if (bgDims) {
+      const imgRatio = bgDims.width / bgDims.height;
+      const pageRatio = A4_W / A4_H;
+      if (imgRatio > pageRatio) {
+        // Image is wider than page ratio - fit height, overflow width
+        bgH = A4_H;
+        bgW = Math.round(A4_H * imgRatio);
+      } else {
+        // Image is taller than page ratio - fit width, overflow height
+        bgW = A4_W;
+        bgH = Math.round(A4_W / imgRatio);
+      }
+    }
+    // Center the image on the page
+    const bgOffsetX = Math.round(((A4_W - bgW) / 2) * 12700); // convert pt to EMU
+    const bgOffsetY = Math.round(((A4_H - bgH) / 2) * 12700);
+
+    // For footer: scale to full width, keep aspect ratio
+    let footerW = A4_W;
+    let footerH = 100;
+    if (footerDims) {
+      footerH = Math.round(A4_W * (footerDims.height / footerDims.width));
+    }
+    // Position footer at bottom of page
+    const footerOffsetY = Math.round((A4_H - footerH) * 12700);
 
     const makeHeader = () => new Header({
       children: [
@@ -112,10 +162,10 @@ Deno.serve(async (req) => {
           children: [
             new ImageRun({
               data: bgImageData,
-              transformation: { width: 596, height: 842 },
+              transformation: { width: bgW, height: bgH },
               floating: {
-                horizontalPosition: { relative: "page", offset: 0 },
-                verticalPosition: { relative: "page", offset: 0 },
+                horizontalPosition: { relative: "page", offset: bgOffsetX },
+                verticalPosition: { relative: "page", offset: bgOffsetY },
                 wrap: { type: "none" },
                 behindDocument: true,
                 lockAnchor: true,
@@ -133,10 +183,10 @@ Deno.serve(async (req) => {
           children: [
             new ImageRun({
               data: footerImageData,
-              transformation: { width: 596, height: 100 },
+              transformation: { width: footerW, height: footerH },
               floating: {
                 horizontalPosition: { relative: "page", offset: 0 },
-                verticalPosition: { relative: "page", offset: 9420000 },  // near bottom
+                verticalPosition: { relative: "page", offset: footerOffsetY },
                 wrap: { type: "none" },
                 behindDocument: true,
                 lockAnchor: true,
