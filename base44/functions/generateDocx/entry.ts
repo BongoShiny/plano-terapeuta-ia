@@ -1,5 +1,14 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
-import { Document, Packer, Paragraph, TextRun, AlignmentType, BorderStyle, PageBreak } from 'npm:docx@9.0.2';
+import { Document, Packer, Paragraph, TextRun, AlignmentType, BorderStyle, PageBreak, Header, Footer, ImageRun } from 'npm:docx@9.0.2';
+
+const BG_IMAGE_URL = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/ef18c5b4c_image.png";
+const FOOTER_IMAGE_URL = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/699c716b5aaf606ea054cadd/ac819d2fc_image.png";
+
+async function fetchImageBuffer(url) {
+  const res = await fetch(url);
+  const arrayBuf = await res.arrayBuffer();
+  return new Uint8Array(arrayBuf);
+}
 
 function trunc(text, max) {
   if (!text) return "";
@@ -85,6 +94,68 @@ Deno.serve(async (req) => {
         if (jsonMatch) planData = JSON.parse(jsonMatch[0]);
       } catch (_e) {}
     }
+
+    // Fetch background and footer images
+    const [bgImageData, footerImageData] = await Promise.all([
+      fetchImageBuffer(BG_IMAGE_URL),
+      fetchImageBuffer(FOOTER_IMAGE_URL),
+    ]);
+
+    // Create header with background image (covers top area)
+    // A4 page = 210mm x 297mm = 595pt x 842pt
+    // Image dimensions: full width, top portion ~120px height
+    const makeHeader = () => new Header({
+      children: [
+        new Paragraph({
+          children: [
+            new ImageRun({
+              data: bgImageData,
+              transformation: { width: 595, height: 842 },
+              floating: {
+                horizontalPosition: {
+                  offset: 0,
+                  relative: "page",
+                },
+                verticalPosition: {
+                  offset: 0,
+                  relative: "page",
+                },
+                wrap: { type: "none" },
+                behindDocument: true,
+                lockAnchor: true,
+              },
+            }),
+          ],
+        }),
+      ],
+    });
+
+    // Create footer with footer image
+    const makeFooter = () => new Footer({
+      children: [
+        new Paragraph({
+          children: [
+            new ImageRun({
+              data: footerImageData,
+              transformation: { width: 595, height: 80 },
+              floating: {
+                horizontalPosition: {
+                  offset: 0,
+                  relative: "page",
+                },
+                verticalPosition: {
+                  offset: 9720000, // ~297mm - footer height, in EMUs approx (bottom of page)
+                  relative: "page",
+                },
+                wrap: { type: "none" },
+                behindDocument: true,
+                lockAnchor: true,
+              },
+            }),
+          ],
+        }),
+      ],
+    });
 
     // ── Build document ──
     const page1Children = [];
@@ -235,8 +306,14 @@ Deno.serve(async (req) => {
       sections: [{
         properties: {
           page: {
-            margin: { top: 1440, right: 720, bottom: 1440, left: 720 },
+            margin: { top: 2160, right: 720, bottom: 1800, left: 720 },
           },
+        },
+        headers: {
+          default: makeHeader(),
+        },
+        footers: {
+          default: makeFooter(),
         },
         children: page1Children,
       }],
