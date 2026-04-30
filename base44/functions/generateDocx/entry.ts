@@ -101,28 +101,25 @@ Deno.serve(async (req) => {
       fetchImageBuffer(FOOTER_IMAGE_URL),
     ]);
 
-    // Create header with background image (covers top area)
-    // A4 page = 210mm x 297mm = 595pt x 842pt
-    // Image dimensions: full width, top portion ~120px height
+    // A4 = 210mm x 297mm. docx transformation uses points (1pt ≈ 0.353mm)
+    // A4 in points: ~595 x 842. But ImageRun transformation uses pixels at 72dpi = points
+    // For full page coverage, use exact A4 dimensions
+    // EMU: 1 inch = 914400 EMU, 1mm = 36000 EMU, 1pt = 12700 EMU
+
     const makeHeader = () => new Header({
       children: [
         new Paragraph({
           children: [
             new ImageRun({
               data: bgImageData,
-              transformation: { width: 595, height: 842 },
+              transformation: { width: 596, height: 842 },
               floating: {
-                horizontalPosition: {
-                  offset: 0,
-                  relative: "page",
-                },
-                verticalPosition: {
-                  offset: 0,
-                  relative: "page",
-                },
+                horizontalPosition: { relative: "page", offset: 0 },
+                verticalPosition: { relative: "page", offset: 0 },
                 wrap: { type: "none" },
                 behindDocument: true,
                 lockAnchor: true,
+                allowOverlap: true,
               },
             }),
           ],
@@ -130,26 +127,20 @@ Deno.serve(async (req) => {
       ],
     });
 
-    // Create footer with footer image
     const makeFooter = () => new Footer({
       children: [
         new Paragraph({
           children: [
             new ImageRun({
               data: footerImageData,
-              transformation: { width: 595, height: 80 },
+              transformation: { width: 596, height: 100 },
               floating: {
-                horizontalPosition: {
-                  offset: 0,
-                  relative: "page",
-                },
-                verticalPosition: {
-                  offset: 9720000, // ~297mm - footer height, in EMUs approx (bottom of page)
-                  relative: "page",
-                },
+                horizontalPosition: { relative: "page", offset: 0 },
+                verticalPosition: { relative: "page", offset: 9420000 },  // near bottom
                 wrap: { type: "none" },
                 behindDocument: true,
                 lockAnchor: true,
+                allowOverlap: true,
               },
             }),
           ],
