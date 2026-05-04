@@ -12,7 +12,17 @@ async function fetchImageBuffer(url) {
 
 function trunc(text, max) {
   if (!text) return "";
-  return text.length > max ? text.slice(0, max).trimEnd() + "..." : text;
+  if (text.length <= max) return text;
+  const cut = text.substring(0, max);
+  // Always end at a complete sentence
+  const lastSentence = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("! "), cut.lastIndexOf("? "));
+  const lastPunctEnd = Math.max(cut.lastIndexOf("."), cut.lastIndexOf("!"), cut.lastIndexOf("?"));
+  if (lastSentence > 30) return cut.substring(0, lastSentence + 1).trim();
+  if (lastPunctEnd > 30 && lastPunctEnd === cut.length - 1) return cut.substring(0, lastPunctEnd + 1).trim();
+  // No sentence break — cut at last space and add period
+  const lastSpace = cut.lastIndexOf(" ");
+  if (lastSpace > 30) return cut.substring(0, lastSpace).trim().replace(/[,;:\-–—]$/, "").trim() + ".";
+  return text;
 }
 
 function safeArr(v) { return Array.isArray(v) ? v : []; }
