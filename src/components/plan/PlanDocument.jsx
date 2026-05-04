@@ -6,9 +6,15 @@ const FOOTER_IMAGE_URL = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/ob
 function truncateAtSentence(text, maxChars) {
   if (!text || text.length <= maxChars) return text;
   const trimmed = text.substring(0, maxChars);
+  // Find last complete sentence ending
   const lastPeriod = Math.max(trimmed.lastIndexOf('. '), trimmed.lastIndexOf('! '), trimmed.lastIndexOf('? '));
-  if (lastPeriod > 50) return trimmed.substring(0, lastPeriod + 1);
-  return trimmed + "...";
+  const lastPeriodEnd = Math.max(trimmed.lastIndexOf('.'), trimmed.lastIndexOf('!'), trimmed.lastIndexOf('?'));
+  if (lastPeriod > 30) return trimmed.substring(0, lastPeriod + 1).trim();
+  if (lastPeriodEnd > 30 && lastPeriodEnd === trimmed.length - 1) return trimmed.substring(0, lastPeriodEnd + 1).trim();
+  // No sentence break found — cut at last space and add period to avoid incomplete words
+  const lastSpace = trimmed.lastIndexOf(' ');
+  if (lastSpace > 30) return trimmed.substring(0, lastSpace).trim().replace(/[,;:\-–—]$/, "").trim() + ".";
+  return text; // fallback: show full text
 }
 
 function Divider() {

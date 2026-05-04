@@ -54,13 +54,22 @@ export default function PlanSummaryDocument({ plan, patientData }) {
     return cleaned;
   };
 
-  // Truncate queixas to max 250 chars ending at a period
+  // Truncate text always ending at a complete sentence (period, ! or ?)
+  // Never cuts in the middle of a word or leaves incomplete text
   const truncateAtPeriod = (text, max) => {
     if (!text) return "";
     if (text.length <= max) return text;
     const cut = text.substring(0, max);
-    const lastPeriod = cut.lastIndexOf(".");
-    return lastPeriod > 50 ? cut.substring(0, lastPeriod + 1) : cut + "...";
+    // Find last sentence-ending punctuation
+    const lastPeriod = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("! "), cut.lastIndexOf("? "));
+    const lastPeriodEnd = Math.max(cut.lastIndexOf("."), cut.lastIndexOf("!"), cut.lastIndexOf("?"));
+    // Prefer period followed by space (mid-text), otherwise period at end
+    if (lastPeriod > 30) return cut.substring(0, lastPeriod + 1).trim();
+    if (lastPeriodEnd > 30 && lastPeriodEnd === cut.length - 1) return cut.substring(0, lastPeriodEnd + 1).trim();
+    // If no sentence break found, find last space and add period
+    const lastSpace = cut.lastIndexOf(" ");
+    if (lastSpace > 30) return cut.substring(0, lastSpace).trim().replace(/[,;:\-–—]$/, "").trim() + ".";
+    return text; // fallback: show full text
   };
 
   const hasPostural = planData?.foto_postural_1 || planData?.foto_postural_2 || planData?.avaliacao_postural;
@@ -149,7 +158,7 @@ export default function PlanSummaryDocument({ plan, patientData }) {
             <div style={{ marginBottom: 6 }}>
               <SectionTitle>Suas Queixas Principais</SectionTitle>
               <p style={{ fontSize: 13, lineHeight: 1.6, margin: 0, textAlign: "justify", fontWeight: 450 }}>
-                {truncateAtPeriod(planData.resumo_queixas, 250)}
+                {truncateAtPeriod(planData.resumo_queixas, 350)}
               </p>
             </div>
           )}
