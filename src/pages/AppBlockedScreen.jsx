@@ -2,7 +2,7 @@ import React from "react";
 import { ArrowRight, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const AGENDA_URL = "https://app.vibeterapias.com.br";
+const AGENDA_URL = "https://www.vibeterapias.tech";
 const SCREENSHOT_URL = "https://media.base44.com/images/public/699c716b5aaf606ea054cadd/5b125770f_image.png";
 const VIDEO_URL = "https://media.base44.com/videos/public/699c716b5aaf606ea054cadd/885b14572_planoterapeutico.mp4";
 
