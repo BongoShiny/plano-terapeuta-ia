@@ -1,0 +1,48 @@
+{
+  "name": "TherapeuticPlan",
+  "type": "object",
+  "properties": {
+    "patient_id": {
+      "type": "string"
+    },
+    "patient_nome": {
+      "type": "string"
+    },
+    "patient_telefone": {
+      "type": "string"
+    },
+    "terapia_especial": {
+      "type": "string"
+    },
+    "plano_completo": {
+      "type": "string",
+      "description": "Plano gerado pela IA em markdown"
+    },
+    "total_sessoes": {
+      "type": "number",
+      "default": 24
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Gerando",
+        "Ativo",
+        "Apresentado",
+        "Fechado",
+        "Arquivado"
+      ],
+      "default": "Gerando"
+    },
+    "observacoes": {
+      "type": "string"
+    },
+    "clinic_id": {
+      "type": "string",
+      "description": "ID da cl\u00ednica onde o plano foi gerado"
+    }
+  },
+  "required": [
+    "patient_id",
+    "terapia_especial"
+  ]
+}

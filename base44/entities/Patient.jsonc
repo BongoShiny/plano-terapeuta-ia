@@ -1,0 +1,105 @@
+{
+  "name": "Patient",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "description": "Nome completo do paciente"
+    },
+    "idade": {
+      "type": "number",
+      "description": "Idade do paciente"
+    },
+    "sexo": {
+      "type": "string",
+      "enum": [
+        "Feminino",
+        "Masculino",
+        "Outro"
+      ]
+    },
+    "telefone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "terapia_especial": {
+      "type": "string",
+      "enum": [
+        "Libera\u00e7\u00e3o Miofascial",
+        "Pesco\u00e7o e Cr\u00e2nio Relax",
+        "Pernas e P\u00e9s Relax",
+        "Fibromialgia",
+        "Lipedema",
+        "Bruxismo",
+        "Coluna Sem Dor",
+        "Desinflama",
+        "H\u00e9rnia de Disco",
+        "Gesta\u00e7\u00e3o Sem Dor"
+      ]
+    },
+    "queixas_principais": {
+      "type": "string"
+    },
+    "areas_afetadas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "intensidade_dor": {
+      "type": "number",
+      "description": "Escala 0-10"
+    },
+    "tempo_dor": {
+      "type": "string"
+    },
+    "historico_dor": {
+      "type": "string"
+    },
+    "causas_provaveis": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "atividade_fisica": {
+      "type": "string"
+    },
+    "condicoes_preexistentes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "medicamentos": {
+      "type": "string"
+    },
+    "resultado_camera_termal": {
+      "type": "string"
+    },
+    "objetivos_paciente": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Ativo",
+        "Em Tratamento",
+        "Conclu\u00eddo",
+        "Inativo"
+      ],
+      "default": "Ativo"
+    },
+    "clinic_id": {
+      "type": "string",
+      "description": "ID da cl\u00ednica onde o paciente \u00e9 atendido"
+    }
+  },
+  "required": [
+    "nome",
+    "telefone",
+    "terapia_especial"
+  ]
+}

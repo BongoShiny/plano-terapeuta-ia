@@ -12,6 +12,7 @@ import ManageUsers from './pages/ManageUsers';
 import ManageClinics from './pages/ManageClinics';
 import SelectClinic from './pages/SelectClinic';
 import PendingApproval from './pages/PendingApproval';
+import AppBlockedScreen from './pages/AppBlockedScreen';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -23,6 +24,13 @@ const LayoutWrapper = ({ children, currentPageName }) => Layout ?
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+
+  // App completely blocked — show migration screen with video, no auth needed
+  return (
+    <Routes>
+      <Route path="*" element={<AppBlockedScreen />} />
+    </Routes>
+  );
 
   // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {

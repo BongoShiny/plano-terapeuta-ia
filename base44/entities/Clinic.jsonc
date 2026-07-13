@@ -1,0 +1,28 @@
+{
+  "name": "Clinic",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "description": "Nome da cl\u00ednica"
+    },
+    "endereco": {
+      "type": "string",
+      "description": "Endere\u00e7o da cl\u00ednica"
+    },
+    "telefone": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Ativa",
+        "Inativa"
+      ],
+      "default": "Ativa"
+    }
+  },
+  "required": [
+    "nome"
+  ]
+}
